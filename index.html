@@ -90,156 +90,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="0-简介"><a href="#0-简介" class="headerlink" title="0 简介"></a>0 简介</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>去官网直接下载，然后进行安装。安装完成之后需要配置环境变量。配置<code>GOROOT</code>和<code>GOPATH</code>。其中的GOROOT是go的安装路径，GOPATH是go项目路径。<br>安装完成之后使用<code>go env</code>命令来检测安装</p>
-<h3 id="go源码文件分类"><a href="#go源码文件分类" class="headerlink" title="go源码文件分类"></a>go源码文件分类</h3><p><strong>命令源码文件</strong></p>
-<p>该文件属于main包，并且有main函数</p>
-<p><strong>库源码文件</strong></p>
-<p>不属于命令源码文件的普通源码文件</p>
-<p><strong>测试源码文件</strong></p>
-<p>文件名：以_test.go为后缀</p>
-<p>文件中的函数名：以Testxxx、或者Benchmarkxxx为前缀</p>
-<h3 id="常用的命令"><a href="#常用的命令" class="headerlink" title="常用的命令"></a>常用的命令</h3><p><code>go build</code>: 用来进行编译。</p>
-<ul>
-<li>默认编译目录下的所有的go文件（不包含以_或者.开头的头go文件），</li>
-<li>如果执行编译一个指定的文件，可以使用<code>go build 文件名</code>。</li>
-<li>如果编译的是普通的包，执行了go build命令之后不会产生任何的文件，如果是main包执行了该命令之后，会在当前目录下生成一个可执行文件。</li>
-<li>当代码包中有且只有一个命令源码文件的时候，在目录下执行go build命令，会在该目录下生成一个和目录名同名的可执行文件。</li>
-</ul>
-<p><code>go get</code>: 从远程代码仓库上下载并安装代码包。</p>
-<ul>
-<li><p><code>go install</code>: 用来编译并安装代码包或者源码文件</p>
-</li>
-<li><p>第一步：生成结果文件（可执行文件或者.a包）</p>
-<ul>
-<li>可执行文件：一般是带main函数的go文件生成的</li>
-<li>.a文件：一般是不包含main函数的go文件产生的，没有函数入口，只能被调用</li>
-</ul>
-</li>
-<li><p>第二步：把编译好的结果一道<code>$GOPATH/pkg</code>或者<code>$GOPATH/bin</code>目录下</p>
-</li>
-</ul>
-<p><code>go run</code>: 该命令不是用来运行所有的go源码文件的，它只能用来运行<strong>命令源码文件</strong>, 不能运行测试源码文件</p>
-<h2 id="1-变量和常量"><a href="#1-变量和常量" class="headerlink" title="1 变量和常量"></a>1 变量和常量</h2><h3 id="1-1-变量的定义"><a href="#1-1-变量的定义" class="headerlink" title="1.1 变量的定义"></a>1.1 变量的定义</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1： 先定义，然后在进行赋值</span></span><br><span class="line"><span class="keyword">var</span> name <span class="keyword">string</span></span><br><span class="line">name = <span class="string">"cody"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：定义的同时进行赋值</span></span><br><span class="line"><span class="keyword">var</span> name <span class="keyword">string</span> = <span class="string">"cody"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法3：定义的时候进行赋值，不指定类型，使用类型推导</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">"cody"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法4：不使用var关键字, 简短声明</span></span><br><span class="line">name := <span class="string">"cody"</span></span><br></pre></td></tr></table></figure>
-
-<p>使用简短声明注意：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 必须有一个是新声明的</span></span><br><span class="line">name, sex, age := <span class="string">"cody"</span>, <span class="string">"male"</span>, <span class="number">10</span> </span><br><span class="line"><span class="comment">// 2. 不能声明全局的变量</span></span><br></pre></td></tr></table></figure>
-
-<p>如果一个变量只进行了声明，没有进行赋值，那么在go语言中默认为对应类型的零值</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name <span class="keyword">string</span> <span class="comment">// 默认值为''</span></span><br><span class="line"><span class="keyword">var</span> age <span class="keyword">int</span> <span class="comment">// 默认值为0</span></span><br><span class="line"><span class="keyword">var</span> isExist <span class="keyword">bool</span> <span class="comment">// 默认为false</span></span><br><span class="line"><span class="keyword">var</span> pointer *<span class="keyword">int</span> <span class="comment">// 默认为nil</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-常量的定义"><a href="#1-2-常量的定义" class="headerlink" title="1.2 常量的定义"></a>1.2 常量的定义</h3><p>常量一旦定义了之后，就不能改变</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 定义常量</span></span><br><span class="line"><span class="keyword">const</span> LENGTH <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line"><span class="keyword">const</span> SIZE = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 定义一组常量</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    NAME = <span class="string">"cody"</span></span><br><span class="line">    AGE = <span class="number">10</span></span><br><span class="line">    SEX = <span class="string">'f'</span></span><br></pre></td></tr></table></figure>
-
-<p>定义一组常量如果这个常量没有初始值，那么这个常量的默认值和上一个常量相同</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    NAME = <span class="string">"cody"</span></span><br><span class="line">    AGE <span class="comment">// 默认值为cody</span></span><br><span class="line">    SEX = <span class="string">'f'</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p>枚举类型</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    SPRING = <span class="number">1</span></span><br><span class="line">    SUMMER = <span class="number">2</span></span><br><span class="line">    AUTUMN = <span class="number">3</span></span><br><span class="line">    WINTER = <span class="number">4</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<p>iota常量: 可以认为是一个可以被编译器进行修改的常量, 每当定义一个常量<code>iota</code>的值就加1</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    a = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">    b = <span class="literal">iota</span> <span class="comment">// 1</span></span><br><span class="line">    c = <span class="literal">iota</span> <span class="comment">// 2</span></span><br><span class="line">)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">		A = <span class="literal">iota</span> <span class="comment">// 0</span></span><br><span class="line">		B <span class="comment">// 1</span></span><br><span class="line">		C <span class="comment">// 2</span></span><br><span class="line">		D = <span class="string">"hello"</span> <span class="comment">// hello, iota = 3</span></span><br><span class="line">		E <span class="comment">// hello iota = 4</span></span><br><span class="line">		F = <span class="number">100</span> <span class="comment">// 100, iota = 5</span></span><br><span class="line">		G <span class="comment">// 100 , iota = 6</span></span><br><span class="line">		H = <span class="literal">iota</span> <span class="comment">// iota = 7 </span></span><br><span class="line">		I <span class="comment">// 8</span></span><br><span class="line">	)</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-数据类型"><a href="#1-2-数据类型" class="headerlink" title="1.2 数据类型"></a>1.2 数据类型</h3><h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><p><strong>布尔</strong></p>
-<p>bool</p>
-<p><strong>数值</strong></p>
-<p>int8, int16, int32, int64, int</p>
-<p>float32, float64</p>
-<p>….</p>
-<p>byte: uint8</p>
-<p>rune: int32</p>
-<p><strong>字符串</strong></p>
-<p>多个byte的集合</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">"cody"</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">`cody`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 单引号和双引号的区别</span></span><br><span class="line">s1 := <span class="string">'A'</span></span><br><span class="line">s2 := <span class="string">"A"</span></span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"%T, %d\n"</span>, s1, s1) <span class="comment">// int32, 65</span></span><br><span class="line">fmt.Printf(<span class="string">"%T, %s\n"</span>, s2, s2) <span class="comment">// string A</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 中文编码</span></span><br><span class="line">s3 := <span class="string">'中'</span></span><br><span class="line">fmt.Printf(<span class="string">"%T, %d, %c, %q\n"</span>, s3, s3, s3, s3) <span class="comment">// int32, 20013, 中, '中'</span></span><br><span class="line"></span><br><span class="line">s4 := <span class="string">`"hello world"`</span></span><br><span class="line">fmt.Println(s4) <span class="comment">// "hello world"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h4><p><strong>array</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1：定义数组</span></span><br><span class="line"><span class="comment">// 声明数组</span></span><br><span class="line"><span class="keyword">var</span> array [<span class="number">10</span>] <span class="keyword">int</span></span><br><span class="line"><span class="comment">// 数组赋值</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    array[i] = i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2：定义数组</span></span><br><span class="line"><span class="keyword">var</span> arr2 [<span class="number">4</span>]<span class="keyword">int</span> = [<span class="number">4</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr3 = [<span class="number">4</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法3：</span></span><br><span class="line"><span class="keyword">var</span> arr4 = [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">13</span>&#125; <span class="comment">// 其他的初始值为0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法4</span></span><br><span class="line"><span class="keyword">var</span> arr5 = [...]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>&#125; <span class="comment">// 不指定元素的个数，根据后面的元素个数自动推导</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法5</span></span><br><span class="line">arr6 := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>:<span class="number">10</span>, <span class="number">9</span>:<span class="number">23</span>&#125; <span class="comment">// 给指定位置赋值</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>slice</strong></p>
-<p><strong>map</strong></p>
-<p><strong>function</strong></p>
-<p><strong>pointer</strong></p>
-<p><strong>struct</strong></p>
-<p><strong>interface</strong></p>
-<p><strong>channel</strong></p>
-<h4 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h4><p>基本语法：Type(value), 转换只能是兼容类型才能够进行转换，不是所有的类型都能够进行转换</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="number">12</span></span><br><span class="line"><span class="keyword">var</span> b <span class="keyword">string</span></span><br><span class="line">b = <span class="keyword">string</span>(a)</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-逻辑控制"><a href="#2-逻辑控制" class="headerlink" title="2 逻辑控制"></a>2 逻辑控制</h2><h3 id="2-1-选择"><a href="#2-1-选择" class="headerlink" title="2.1 选择"></a>2.1 选择</h3><h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 最基本的if语句</span></span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">20</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"a is bigger than 20"</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"a is smaller than 20"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// if语句的其他写法</span></span><br><span class="line"><span class="keyword">if</span> num := <span class="number">20</span>; num &gt; <span class="number">10</span> &#123; <span class="comment">// num的作用域是if语句中</span></span><br><span class="line">    fmt.Println(<span class="string">"hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h4><p>每个case语句后面默认有个一个break语句, 也可以手动显示的书写; <code>fallthrough</code>穿透，如果fallthrough所在的case语句得到了执行，那么它后面的case语句不进行匹配了直接进行执行</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. switch后面有tag</span></span><br><span class="line"><span class="keyword">switch</span> a &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">    fmt.Println(<span class="string">"hello"</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="number">20</span>:</span><br><span class="line">    fmt.Println(<span class="string">"world"</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    fmt.Println(<span class="string">"default"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. switch后面无tag, 此时默认为true，将case后面的表达式与true进行比较</span></span><br><span class="line"><span class="keyword">switch</span> &#123;</span><br><span class="line"><span class="keyword">case</span> a &gt; <span class="number">10</span>:</span><br><span class="line">    fmt.Println(<span class="string">"hello"</span>)</span><br><span class="line"><span class="keyword">case</span> a &lt; <span class="number">10</span>:</span><br><span class="line">    fmt.Println(<span class="string">"world"</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    fmt.Println(<span class="string">"default"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 使用break</span></span><br><span class="line"><span class="keyword">switch</span> &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="literal">true</span>:</span><br><span class="line">    fmt.Println(<span class="string">"扯犊子"</span>)</span><br><span class="line">    fmt.Println(<span class="string">"扯犊子"</span>)</span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line">    fmt.Println(<span class="string">"扯犊子"</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="literal">false</span>:</span><br><span class="line">    fmt.Println(<span class="string">"扯淡...."</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 使用fallthrough实现switch的穿透</span></span><br><span class="line"><span class="keyword">switch</span> a &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">    fmt.Println(<span class="string">"fallthrough"</span>)</span><br><span class="line">    <span class="keyword">fallthrough</span> <span class="comment">// 执行其后面的case语句, 只能在最后一个语句</span></span><br><span class="line"><span class="keyword">case</span> <span class="number">29</span>:</span><br><span class="line">    fmt.Println(<span class="string">"false case"</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="number">123</span>:</span><br><span class="line">    fmt.Println(<span class="string">"case 123"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="select"><a href="#select" class="headerlink" title="select"></a>select</h4><p>专门用于channel中</p>
-<h3 id="2-2-循环"><a href="#2-2-循环" class="headerlink" title="2.2 循环"></a>2.2 循环</h3><p>for实现循环</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. for循环方式1</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ &#123;</span><br><span class="line">    fmt.Println(<span class="string">"hello"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. for循环方式2</span></span><br><span class="line">i := <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i &gt; <span class="number">0</span> &#123; <span class="comment">// 类似于其他语言的while</span></span><br><span class="line">    fmt.Println(<span class="string">"world"</span>)</span><br><span class="line">    i--</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3. for循环方式3</span></span><br><span class="line"><span class="keyword">for</span> &#123; <span class="comment">// wile(true)</span></span><br><span class="line">    fmt.Println(<span class="string">"world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="3-函数"><a href="#3-函数" class="headerlink" title="3 函数"></a>3 函数</h2><h2 id="4-面向对象"><a href="#4-面向对象" class="headerlink" title="4 面向对象"></a>4 面向对象</h2><h2 id="5-错误及异常处理"><a href="#5-错误及异常处理" class="headerlink" title="5 错误及异常处理"></a>5 错误及异常处理</h2><h2 id="6-包和模块"><a href="#6-包和模块" class="headerlink" title="6 包和模块"></a>6 包和模块</h2><h3 id="6-1-创建包"><a href="#6-1-创建包" class="headerlink" title="6.1 创建包"></a>6.1 创建包</h3><p>包和文件夹的关系：没有关系，但是建议是将包的名字设置成文件夹的名字，在同一个文件夹下的文件中声明package的名字的时候都应该是一样的</p>
-<h3 id="6-2-导入包"><a href="#6-2-导入包" class="headerlink" title="6.2 导入包"></a>6.2 导入包</h3><p>使用import关键字来进行导包，导包的语法如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法1, 使用包中的函数的时候需要使用包名.函数名的方式来使用</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法2, 此时在使用包中的方法的时候，不需要使用包名直接使用包中的方法名就可以</span></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    . <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法3， 使用别名, 在使用包中的方法的时候，使用别名.函数名的方式来使用</span></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    f <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法4， 使用_, 引入该包，但是不直接使用包中的函数，而是调用了该包中的init函数</span></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    _ <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-<h2 id="7-并发编程"><a href="#7-并发编程" class="headerlink" title="7 并发编程"></a>7 并发编程</h2><h2 id="8-最佳实践"><a href="#8-最佳实践" class="headerlink" title="8 最佳实践"></a>8 最佳实践</h2><h3 id="8-1-编码规范"><a href="#8-1-编码规范" class="headerlink" title="8.1 编码规范"></a>8.1 编码规范</h3><h4 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h4><p><strong>包命名</strong></p>
-<p>保持package的名字与目录的名字一致，包名应该为消息单词，不要使用下划线或者混合大小写</p>
-<p><strong>文件命名</strong></p>
-<p>应该为小写单词，使用下划线分割单词</p>
-<p><strong>结构体命名</strong></p>
-<p>采用驼峰命名法：首字母根据访问控制权限来大写或者小写</p>
-<p><strong>接口命名</strong></p>
-<p>单个函数的接口名以<code>er</code>作为后缀</p>
-<p><strong>变量命名</strong></p>
-<ul>
-<li>和结构体类似，变量名使用驼峰，首字母根据访问控制权限选择大小写</li>
-<li>若变量为bool类型，名称应该以Has，Is，Can，或Allow开头</li>
-</ul>
-<p><strong>常量命名</strong></p>
-<ul>
-<li>全部大写字母，使用下划线分割单词</li>
-<li>如果是枚举类型的常量，需要先创建相应的类型<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Scheme <span class="keyword">string</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    HTTP Scheme = <span class="string">"http"</span></span><br><span class="line">    HTTPS Scheme = <span class="string">"https"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h4 id="注释规范"><a href="#注释规范" class="headerlink" title="注释规范"></a>注释规范</h4><p><strong>包注释</strong></p>
-<ul>
-<li>包注释：位于package包的声明前。如果包中有多个文件，只需要出现在一个go文件中（通常是和包同名的文件）<ul>
-<li>包的基本简介</li>
-<li>创建者</li>
-<li>创建时间 </li>
-</ul>
-</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 该包是用来提供常用的工具的</span></span><br><span class="line"><span class="keyword">package</span> util</span><br></pre></td></tr></table></figure>
-
-<p><strong>接口或结构注释</strong></p>
-<p>接口注释放在接口定义的前一行</p>
-<p><strong>函数或者方法注释</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数的作用</span></span><br><span class="line"><span class="comment">// 参数：每行一个参数</span></span><br><span class="line"><span class="comment">// 返回值: 每行一个返回值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span><span class="params">(a <span class="keyword">int</span>)</span> <span class="title">string</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h4><p><strong>缩进和换行</strong></p>
-<ul>
-<li>使用tab进行缩进</li>
-<li>每行不超过120字符</li>
-</ul>
-<p><strong>括号和空格</strong></p>
-<ul>
-<li>左大括号不换行</li>
-<li>运算符之间使用空格</li>
-</ul>
-<p><strong>import风格</strong></p>
-<p>标准库中的包、程序内部的包、第三方的包</p>
-<p><strong>错误的处理</strong></p>
-<ul>
-<li>尽早使用return</li>
-<li>采用独立的错误流进行处理错误</li>
-</ul>
-<h3 id="8-2-使用工具"><a href="#8-2-使用工具" class="headerlink" title="8.2 使用工具"></a>8.2 使用工具</h3><h4 id="gofmt"><a href="#gofmt" class="headerlink" title="gofmt"></a>gofmt</h4><p>使用该工具对代码进行格式化</p>
-<h4 id="goimport"><a href="#goimport" class="headerlink" title="goimport"></a>goimport</h4><p>使用该工具对导入的包进行格式化</p>
-<h4 id="go-vet"><a href="#go-vet" class="headerlink" title="go vet"></a>go vet</h4><p>静态分析源码中存在的问题</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+        <p>本文简单的记录了go语言的基础知识。</p>
+        
+          <p class="article-more-link">
+            <a href="/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" data-id="ck5zg6lfh004fgesbhxffe40r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/" data-id="ck5zgmskh004dzksbct9sf7vv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
@@ -286,7 +146,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E7%AE%80%E4%BB%8B/" data-id="ck5zg6lek0021gesbbswr24ws" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E7%AE%80%E4%BB%8B/" data-id="ck5zgmsjn001zzksbh90z3l2i" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li></ul>
@@ -333,7 +193,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" data-id="ck5zg6lep002igesbfk5z21b5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" data-id="ck5zgmsjr002gzksb69dcau0a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li></ul>
@@ -380,7 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E9%98%9F%E5%88%97/" data-id="ck5zg6leu0032gesbhrhx22jq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E9%98%9F%E5%88%97/" data-id="ck5zgmsjv0030zksb4ojidelx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -425,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%93%E5%AD%98/" data-id="ck5zg6ler002pgesb5zgr6lzx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%93%E5%AD%98/" data-id="ck5zgmsjt002qzksbe7ui0ttu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -470,7 +330,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ck5zg6les002sgesb3gbl2up8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ck5zgmsjs002nzksb09js1p2q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -515,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BD%91%E7%BB%9C/" data-id="ck5zg6let002vgesb0crs4uzw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BD%91%E7%BB%9C/" data-id="ck5zgmsju002xzksbblab5z0f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -560,7 +420,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" data-id="ck5zg6leu002zgesb4nbcdc5j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" data-id="ck5zgmsju002tzksb3y6s0298" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li></ul>
@@ -607,7 +467,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/03/%E7%88%AC%E8%99%AB%E4%B8%93%E9%A2%98/" data-id="ck5zg6lem0028gesb5c0pbgju" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/03/%E7%88%AC%E8%99%AB%E4%B8%93%E9%A2%98/" data-id="ck5zgmsjp0026zksb3e0kf6vm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li></ul>
@@ -654,7 +514,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/" data-id="ck5zg6lfj004jgesbfm59bvaw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/" data-id="ck5zgmskj004hzksb9ijdhcoq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
