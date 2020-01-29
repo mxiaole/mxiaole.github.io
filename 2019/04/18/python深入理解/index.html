@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>python深入理解 | 人生识字忧患始，不待扬鞭自奋蹄</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. python的编译结果1.1 python程序的执行程python文件的执行是通过解释器来执行的。当敲入python命令的时候，目的就是为了激活解释器，在真正开始执行之前，python解释器要首先编译.py文件，通过编译得到python的字节码.pyc文件，然后将编译的字节码.pyc文件交给python虚拟机，虚拟机按照顺序一条条的执行字节码。在.py文件进行编译之后除了产生.pyc文件，还">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python深入理解">
+<meta property="og:url" content="http://yoursite.com/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="人生识字忧患始，不待扬鞭自奋蹄">
+<meta property="og:description" content="1. python的编译结果1.1 python程序的执行程python文件的执行是通过解释器来执行的。当敲入python命令的时候，目的就是为了激活解释器，在真正开始执行之前，python解释器要首先编译.py文件，通过编译得到python的字节码.pyc文件，然后将编译的字节码.pyc文件交给python虚拟机，虚拟机按照顺序一条条的执行字节码。在.py文件进行编译之后除了产生.pyc文件，还">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-18T01:00:51.000Z">
+<meta property="article:modified_time" content="2019-04-23T00:28:16.000Z">
+<meta property="article:author" content="Cody">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="人生识字忧患始，不待扬鞭自奋蹄" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">人生识字忧患始，不待扬鞭自奋蹄</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python深入理解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" class="article-date">
+  <time datetime="2019-04-18T01:00:51.000Z" itemprop="datePublished">2019-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python深入理解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="1-python的编译结果"><a href="#1-python的编译结果" class="headerlink" title="1. python的编译结果"></a>1. python的编译结果</h4><h5 id="1-1-python程序的执行程"><a href="#1-1-python程序的执行程" class="headerlink" title="1.1 python程序的执行程"></a>1.1 python程序的执行程</h5><p>python文件的执行是通过<code>解释器</code>来执行的。当敲入python命令的时候，目的就是为了激活解释器，在真正开始执行之前，python解释器要首先编译.py文件，通过编译得到python的<code>字节码.pyc</code>文件，然后将编译的字节码<code>.pyc</code>文件交给python<code>虚拟机</code>，虚拟机按<br>照顺序一条条的执行字节码。在.py文件进行编译之后除了产生.pyc文件，还会产生其他的一些信息。<br>在.pyc文件中保存的是.py源代码中出现的一切有用的<code>静态信息</code>，在python运行期间这些静态信息会被存储在一个<code>运行时的对象</code>中。<strong>当python运行结束后，这个运行对象中包含的信息会存储在pyc文件中</strong>。这个运行时的对象就是<code>PyCodeObject</code>。</p>
+<blockquote>
+<p>在程序运行期间，编译结果存在于内存的PyCodeObject对象中，而python运行结束后，编译结果保存在pyc文件中。当下一次运行相同的程序时，python会根据pyc文件中记录的编译结果直接建立内存中的PyCodeObject对象，不用在对源文件进行编译了。</p>
+</blockquote>
+<h5 id="PyCodeObject对象"><a href="#PyCodeObject对象" class="headerlink" title="PyCodeObject对象"></a>PyCodeObject对象</h5><p><strong>对于源代码中的一个<code>code block</code>，python编译器在对源代码进行编译的时候就会创建一个<code>PyCodeObject对象</code>与这个代码块进行对应。</strong> 那么一个code block是多少代码呢？当进入一个新的名字或者作用域时，就算是进入了一个新的code block。如下的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># demo.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">a = A()</span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+<p>上述的代码会产生三个PyCodeObject对象：一个对应demo.py文件，一个对应class A代表的code block，最后一个是fun所对应的code block。</p>
+<h5 id="名字空间"><a href="#名字空间" class="headerlink" title="名字空间"></a>名字空间</h5><p>名字空间是符号的上下文环境，名字空间可以一个套一个形成一个<code>名字空间链</code>。python虚拟机在执行的时候，会有很大一部分时间消耗在从这条名字空间链中确定一个<code>符号所应该对应的对象</code>是什么。在python中，类、函数、module都对应着一个独立的名字空间。名字空间实际上式维护这变量名和变量值之间关系的PyDictObject。</p>
+<h4 id="1-2-pyc文件"><a href="#1-2-pyc文件" class="headerlink" title="1.2 pyc文件"></a>1.2 pyc文件</h4><p>每一个PyCodeObject对象中，都包含每一个code block中所有的python源代码经过编译后得到的byte code序列。</p>
+<h5 id="import机制与pyc文件生成"><a href="#import机制与pyc文件生成" class="headerlink" title="import机制与pyc文件生成"></a>import机制与pyc文件生成</h5><p>python中的import会触发pyc文件的生成。python在运行的时候，碰到import abc这样的语句，那么python将到设定好的path中国寻找abc.pyc文件，如果没有找到，而只是找到了abc.py文件，那么python首先将abc.py编译成PyCodeObjct中间结果，然后创建abc.pyc文件，并将中间结果写入该文件。之后才会对abc.pyc文件执行import动作。</p>
+<h5 id="pyc文件的内容"><a href="#pyc文件的内容" class="headerlink" title="pyc文件的内容"></a>pyc文件的内容</h5><p>pyc文件主要包含了三部分独立的信息：</p>
+<ul>
+<li>python的magic number，该信息是用来保证python的兼容性的。python在加载pyc文件的时候，会首先检查这个值，如果python自身的magic number与待加载的pyc文件中记录的该值不一致，就会拒绝加载该文件。</li>
+<li>pyc文件的创建时间信息，如果我们修改了生成pyc文件的原文件，那么python在加载的时候会发现pyc文件时间早于py文件的时间，于是会重新编译pyc文件的原文件，生成新的pyc文件</li>
+<li>PyCodeObject对象</li>
+</ul>
+<h5 id="python字节码指令"><a href="#python字节码指令" class="headerlink" title="python字节码指令"></a>python字节码指令</h5><p>使用dis标准库来解析code对象，查看code对象里的字节码指令信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = open(<span class="string">"aa.py"</span>).read()</span><br><span class="line">co = compile(s, <span class="string">"aa.py"</span>, <span class="string">"exec"</span>)</span><br><span class="line"><span class="keyword">import</span> dis</span><br><span class="line">dis.dis(co)</span><br></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.py</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>执行如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = open(<span class="string">"test.py"</span>).read()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>co = compile(s, <span class="string">"test.py"</span>, <span class="string">"exec"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(co)</span><br><span class="line"> <span class="number">18</span>    <span class="number">0</span> LOAD_CONST     <span class="number">0</span> (<span class="string">'\n@Time : 2018/1/11 09:17\n'</span>)  </span><br><span class="line">       <span class="number">2</span> STORE_NAME     <span class="number">0</span> (__doc__)</span><br><span class="line"> <span class="number">20</span>    <span class="number">4</span> SETUP_LOOP     <span class="number">28</span> (to <span class="number">34</span>)</span><br><span class="line">       <span class="number">6</span> LOAD_NAME      <span class="number">1</span> (range)</span><br><span class="line">       ...</span><br></pre></td></tr></table></figure>
+
+<p>其中的，最左边的一列表示的是在源文件中的行号，第二列显示当前的字节码指令的偏移位置，第三列显示的是当前字节码指令，最后一列显示的是当前字节码指令的参数</p>
+<h4 id="2-python虚拟机框架"><a href="#2-python虚拟机框架" class="headerlink" title="2 python虚拟机框架"></a>2 python虚拟机框架</h4><p>python字节码虚拟机的执行原理：python的虚拟机会从编译得到的PyCodeObject对象中依次读取每一条字节码指令，并在当前的上下文环境中执行这条字节码指令。python虚拟机实际上是模拟操作系统运行可执行文件的过程，即函数栈帧执行原理（对一个函数而言所有的局部变量的操作都是在<code>自己的栈帧</code>中完成的，而函数之间的调用则通过<code>创建新的栈帧</code>来完成），从而完成了python字节码指令序列的执行。</p>
+<p>举例说明执行过程，有如下的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="string">"Python"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    i = <span class="number">9999</span></span><br><span class="line">    print(i)</span><br><span class="line"></span><br><span class="line">f()</span><br><span class="line">print(i)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码的执行过程，可以描述如下：在运行第一条表达式的时候，python已经建立了一个<code>执行环境A</code>，所有的字节码指令都会在这个函数中执行，python可以从这个环境中获取变量的值，也可以根据字节码的指令修改执行环境中某个变量的值，以影响后序字节码指令，这个过程会一直执行下去，直到发生了函数调用，当函数在执行环境中调用f的字节码指令时，会在当前环境之外重新创建一个新的执行环境B。这个执行环境就是PyFrameObject对象。</p>
+<p>在python实际的执行中会产生很多的PyFrameObject对象，这些对象是被链接起来的，形成一条执行环境链表。</p>
+<p>在python中访问PyFrameObject对象：python中的 fram Object是对python源码中PyFrameObject结构体的包装。可以通过sys模块中的_getframe方法来获得当前处于活动状态的frame object。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">value = <span class="number">3</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">    frame = sys._getframe()</span><br><span class="line">    <span class="comment"># get current function name</span></span><br><span class="line">    print(<span class="string">"current function is "</span>, frame.f_code.co_name)</span><br><span class="line">    caller = frame.f_back</span><br><span class="line">    print(<span class="string">"caller function is "</span>, caller.f_code.co_name)</span><br><span class="line">    print(<span class="string">"caller's local namespace"</span>, caller.f_locals)</span><br><span class="line">    print(<span class="string">"caller's global namespace"</span>, caller.f_globals.keys())</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">2</span></span><br><span class="line">    g()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    f()</span><br><span class="line">show()</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(&#39;current function is &#39;, &#39;g&#39;)</span><br><span class="line">(&#39;caller function is &#39;, &#39;f&#39;)</span><br><span class="line">(&quot;caller&#39;s local namespace&quot;, &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;)</span><br><span class="line">(&quot;caller&#39;s global namespace&quot;, [&#39;g&#39;, &#39;f&#39;, &#39;__builtins__&#39;, &#39;__file__&#39;, &#39;show&#39;, &#39;value&#39;, &#39;__package__&#39;, &#39;sys&#39;,&#39;__name__&#39;, &#39;__doc__&#39;])</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-python运行环境初始化"><a href="#3-python运行环境初始化" class="headerlink" title="3 python运行环境初始化"></a>3 python运行环境初始化</h4><h4 id="3-1-线程环境初始化"><a href="#3-1-线程环境初始化" class="headerlink" title="3.1 线程环境初始化"></a>3.1 线程环境初始化</h4><ul>
+<li>在python启动的时候，会依次创建代表进程和线程的c结构体，并在他们之间建立联系;</li>
+<li>之后，开始设置系统的module, 其中第一个被创建的module是<strong>buildin</strong> module</li>
+<li>在某个名字空间中，找到某个符号所对应的对象</li>
+</ul>
+<blockquote>
+<p>参考<br>《python源码剖析》</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" data-id="ck5zg6lef001pgesbaul77x4d" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/20/lua%E7%BC%96%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          lua编程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/17/burpsuite%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">burpsuite使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">通用编程技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/burp/" rel="tag">burp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/curl/" rel="tag">curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/erlang/" rel="tag">erlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grcp/" rel="tag">grcp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/" rel="tag">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lantern/" rel="tag">lantern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/make/" rel="tag">make</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rust/" rel="tag">rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vscode/" rel="tag">vscode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" rel="tag">基础架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/burp/" style="font-size: 10px;">burp</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/curl/" style="font-size: 10px;">curl</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/erlang/" style="font-size: 10px;">erlang</a> <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/etcd/" style="font-size: 15px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grcp/" style="font-size: 10px;">grcp</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/lantern/" style="font-size: 10px;">lantern</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/make/" style="font-size: 10px;">make</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rust/" style="font-size: 10px;">rust</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">基础架构</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">编程语言</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">网络编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/">go语言基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E7%AE%80%E4%BB%8B/">分布式系统--简介</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E9%98%9F%E5%88%97/">通用编程技术-队列</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%93%E5%AD%98/">通用编程技术-缓存</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Cody<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

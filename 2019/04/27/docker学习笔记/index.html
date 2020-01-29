@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>docker学习笔记 | 人生识字忧患始，不待扬鞭自奋蹄</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="0. 安装dockerubuntu环境下安装：sudo apt install docker-iocentos上安装：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F; 参考官方文档完成安装即可 将用户添加到docker用户组：gpasswd -M mxiaole docker  将mxiaole用户添加到docker组  vagrant">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="人生识字忧患始，不待扬鞭自奋蹄">
+<meta property="og:description" content="0. 安装dockerubuntu环境下安装：sudo apt install docker-iocentos上安装：https:&#x2F;&#x2F;docs.docker.com&#x2F;install&#x2F;linux&#x2F;docker-ce&#x2F;centos&#x2F; 参考官方文档完成安装即可 将用户添加到docker用户组：gpasswd -M mxiaole docker  将mxiaole用户添加到docker组  vagrant">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/docker_instructure.jpg">
+<meta property="article:published_time" content="2019-04-27T06:31:37.000Z">
+<meta property="article:modified_time" content="2019-08-19T00:38:46.000Z">
+<meta property="article:author" content="Cody">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/docker_instructure.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="人生识字忧患始，不待扬鞭自奋蹄" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">人生识字忧患始，不待扬鞭自奋蹄</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-docker学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time datetime="2019-04-27T06:31:37.000Z" itemprop="datePublished">2019-04-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      docker学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0-安装docker"><a href="#0-安装docker" class="headerlink" title="0. 安装docker"></a>0. 安装docker</h1><p>ubuntu环境下安装：<code>sudo apt install docker-io</code><br>centos上安装：<a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/centos/</a> 参考官方文档完成安装即可</p>
+<p><strong>将用户添加到docker用户组：<code>gpasswd -M mxiaole docker  将mxiaole用户添加到docker组</code></strong></p>
+<blockquote>
+<p>vagrant + virtualbox使用：借助该工具可以直接在virtualbox中创建虚拟机</p>
+<ul>
+<li>首先安装virtualbox和vagrant：下载地址<a href="https://www.vagrantup.com/downloads.html和https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="noopener">https://www.vagrantup.com/downloads.html和https://www.virtualbox.org/wiki/Downloads</a></li>
+<li>使用vagrant快速的创建Linux虚拟机：<ul>
+<li>创建一个目录centos，然后cd到该目录，执行<code>vagrant init centos/7</code>命令，会生成一个Vagrantfile文件</li>
+<li>然后运行<code>vagrant up</code>命令，之后就会创建好了一个虚拟机</li>
+<li>连接到生成的虚拟机：<code>vagrant ssh</code></li>
+</ul>
+</li>
+<li>vagrant的其他命令：vagrant status、vagrant halt、vagrant destroy</li>
+</ul>
+</blockquote>
+<h1 id="1-docker-machine使用"><a href="#1-docker-machine使用" class="headerlink" title="1. docker-machine使用"></a>1. docker-machine使用</h1><p>这个工具可以用来创建远端的docker server，但是要有相关的驱动，然后在本地使用docker-machine命令就可以在virtual-box, vm-ware, aws，aliyun上使用相应的驱动创建安装了docker的虚拟机。</p>
+<p>使用virtualbox驱动直接创建一个安装了docker的虚拟机：<code>docker-machine create 虚拟机的名字</code><br>直接进入创建好的虚拟机：<code>docker-machine ssh 虚拟机的名字</code><br>docker-machine 的其他命令，使用docker-manchine –help 查看</p>
+<blockquote>
+<p>tips<br>可以使用mac上的client 连接docker-machine创建的安装了docker的虚拟机，在终端执行如下的两条命令：<br><code>docker-machine env 虚拟机的名字</code>  ,  <code>eval ($docker-machine env 虚拟机的名字)</code><br>撤销使用的命令： <code>docker-machine env --unset</code>, <code>eval $(docker-machine env --unset)</code></p>
+</blockquote>
+<p>dockerplayground可以随意的玩</p>
+<h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker_instructure.jpg" alt="docker架构图"></p>
+<p>共享宿主机的kernel</p>
+<h2 id="docker使用的底层技术主要有："><a href="#docker使用的底层技术主要有：" class="headerlink" title="docker使用的底层技术主要有："></a>docker使用的底层技术主要有：</h2><ul>
+<li>namespace实现隔离</li>
+<li>cgroup实现资源限制</li>
+<li>union file systems实现container和image分层</li>
+</ul>
+<p>这些技术都是Linux上自带的。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li><strong>镜像image</strong>: 在docker中，所有的应用程序都被制作成了镜像</li>
+<li><strong>容器container</strong>: 每一个基于镜像的应用程序都必须在容器中才能执行</li>
+<li><strong>宿主机</strong>: 运行docker这个应用程序的机器称为宿主机</li>
+</ul>
+<p>镜像的分层概念。</p>
+<h1 id="3-image"><a href="#3-image" class="headerlink" title="3. image"></a>3. image</h1><h2 id="3-1-是什么"><a href="#3-1-是什么" class="headerlink" title="3.1 是什么"></a>3.1 是什么</h2><ul>
+<li>是文件和meta data的集合。</li>
+<li>分层，每一层都可以添加删除改变文件，称为一个新的image</li>
+<li>不同的image可以共享相同的layer</li>
+<li>image本身是只读的</li>
+</ul>
+<h2 id="3-2-怎么操作"><a href="#3-2-怎么操作" class="headerlink" title="3.2 怎么操作"></a>3.2 怎么操作</h2><p><strong>1. 获取image</strong></p>
+<p>有三种获取image的方法：</p>
+<ul>
+<li>自己创建dockerfile文件，进行构建image: docker build -t imagename:tag .</li>
+<li>基于container创建一个image: docker container commit (不推荐使用)</li>
+<li>直接从镜像仓库中获取: docker pull imagename</li>
+</ul>
+<p><strong>2. 发布image</strong></p>
+<p><strong>发布到dockerhub</strong></p>
+<ul>
+<li><p>创建一个docker hub账号，被push的image的name必须是<code>dockerhubID/imagename[:tag]</code></p>
+</li>
+<li><p>在发布之前必须先登录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login</span><br><span class="line">docker image push mxiaole/hello-world:latest</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>推荐的做法是将dockerhub和github进行关联，在github上发布dockerfile，然后dockerhub会自动的根据dockerfile创建image</p>
+<p><strong>发布到私有的dockerhub</strong></p>
+<ul>
+<li>使用docker创建一个私有的dockerhub: <code>docker run -d -p 5000:5000 --restart always --name registry registry:2</code></li>
+<li>向本地私有仓库提交image的时候，镜像的名字必须是<code>10.10.10.2:8888/hello</code>, registry的IP:端口，开头</li>
+<li>然后，使用命令<code>dockr push 10.10.2:888/hello</code>向本地仓库push镜像，但是这个时候可能会出错，<ul>
+<li>在/etc/docker/目录下创建一个文件:daemon.json，添加内容<code>{&quot;insecure-registries&quot;: [&quot;10.0.2.15:500&quot;]}</code></li>
+<li>同时在/lib/systemd/system/docker.service文件中添加一行: <code>EnvironmenFile=-/etc/docker/daemon.json</code></li>
+<li>最后重启docker：<code>sudo service docker restart</code></li>
+</ul>
+</li>
+<li>验证镜像是否成功的push： <code>curl localhost:5000/v2/_catlog</code> 查看</li>
+</ul>
+<h1 id="4-创建image"><a href="#4-创建image" class="headerlink" title="4. 创建image"></a>4. 创建image</h1><h2 id="4-1-基于container创建image"><a href="#4-1-基于container创建image" class="headerlink" title="4.1 基于container创建image"></a>4.1 基于container创建image</h2><p><code>docker commit containername newimage</code> 使用上述的命令能够基于已经存在的container创建一个新的image</p>
+<h2 id="4-2-使用Dockerfile创建image"><a href="#4-2-使用Dockerfile创建image" class="headerlink" title="4.2 使用Dockerfile创建image"></a>4.2 使用Dockerfile创建image</h2><p>Dockerfile常用的命令：</p>
+<ul>
+<li><p>FROM: 指定创建image的base image是什么 ; 尽量使用官方的image作为baseimage</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> centos</span><br></pre></td></tr></table></figure></li>
+<li><p>LABEL: </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintainer=<span class="string">"mxiaole"</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> version=<span class="string">"1.0"</span></span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> description=<span class="string">"this is description"</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>RUN:  创建镜像时执行的命令，每运行一次该命令，就会生成新的一层; 将多条命令放在一行，如果需要换行使用\</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> yum install vim &amp;&amp; yum install git &amp;&amp; yum install gcc</span></span><br></pre></td></tr></table></figure>
+<p><strong>命令有两种格式，cmd和entrypoint命令也是如此</strong></p>
+<ul>
+<li>shell格式<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> apt install -y vim</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"hello world"</span></span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"hello world"</span></span></span><br></pre></td></tr></table></figure></li>
+<li>exec格式<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="bash"> [<span class="string">"apt"</span>, <span class="string">"install"</span>, <span class="string">"-y"</span>, <span class="string">"vim"</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"/bin/echo"</span>, <span class="string">"hello world"</span>]</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [<span class="string">"/bin/echo"</span>, <span class="string">"hello world"</span>]</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>CMD: 设置容器启动之后默认执行的命令和参数, 如果在docker run的时候执行了其他的命令，那么cmd命令会被忽略；如果定义了多个cmd命令，只有最后一个会被执行。</p>
+</li>
+<li><p>ENTRYPOINT: 设置容器启动时执行的命令；让容器以应用程序或者服务的形式运行；该命令不会被忽略一会被执行；最好是写一个shell脚本作为entrypoint</p>
+</li>
+<li><p>WORKDIR: 用来设定当前的工作目录; 尽量是用绝对路径，不要使用相对路径</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> demo</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">pwd</span>  <span class="comment"># 输出结果应该是/root/demo</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>ADD &amp;&amp; COPY: 这两个命令都是将本地的文件，添加到docker image中<br><strong>两者的区别</strong>:</p>
+<ul>
+<li>ADD命令还可以进行解压: ADD xxx.tar.gz /</li>
+<li>大部分的情况优先使用COPY</li>
+</ul>
+</li>
+<li><p>ENV: 用来设定环境变量</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ENV</span> MYSQL_VERSION <span class="number">5.7</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> yum install mysql=<span class="variable">$&#123;MYSQL_VERSION&#125;</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>VOLUME: 指定当前容器中要备份的文件路径，会将docker container中该路径下的文件挂载到宿主机上的某个位置。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">VOLUME</span><span class="bash"> /var/lib/mysql</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="4-3-demo"><a href="#4-3-demo" class="headerlink" title="4.3 demo"></a>4.3 demo</h2><p><strong>demo1: 创建一个Python的flask应用</strong></p>
+<ul>
+<li>创建dockerfile<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">2.7</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintainer=<span class="string">"mxiale"</span></span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install flask</span></span><br><span class="line"><span class="keyword">ADD</span><span class="bash"> main.py /app/</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"python"</span>, <span class="string">"main.py"</span>]</span></span><br></pre></td></tr></table></figure></li>
+<li>build镜像文件 : <code>docker build -t mxiaole/flask-demo .</code></li>
+<li>运行创建的镜像：<code>docker run -d mxiaole/flask-demo</code></li>
+</ul>
+<p><strong>使用dockerfile创建image时的debug</strong><br>因为在build的时候，每一层都会生成一个镜像，可以通过运行这些中间生成的镜像来进行debug</p>
+<p><strong>demo2: 创建一个命令行工具</strong></p>
+<ul>
+<li>创建dockerfile<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ubuntu</span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> apt update &amp;&amp; apt install stress</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="bash"> [<span class="string">"/usr/bin/stress/"</span>]</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> []</span></span><br></pre></td></tr></table></figure></li>
+<li>创建镜像：<code>docker build -t mxiaole/ubuntu-stress .</code></li>
+<li>使用: <code>docker run -it mxiaole/ubuntu-stress --help</code> 可以直接指定stress的命令参数</li>
+</ul>
+<h1 id="5-container操作"><a href="#5-container操作" class="headerlink" title="5. container操作"></a>5. container操作</h1><h2 id="5-1-启动容器"><a href="#5-1-启动容器" class="headerlink" title="5.1 启动容器"></a>5.1 启动容器</h2><p>最简单的启动方式就是：<code>docker run image</code></p>
+<h2 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h2><ul>
+<li>exec命令: <code>docker exec -it conainerid /bin/bash</code> 进入一个运行的容器</li>
+<li>inspect: <code>docker inspect conainerid</code> 检测一个container的信息</li>
+<li>logs: <code>docker logs containerid</code> 查看container的输出日志</li>
+</ul>
+<blockquote>
+<p>tips: 快速清除多个container<br>docker container ls -aq  # 查看容器的ID<br>docker rm $(docker container ls -aq)  # 可以实现快速的删除多个container<br>docker container ls -f “status=exited” -q  # 查看所有的已经退出的container<br>docker rm $(docker container ls -f “status=exited” -q)  # 快速的清除所有已经退出的container</p>
+</blockquote>
+<h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p>TODO</p>
+<h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
+<p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>
+<p>第 1 种叫绑定挂载的 Volume (bind mount volume)：用户<strong>指定将主机上的某个目录</strong>挂载到<strong>容器中的某个目录</strong>。(-v参数指定，宿主机的目录：container的目录， 这两个目录是一一对应的)， 在运行container的时候，直接使用-v参数指定。</p>
+<p>第 2 种叫受管理的 Volume (managed volume)：所使用的主机上的位置是由 Docker daemon 创建并管理的，这些位置称为 Docker managed space, 在dockerfile文件中使用VOLUME指令指定volume的路径，然后使用-v参数给这个volume起个名字, 这个volume对应的宿主机的位置不是用户指定的，是docker运行时自动指定的。</p>
+<p>例如：创建一个MySQL container: <code>docker run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql</code>, 这时候查看一下<code>docker volume ls</code>会看到生成了一个volume，使用<code>docker volume inspect volumenameid</code>命令可以查看详情</p>
+<p>上面的命令创建的container生成的volumeID不方便使用，可以使用<code>docker run -d -v mysql:/var/lib/mysql --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql</code>创建（-v参数指定volume的名字），当把创建的MySQL container销毁之后，下一次启动一个新的container(<code>docker run -d -v mysql:/var/lib/mysql --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql</code>)的时候可以继续通过volume的名字指定使用销毁的container的volume。</p>
+<p>上述命令中的<code>-v</code>参数：指定生成的volume名字，前面的参数是volume名字:后面的是容器中备份文件的路径，</p>
+<p><strong>demo: bind mount使用</strong></p>
+<p>考虑这样一个场景：假如我们只有mac环境，但是我们在Mac上安装了docker。我们想要使用Mac的pycharm ide开发了一个Flask项目，我们可以创建一个Dockerfile，然后将这个项目创建一个镜像，然后运行这个镜像到container中。但是突然发现我们还有一个功能没有开发，这时候会频繁的修改Flask项目中的文件，如果我们每做一次修改就要重新build创建一个镜像，然后运行，实在是太麻烦了，这个时候我们可以考虑使用这个bint mount神器。具体操作如下：</p>
+<ul>
+<li>将初次的项目，创建一个镜像，然后运行的时候使用-v参数：<code>docker run -p 5000:5000 -d --name flask -v $(pwd):/root/flask mxiaole/myflask</code></li>
+<li>之后，可以在Mac上修改项目文件，这些文件或自动的同步到container中</li>
+</ul>
+<p><strong>demo2: wordpress搭建</strong></p>
+<ul>
+<li>docker run -d –name mysql -v mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=wordpress mysql:5.7</li>
+<li>docker run -d -e WORDPRESS_DB_HOST=mysql:3306 –link mysql -p 8080:80 wordpress</li>
+</ul>
+<h1 id="8-docker-compose"><a href="#8-docker-compose" class="headerlink" title="8. docker-compose"></a>8. docker-compose</h1><p>如果我们想要创建一个Python项目，这个Python项目依赖MySQL和Redis和Nginx，这时候需要手动的创建这些container，为了减少复杂度，我们可以将这些container创建成一个组，将这些容器进行统一的启动，删除等操作。docker-compose就是为了解决这个问题的。</p>
+<p>注意：该方式不适合在生产环境使用</p>
+<h2 id="8-1-使用"><a href="#8-1-使用" class="headerlink" title="8.1 使用"></a>8.1 使用</h2><p>基本的使用流程：创建一个docker-compose.yaml文件，然后使用docker-compose进行操作。</p>
+<p><strong>命令</strong></p>
+<ul>
+<li>docker-compose up</li>
+<li>docker-compose images</li>
+<li>docker-compose ps</li>
+<li>docker-compose exec </li>
+</ul>
+<h2 id="8-2-docker-compose-yml文件"><a href="#8-2-docker-compose-yml文件" class="headerlink" title="8.2 docker-compose.yml文件"></a>8.2 docker-compose.yml文件</h2><p>可以直接指定镜像启动，也可以通过在compose文件中使用build命令在文件中先build镜像，然后在启动镜像。</p>
+<p>docker-compose.yaml文件, 该文件主要有三个基本的概念：service，networks，volumes.</p>
+<p><strong>services</strong>：一个service代表一个container，可以给service指定network和volume</p>
+<p>水平扩展：<code>docker-compose up --scale web=3  -d</code>, 该命令只能实现单机上的扩容，无法实现多个物理机器上的扩容，如果想要扩容还需要使用swarm</p>
+<h1 id="9-swarm容器编排"><a href="#9-swarm容器编排" class="headerlink" title="9. swarm容器编排"></a>9. swarm容器编排</h1><p>在集群中管理docker镜像</p>
+<h2 id="9-1-基础"><a href="#9-1-基础" class="headerlink" title="9.1 基础"></a>9.1 基础</h2><p>物理机两个角色：manager 和 worker。swarm集群的初始化：<code>docker swarm init --advertise-addr=想要做manager的节点ip</code>，初始化manager节点</p>
+<p>集群相关的命令：<code>docker node</code></p>
+<p>在docker swarm集群中创建service不在使用<code>docker run</code>命令，而是使用<code>docker service create</code>命令.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create      Create a new service  # 创建一个服务</span><br><span class="line">inspect     Display detailed information on one or more services</span><br><span class="line">logs        Fetch the logs of a service or task</span><br><span class="line">ls          List services</span><br><span class="line">ps          List the tasks of one or more services</span><br><span class="line">rm          Remove one or more services</span><br><span class="line">rollback    Revert changes to a service's configuration</span><br><span class="line">scale       Scale one or multiple replicated services  # 横向扩展服务</span><br><span class="line">update      Update a service</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-2-swarm中的docker-compose"><a href="#9-2-swarm中的docker-compose" class="headerlink" title="9.2 swarm中的docker-compose"></a>9.2 swarm中的docker-compose</h2><p>首先创建docker-compose文件，然后使用命令<code>docker stack</code>命令来部署服务</p>
+<h2 id="9-2-实践"><a href="#9-2-实践" class="headerlink" title="9.2 实践"></a>9.2 实践</h2><p>使用docker-machine命令创建三个安装了docker的虚拟机.<br>1.前提条件：</p>
+<ul>
+<li>安装了docker-machine工具</li>
+<li>安装了virtual-box驱动</li>
+</ul>
+<p>2.安装</p>
+<p>依次执行命令：<code>docker-machine create swarm-manager</code>, <code>docker-machine create swarm-worker1</code>, <code>docker-machine create swarm-worker2</code></p>
+<p>3.初始化</p>
+<ul>
+<li>登录要作为manager的主机：<code>docker-machine ssh swarm-manager</code>, 然后执行命令: <code>docker swarm init --advertise-addr=192.168.99.101</code>，之后会得到<code>docker swarm join --token SWMTKN-1-0etbagd0a455sx2b7bu0va69qhdqzti8bc7hhqohi7rzm29lus-ekf933f62naxe37s52bk64umq 192.168.99.101:2377</code></li>
+<li>登录worker机器：分别执行上面的命令输出的命令<code>docker swarm join --token SWMTKN-1-0etbagd0a455sx2b7bu0va69qhdqzti8bc7hhqohi7rzm29lus-ekf933f62naxe37s52bk64umq 192.168.99.101:2377</code></li>
+<li>检查集群的状态：登录manager节点，执行<code>docker node ls</code>命令</li>
+</ul>
+<p>4.部署wordpress服务</p>
+<ul>
+<li>在manager节点上创建一个overlay驱动的网络: <code>docker network create -d overlay demo</code></li>
+<li>在manager节点上创建MySQL服务: <code>docker service create --name mysql --env MYSQL_ROOT_PASSWORD=root --env MYSQL_DATABASE=wordpress --network demo --mount type=volume,source=mysql-data,destination=/var/lib/mysql mysql:5.7</code></li>
+<li>在manager节点上创建wordpress服务：<code>docker service create --name wordpress -p 80:80 --env WORDPRESS_DB_PASSWORD=root --env WORDPRESS_DB_HOST=mysql --network demo wordpress</code></li>
+</ul>
+<h2 id="9-3-swarm中的密码管理Dockersecret"><a href="#9-3-swarm中的密码管理Dockersecret" class="headerlink" title="9.3 swarm中的密码管理Dockersecret"></a>9.3 swarm中的密码管理Dockersecret</h2><p><strong>创建</strong><br>使用<code>docker secret create</code>命令来创建secret，可以从标准输入来创建，也可以从文件来创建。</p>
+<ul>
+<li><code>docker secret create secret名字  文件名</code></li>
+<li><code>echo &quot;*****&quot; | docker secret create secretname  -</code>  </li>
+</ul>
+<p><strong>使用</strong></p>
+<ul>
+<li><p>在命令行中使用：在创建container的时候通过–secret参数来指定secret, 然后会被保存在container上的/run/secrets目录下。例如使用MySQL密码使用：在创建container的时候可以使用如下的命令：<br><code>docker service create --name mysql --secret secretname -e MYSQL_ROOT_PASSWORD_FILE=/run/secrets/secretname mysql:5.7</code></p>
+</li>
+<li><p>在docker-compose文件中使用: 可以使用secret标签先创建然后使用, 也可以先手动创建然后service中直接使用。推荐采用后者。<br>方式1：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">aaa:</span></span><br><span class="line">    <span class="string">xxxxx</span> </span><br><span class="line">  </span><br><span class="line">  <span class="attr">secrect:</span></span><br><span class="line">    <span class="attr">my-pwd:</span></span><br><span class="line">      <span class="attr">file:</span> <span class="string">./password</span></span><br></pre></td></tr></table></figure>
+<p>方式2：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:5.7</span></span><br><span class="line">    <span class="attr">secret:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">my-pwd</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="9-4-docker-swarm-service的更新"><a href="#9-4-docker-swarm-service的更新" class="headerlink" title="9.4 docker swarm service的更新"></a>9.4 docker swarm service的更新</h2><p>在不停服的情况下对server进行更新：首先将service进行水平扩展<code>docker service scale server_container_name=2</code>, 然后使用命令<code>docker service update --image new_image_name server_container_name</code></p>
+<p>通过端口更新, 这样会导致业务的中断：<code>docker service update --publish-rm 8080:5050 --publish-add 9999:5050 container-name</code></p>
+<p>对于通过docker-compose文件创建的service的更新，需要直接修改docker-compose文件，然后重新执行docker stack deploy。</p>
+<blockquote>
+<p>参考文章<br>1.<a href="https://docs.docker.com/engine/reference/commandline/cli/" target="_blank" rel="noopener">https://docs.docker.com/engine/reference/commandline/cli/</a><br>2.《Docker进阶与实战》<br>3.<a href="https://docs.docker.com/compose/compose-file/" target="_blank" rel="noopener">https://docs.docker.com/compose/compose-file/</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck5zg6lfg004dgesbglq90bh8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          常用的基础架构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/25/kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">kafka权威指南笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">通用编程技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/burp/" rel="tag">burp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/curl/" rel="tag">curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/erlang/" rel="tag">erlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grcp/" rel="tag">grcp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/" rel="tag">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lantern/" rel="tag">lantern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/make/" rel="tag">make</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rust/" rel="tag">rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vscode/" rel="tag">vscode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" rel="tag">基础架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/burp/" style="font-size: 10px;">burp</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/curl/" style="font-size: 10px;">curl</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/erlang/" style="font-size: 10px;">erlang</a> <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/etcd/" style="font-size: 15px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grcp/" style="font-size: 10px;">grcp</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/lantern/" style="font-size: 10px;">lantern</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/make/" style="font-size: 10px;">make</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rust/" style="font-size: 10px;">rust</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">基础架构</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">编程语言</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">网络编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/">go语言基础</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E7%AE%80%E4%BB%8B/">分布式系统--简介</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E9%98%9F%E5%88%97/">通用编程技术-队列</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%93%E5%AD%98/">通用编程技术-缓存</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Cody<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
