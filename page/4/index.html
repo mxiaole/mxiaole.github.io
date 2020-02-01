@@ -64,6 +64,87 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-cmake使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/10/cmake%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2019-08-10T08:00:27.000Z" itemprop="datePublished">2019-08-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/10/cmake%E4%BD%BF%E7%94%A8/">cmake使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>cmake是一个构建工具，使用该工具可以用来构建C/C++项目的时候使用cmake命令可以自动生成Makefile文件，然后使用make工具进行项目的编译。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基本使用规范"><a href="#基本使用规范" class="headerlink" title="基本使用规范"></a>基本使用规范</h3><p>cmake构建系统是通过多个目标文件组织在一起生成一个二进制可执行文件的，每一个目标对应一个可执行文件或者库文件。</p>
+<h4 id="1-可执行目标文件"><a href="#1-可执行目标文件" class="headerlink" title="1. 可执行目标文件"></a>1. 可执行目标文件</h4><p>通过<code>add_executable(target dependency1 dependency2 ....)</code>命令来实现添加希望生成的可执行文件</p>
+<h4 id="2-库文件"><a href="#2-库文件" class="headerlink" title="2. 库文件"></a>2. 库文件</h4><p>通过<code>add_library(lib dependency1 dependency2 ...)</code>命令来实现添加生成目标文件。</p>
+<p><strong>怎么指定是生成动态库还是静态库呢？</strong></p>
+<blockquote>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成动态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive STATIC archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成静态库，默认是静态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive MODULE <span class="number">7</span>z.cpp) </span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="3-给目标文件添加文件目录"><a href="#3-给目标文件添加文件目录" class="headerlink" title="3. 给目标文件添加文件目录"></a>3. 给目标文件添加文件目录</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(<span class="keyword">target</span> directory)</span><br></pre></td></tr></table></figure>
+
+<p>该命令是用来在生成目标文件时指定生成目标文件依赖的源代码的目录。</p>
+<h4 id="4-file命令"><a href="#4-file命令" class="headerlink" title="4. file命令"></a>4. file命令</h4><p>这是一个文件操作命令。通过该命令可以有如下的操作：</p>
+<ul>
+<li>从文件中读</li>
+<li>向文件中追加内容，重写内容</li>
+</ul>
+<p>常用的命令有如下：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">file</span>(READ &lt;filename&gt; &lt;variable&gt; [OFFSET &lt;offset&gt;] [LIMIT &lt;max-in&gt;] [HEX])  <span class="comment"># 从文件中读取内容，并且保存到变量里，可以选择开始读取文件的偏移量和读取的最长字节数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(STRINGS &lt;filename&gt; &lt;variable&gt; [&lt;options&gt;...])  <span class="comment"># 按行文件中读取内容，保存在变量中。可以通过option参数对读取到的行进行过滤，只有满足参数条件的字符串才能够被命中保存到变量中，具体的参数值可以参考:https://cmake.org/cmake/help/v3.7/command/file.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(WRITE &lt;filename&gt; &lt;content&gt;...)  <span class="comment"># 将content写入到filename文件中。如果文件不存在就创建，如果文件存在，WRITE模式就会覆盖原文件的内容，APPEND模式就会追加到文件中</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-字符串操作命令"><a href="#5-字符串操作命令" class="headerlink" title="5. 字符串操作命令"></a>5. 字符串操作命令</h4><p>cmake提供了对字符串进行操作的命令，可以通过这写命令来对输入的字符串进行查找，过滤、正则匹配等操作。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span>(FIND &lt;<span class="keyword">string</span>&gt; &lt;substring&gt; &lt;output variable&gt; [REVERSE])  <span class="comment"># 将子串在字符串中的位置赋值给变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REPLACE &lt;match_string&gt; &lt;replace_string&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用replace_string来替换所有匹配input中的的match_string，然后将结果保存在变量中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REGEX MATCH &lt;regular_expression&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用正则进行处理字符串</span></span><br></pre></td></tr></table></figure>
+<h4 id="6-set命令"><a href="#6-set命令" class="headerlink" title="6. set命令"></a>6. set命令</h4><p>使用该命令来对变量值进行设置。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(&lt;variable&gt; &lt;value&gt;... [PARENT_SCOPE])  <span class="comment"># 将value值设置到variable上，如果value是多个的话，那么变量就是一个list，可选参数[PARENT_SOCPE]用来限定设置哪个范围的变量</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7-project命令"><a href="#7-project命令" class="headerlink" title="7. project命令"></a>7. project命令</h4><p>使用改命令来设置项目的信息，项目的名称，版本</p>
+<h4 id="8-option命令"><a href="#8-option命令" class="headerlink" title="8. option命令"></a>8. option命令</h4><p>该命令用来与用户进行交互</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">option</span>(&lt;option_variable&gt; <span class="string">"help string describing option"</span> [initial value])  <span class="comment"># 如果没有设置init value默认使用false</span></span><br></pre></td></tr></table></figure>
+<h4 id="9-link-libraires"><a href="#9-link-libraires" class="headerlink" title="9. link_libraires"></a>9. link_libraires</h4><p>该命令是用来给最后生成的app指定以来的库。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_libraires(item1 item2 ...)  <span class="comment"># item为依赖的库名</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<br>该命令和target_link_libraries命令.</p>
+<ul>
+<li>link_libraries* is used to supply a list of libraries (object archives) to the linker. If the linked item is a cmake target, with specified include directories, they don’t need to be specified separately with.</li>
+<li>The target_* versions apply only to the target that is given as an operand. The non-target versions apply to all targets in the directory. The target_* versions should be used whenever possible (i.e. pretty much always).</li>
+</ul>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://cmake.org/cmake/help/v3.7" target="_blank" rel="noopener">https://cmake.org/cmake/help/v3.7</a><br><a href="https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories" target="_blank" rel="noopener">https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/10/cmake%E4%BD%BF%E7%94%A8/" data-id="ck638fwqr0001pksb54832bsg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-常用的基础架构" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" class="article-date">
@@ -95,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" data-id="ck61pxxrm001sqlsbbfdgfqru" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" data-id="ck638fwrl0024pksb8bg57s8b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" rel="tag">基础架构</a></li></ul>
@@ -346,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck61pxxsk003gqlsb7sujfzrj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck638fwsg004epksbgyrabyv3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
@@ -414,7 +495,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/25/kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/" data-id="ck61pxxrf0013qlsb09d08m2t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/25/kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/" data-id="ck638fwra0016pksb7nrf3jn8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kakfa/" rel="tag">kakfa</a></li></ul>
@@ -483,7 +564,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/21/sql%E6%B3%A8%E5%85%A5/" data-id="ck61pxxrl001pqlsb16430nle" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/21/sql%E6%B3%A8%E5%85%A5/" data-id="ck638fwrh001wpksbdqvw21dy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li></ul>
@@ -560,7 +641,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/20/es%E6%93%8D%E4%BD%9C/" data-id="ck61pxxqy000bqlsb6vp84zb4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/20/es%E6%93%8D%E4%BD%9C/" data-id="ck638fwqx000bpksbhuvdelyd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es/" rel="tag">es</a></li></ul>
@@ -603,7 +684,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/20/lua%E7%BC%96%E7%A8%8B/" data-id="ck61pxxri001dqlsbhs816swp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/20/lua%E7%BC%96%E7%A8%8B/" data-id="ck638fwrc001dpksb8sd6dgmt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lua/" rel="tag">lua</a></li></ul>
@@ -692,7 +773,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" data-id="ck61pxxrk001mqlsbhhnk1ig5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" data-id="ck638fwrf001qpksbgmmhhn8t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
@@ -734,7 +815,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/17/burpsuite%E4%BD%BF%E7%94%A8/" data-id="ck61pxxqq0001qlsb0t4ie0re" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/17/burpsuite%E4%BD%BF%E7%94%A8/" data-id="ck638fwqk0000pksbe27u30on" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/burp/" rel="tag">burp</a></li></ul>
@@ -786,82 +867,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/13/mysql%E6%80%BB%E7%BB%93/" data-id="ck61pxxrj001jqlsb3qu6acuq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/13/mysql%E6%80%BB%E7%BB%93/" data-id="ck638fwrd001kpksbcdt8cypu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nginx配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/03/10/nginx%E9%85%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2019-03-10T01:48:06.000Z" itemprop="datePublished">2019-03-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/10/nginx%E9%85%8D%E7%BD%AE/">nginx配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-版本介绍"><a href="#1-版本介绍" class="headerlink" title="1 版本介绍"></a>1 版本介绍</h2><ul>
-<li>开发版</li>
-<li>稳定版</li>
-<li>历史版</li>
-</ul>
-<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2 安装"></a>2 安装</h2><ul>
-<li>首先安装依赖包 <code>libpcre3</code>（解析正则的库） <code>libpcre3-dev</code> <code>zlib1g-dev</code></li>
-<li>下载nginx包</li>
-<li>安装nginx</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./config  生成makefiel</span><br><span class="line">make 编译文件</span><br><span class="line">make install 安装</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-功能"><a href="#3-功能" class="headerlink" title="3 功能"></a>3 功能</h2><h2 id="4-配置解读"><a href="#4-配置解读" class="headerlink" title="4 配置解读"></a>4 配置解读</h2><h2 id="5-nginx的日志类型"><a href="#5-nginx的日志类型" class="headerlink" title="5 nginx的日志类型"></a>5 nginx的日志类型</h2><ul>
-<li>error.log</li>
-<li>access.log</li>
-</ul>
-<h3 id="错误日志的配置"><a href="#错误日志的配置" class="headerlink" title="错误日志的配置"></a>错误日志的配置</h3><h3 id="nginx中有哪些变量"><a href="#nginx中有哪些变量" class="headerlink" title="nginx中有哪些变量"></a>nginx中有哪些变量</h3><ul>
-<li><p>请求的变量</p>
-</li>
-<li><p>需求，我们想要记录用户的user-agent，应该怎么处理</p>
-<ul>
-<li>request的请求变量是http_请求头信息，如http_user_agent</li>
-</ul>
-</li>
-<li><p>nginx -c -t config  检查配置文件的配置是否正确</p>
-</li>
-</ul>
-<h2 id="不同场景下的配置"><a href="#不同场景下的配置" class="headerlink" title="不同场景下的配置"></a>不同场景下的配置</h2><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="http请求"><a href="#http请求" class="headerlink" title="http请求"></a>http请求</h3><ul>
-<li>curl -v <a href="http://ww.baidu.com" target="_blank" rel="noopener">http://ww.baidu.com</a>  # 详细的查看每次的请求信息</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/10/nginx%E9%85%8D%E7%BD%AE/" data-id="ck61pxxrj001gqlsbgiu7fi1i" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
 
     </footer>
   </div>
@@ -874,7 +883,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -927,6 +936,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/31/go%E6%A1%86%E6%9E%B6-gin/">go框架-gin</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/">go语言基础</a>
           </li>
         
@@ -940,10 +953,6 @@
         
           <li>
             <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E9%98%9F%E5%88%97/">通用编程技术-队列</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%93%E5%AD%98/">通用编程技术-缓存</a>
           </li>
         
       </ul>
