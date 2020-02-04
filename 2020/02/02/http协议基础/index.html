@@ -19,8 +19,9 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/02/http%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/http-%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/02/http%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/http-%E7%BD%91%E5%85%B3%E6%9C%8D%E5%8A%A1%E5%99%A8.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/02/http%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/http-%E7%BC%93%E5%AD%98%E6%9C%8D%E5%8A%A1%E5%99%A8.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/02/http%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/ssl%E9%80%9A%E4%BF%A1.png">
 <meta property="article:published_time" content="2020-02-02T03:44:26.000Z">
-<meta property="article:modified_time" content="2020-02-03T05:56:36.192Z">
+<meta property="article:modified_time" content="2020-02-04T07:04:00.785Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="http">
 <meta name="twitter:card" content="summary">
@@ -210,7 +211,18 @@
 <p>例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vary: Accept-Language</span><br></pre></td></tr></table></figure>
 <p>只有当客户端的请求中accept-language的值与缓存中资源的accept-language一致时才将缓存的数据返回。</p>
-<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><h3 id="3-4-响应主体"><a href="#3-4-响应主体" class="headerlink" title="3.4 响应主体"></a>3.4 响应主体</h3><p>响应正文的压缩：</p>
+<h4 id="X-Frame-Options"><a href="#X-Frame-Options" class="headerlink" title="X-Frame-Options"></a>X-Frame-Options</h4><p>用于控制请求的资源页面在其他的web网站的frame标签内的显示问题，主要目的是为了防止点击劫持. 该字段有两个参数可选：</p>
+<ul>
+<li>deny：表示该请求得到的响应html，不能在frame中展示</li>
+<li>SAMEORIGIN：表示该页面可以在相同域名页面的 frame 中展示</li>
+</ul>
+<h4 id="X-XSS-Protection"><a href="#X-XSS-Protection" class="headerlink" title="X-XSS-Protection"></a>X-XSS-Protection</h4><p>用于控制浏览器XSS防护机制的开关。浏览器内置了一个针对XSS攻击的防护机制，浏览器检测到了含有恶意代码的输入被呈现在HTML文档中，那么这段呈现的恶意代码要么被删除，要么被转义，恶意代码不会被正常的渲染出来。</p>
+<ul>
+<li>0: 表示将xss状态设置成无效状态，就是关闭浏览器的xss防护机制</li>
+<li>1: 表示将xss状态设置成有效状态，如果检测到恶意代码就删除这个恶意代码, 这是浏览器的默认设置</li>
+<li>1; mode=block：如果检测到恶意代码，在不渲染恶意代码</li>
+</ul>
+<h3 id="3-4-响应主体"><a href="#3-4-响应主体" class="headerlink" title="3.4 响应主体"></a>3.4 响应主体</h3><p>响应正文的压缩：</p>
 <p>响应正文的分块发送：</p>
 <h2 id="4-使用http与服务器的通信"><a href="#4-使用http与服务器的通信" class="headerlink" title="4 使用http与服务器的通信"></a>4 使用http与服务器的通信</h2><p>客户端与服务器进行通信的目的是<code>获取服务器上的资源</code>, 那么这个实际存放着资源的服务器才是客户端最终要访问的目标服务器。从客户端请求到最终的目标服务器的过程中，可能还会经过一些其他的服务器节点。</p>
 <h3 id="4-1-单台服务器有多个域名"><a href="#4-1-单台服务器有多个域名" class="headerlink" title="4.1 单台服务器有多个域名"></a>4.1 单台服务器有多个域名</h3><p>当一个服务器和多个域名绑定的时候，此时这多个域名被DNS解析之后的ip地址是相同的，此时在发送http请求的时候，必须在host内部完整的指定主机名或者域名的url</p>
@@ -276,6 +288,76 @@
 </li>
 <li><p>cookie: 用于请求首部字段, 首部字段 Cookie 会告知服务器，当客户端想获得 HTTP 状态管理支持时，就会在请求中包含从服务器接收 到的 Cookie。接收到多个 Cookie 时，同样可以以多个 Cookie 形式发送。</p>
 </li>
+</ul>
+<h2 id="8-https"><a href="#8-https" class="headerlink" title="8 https"></a>8 https</h2><h3 id="8-1-http存在的问题及https解决的方案"><a href="#8-1-http存在的问题及https解决的方案" class="headerlink" title="8.1 http存在的问题及https解决的方案"></a>8.1 http存在的问题及https解决的方案</h3><h4 id="通信使用明文"><a href="#通信使用明文" class="headerlink" title="通信使用明文"></a>通信使用明文</h4><p>该问题在https中是怎么解决的呢？</p>
+<ul>
+<li>在https中使用了ssl或者tls将传输的明文数据进行加密</li>
+</ul>
+<h4 id="不验证通信双发的身份"><a href="#不验证通信双发的身份" class="headerlink" title="不验证通信双发的身份"></a>不验证通信双发的身份</h4><p>客户端如果遇到假的服务器怎么办？服务器如果遇到假的客户端怎么办？服务器无法确定客户端是否有权限访问某个资源？</p>
+<p>针对上述问题https怎么解决呢？</p>
+<ul>
+<li>使用ssl解决，因为ssl在提供加密的同时也提供了一种叫做证书的东西。</li>
+<li>客户端在请求服务器的时候使用证书确定自己访问的服务器是不是假的。</li>
+<li>服务器在收到请求的时候使用证书判断发送该请求的客户端是不是假的</li>
+</ul>
+<h4 id="无法验证通信中的报文是否被篡改"><a href="#无法验证通信中的报文是否被篡改" class="headerlink" title="无法验证通信中的报文是否被篡改"></a>无法验证通信中的报文是否被篡改</h4><p>https怎么解决？</p>
+<ul>
+<li>ssl提供的摘要功能</li>
+</ul>
+<h3 id="8-2-ssl"><a href="#8-2-ssl" class="headerlink" title="8.2 ssl"></a>8.2 ssl</h3><p>通常htt和tcp直接通信，当使用了ssl之后就是http先和ssl通信，然后由ssl和tcp通信。</p>
+<p><img src="ssl%E9%80%9A%E4%BF%A1.png" alt="使用ssl通信"></p>
+<h3 id="8-3-https"><a href="#8-3-https" class="headerlink" title="8.3 https"></a>8.3 https</h3><p>先了解一下基本的加密概念: </p>
+<ul>
+<li>加密和解密使用同一个秘钥的加密方式叫做<strong>对称加密</strong>;</li>
+<li>加密和解密不使用同一个秘钥，而是使用两个，一个叫做<strong>公钥</strong>，一个叫做<strong>私钥</strong>，加密的时候使用公钥加密，解密的时候使用私钥，这种加密方式称为<strong>非对称加密</strong>。其中公钥可以给任何人，但是私钥不能让其他人知道。</li>
+</ul>
+<p>https使用上述的两种方式混合:</p>
+<ul>
+<li>在通信的双方<strong>交换密钥环节</strong>(这里交换的秘钥是<code>通信阶段报文加密的秘钥</code>)使用公开密钥加密(非对称加密)方式</li>
+<li>之后的建立通信<strong>交换报文阶段</strong>则使用共享密钥加密(对称加密)方式。</li>
+</ul>
+<h4 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h4><p>假如正准备和某台服务器建立公开密钥加密方式下的通信时，如何证明收到的公开密钥就是原本预想的那台服务器发行的公开密钥, 或许在公开密钥传输途中，真正的公开密钥已经被攻击者替换掉了。如何解决这个问题？</p>
+<ul>
+<li>使用由数字证书认证机构（CA，Certificate Authority）和其相关机关颁发的公开密钥证书</li>
+<li>服务器会将这份由数字证书认证机构颁发的<strong>公钥证书</strong>发送给客户端，以进行公开密钥加密方式通信。公钥证书也可叫做数字证书或直接称为证书。</li>
+<li>客户端收到证书之后可使用<code>数字证书认证机构的公开密钥</code>，对那张证书上的数字签名进行验证，一旦验证通过，客户端便可明确两件事：<ul>
+<li>认证服务器的公开密钥的是真实有效的数字证书认证机构。</li>
+<li>服务器的公开密钥是值得信赖的。</li>
+</ul>
+</li>
+</ul>
+<p>怎么获取这个证书?</p>
+<ul>
+<li>首先，服务器的运营人员向数字证书认证机构提出公开密钥的申请。</li>
+<li>数字证书认证机构在判明提出申请者的身份之后，会对已申请的公开密钥做数字签名(数字签名的实现：数字认证机构用自己的<strong>私有密钥</strong>向服务器的公开密钥签名)，然后分配这个<strong>已签名的公开密钥</strong>，并将该公开密钥放入公钥证书后绑定在一起。</li>
+</ul>
+<p><strong>数字证书认证机构的公开秘钥</strong>：认证机关的公开密钥必须安全地转交给客户端。使用通信方式时，如何安全转交是一件很困难的事，因此，多数浏览器开发商发布版本时，会事先在内部植入常用认证机关的<strong>公开密钥</strong>(这个公开密钥来验证服务器的数字签名)。</p>
+<h4 id="https的通信过程"><a href="#https的通信过程" class="headerlink" title="https的通信过程"></a>https的通信过程</h4><p>通信的过程包含两个部分：</p>
+<ul>
+<li>获取把报文使用对称加密时加密的密钥, ssl握手协商部分</li>
+<li>通信双方交换数据</li>
+</ul>
+<p>ssl握手协商部分:</p>
+<ul>
+<li>首先，客户端发送client hello报文，通过该报文告诉服务器自己使用的ssl版本、自己支持的加密算法和秘钥长度列表</li>
+<li>服务器端收到之后，回复给客户端server hello报文, 通过该报文告诉客户端自己选择了他发送过来的加密算法和密钥长度是什么</li>
+<li>紧接着，服务器端发送certificate报文，在该报文中将自己的证书发送给客户端，证书中包含<strong>公钥</strong></li>
+<li>随后，服务器端会发送server hello done报文，使用该报文通知客户端，自己这边已经完事。</li>
+<li>客户端收到上述的三个报文之后, 以Client Key Exchange报文作为回应。报文中包含通信加密中使用的一种被称为Pre-master secret的随机密码串。注意这是的报文已经使用，上述确定的<strong>公钥</strong>和<strong>加密算法</strong>进行加密</li>
+<li>接着客户端继续发送Change Cipher Spec 报文。该报文会提示服务器，在此报文之后的通信会采用<strong>Pre-master secret密钥</strong>（这个密钥就是对称加密的密钥）加密报文交换阶段的数据</li>
+<li>随后客户端发送Finished报文。该报文包含连接至今全部报文的整体校验值。这次握手协商是否能够成功，要以服务器是否能够正确解密该报文作为判定标准。 </li>
+<li>之后, 服务器同样发送Change Cipher Spec报文。</li>
+<li>最后，服务器发送Finished报文。</li>
+</ul>
+<p>通信双发交换数据部分：</p>
+<ul>
+<li>客户端使用上述协商好的密钥对发送的数据进行加密 </li>
+<li>服务器端也使用上述协商好的密钥对客户端发送的数据进行解密，并将自己要发送的数据采用这个密钥进行</li>
+</ul>
+<h3 id="8-4-nginx配置https"><a href="#8-4-nginx配置https" class="headerlink" title="8.4 nginx配置https"></a>8.4 nginx配置https</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">      listen        443 ssl;                                                 </span><br><span class="line">      server_name    www.****.com;#域名                         </span><br><span class="line">      ssl_certificate      ssl&#x2F;nginx.crt;#证书路径     </span><br><span class="line">      ssl_certificate_key  ssl&#x2F;nginx.key;#key路径             </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《图解http》</li>
 </ul>
 
       
