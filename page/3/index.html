@@ -64,6 +64,114 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-curl工具使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/17/curl%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2019-11-17T06:33:37.000Z" itemprop="datePublished">2019-11-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/17/curl%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">curl工具使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl www.baidu.com  # 直接使用</span><br><span class="line">curl -v www.baidu.com  # 可以查看详细的整个http通信过程</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级使用"><a href="#高级使用" class="headerlink" title="高级使用"></a>高级使用</h2><h3 id="在请求头中添加参数"><a href="#在请求头中添加参数" class="headerlink" title="在请求头中添加参数"></a><strong>在请求头中添加参数</strong></h3><p>使用<code>-H</code>指定参数，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -H "Content-Type:application/json" -H "requestid:1111"</span><br></pre></td></tr></table></figure>
+<p>每一个参数都要使用<code>-H</code>进行指定</p>
+<h3 id="发送post请求"><a href="#发送post请求" class="headerlink" title="发送post请求"></a><strong>发送post请求</strong></h3><h4 id="请求头中添加参数"><a href="#请求头中添加参数" class="headerlink" title="请求头中添加参数"></a>请求头中添加参数</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d “username=xiao&amp;passwd=1234” url</span><br></pre></td></tr></table></figure>
+<h4 id="请求体中发送json数据"><a href="#请求体中发送json数据" class="headerlink" title="请求体中发送json数据"></a>请求体中发送json数据</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d '&#123;"student_id": "1233253535", "work_id": "2019007350001"&#125;'</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/17/curl%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" data-id="ck68ll0cn00071dsb902z9wsk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/curl/" rel="tag">curl</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-算法专题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/21/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" class="article-date">
+  <time datetime="2019-08-21T06:37:41.000Z" itemprop="datePublished">2019-08-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/21/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/">算法专题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>学习算法，其实是学习算法的基本思想，了解了算法的基本思想之后，用代码实现其实是很容易的。学习算法的前提是了解常用的数据结构：数组、栈、队列、堆、链表等。在本专题中默认大家已经掌握常用的数据结构，不会专门来讲解这些数据结构。</p>
+<p>数据结构这一学科正是以“数据”这一信息的表现形式为研究对象，旨在建立支持高效算法的数据信息处理策略、技巧与方法。要做到根据实际应用需求自如地设计、实现和选用适当的数据结构，必须首先对算法设计的技巧以及相应数据结构的特性了然于心。</p>
+<p>算法是依托于数据结构而存在的。</p>
+<p>数据的逻辑结构，所谓的数据的逻辑结构是指，<strong>数据元素及其之间的关系</strong>，主要包括如下的逻辑结构：</p>
+<ul>
+<li>集合: 数据中的元素除了属于同一个集合外，没有其他的关系</li>
+<li>线性结构: 数据中的元素存在一对一的相互关系</li>
+<li>树形结构: 数据中的元素存在一对多的关系</li>
+<li>图形结构: </li>
+</ul>
+<p>搞清楚研究对象是什么？研究对象中的数据元素是什么？数据元素之间有什么关系？</p>
+<h2 id="1-排序算法"><a href="#1-排序算法" class="headerlink" title="1 排序算法"></a>1 排序算法</h2><h3 id="1-1-选择排序"><a href="#1-1-选择排序" class="headerlink" title="1.1 选择排序"></a>1.1 选择排序</h3><p>O(n^2)</p>
+<p>选择排序的基本思想就是：<br>1.从给定的数组中找到最小的放在1号位置<br>2.从剩下的元素中找出最小的位置，放在当前数组的1号位置<br>3.重复上述过程，直到最后数组中的元素为0</p>
+<h3 id="1-2-插入排序"><a href="#1-2-插入排序" class="headerlink" title="1.2 插入排序"></a>1.2 插入排序</h3><p>O(n^2)</p>
+<p>基本思想：<br>1.将数据分成两部分，一部分有序，一部分无序<br>2.每次从无序的部分取出一个数，插入到有序的数组中</p>
+<p>分析：如果待排序的数组是基本有序的，那么排序的效率是非常的高的。如果待排序的数组是有序的，那么排序的时间复杂度就会是O(n)</p>
+<h3 id="1-3-归并排序"><a href="#1-3-归并排序" class="headerlink" title="1.3 归并排序"></a>1.3 归并排序</h3><p>O(nlogn)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/21/%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" data-id="ck68ll0dn002c1dsbgrqz5ffl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-etcd源码分析-启动流程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/08/19/etcd%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" class="article-date">
@@ -617,116 +725,6 @@
 
 
   
-    <article id="post-makefile编写" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/12/makefile%E7%BC%96%E5%86%99/" class="article-date">
-  <time datetime="2019-08-12T06:18:10.000Z" itemprop="datePublished">2019-08-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/12/makefile%E7%BC%96%E5%86%99/">makefile编写</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Makefile是一个文件，在这个文件里面记录了我们编译代码的步骤。Makefile是由很多的规则组的，很多的规则组成一起就成了Makefile文件。</p>
-<p><strong>文件的结构：</strong></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">规则1</span><br><span class="line">规则2</span><br><span class="line">规则3</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p><strong>Makefile文件的命名规则：</strong></p>
-<p>makeflie 或者 Makefile。</p>
-<p><strong>Makefile文件的规则：</strong></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target: dependency</span></span><br><span class="line">	command   <span class="comment"># command前面必须有一个缩进</span></span><br></pre></td></tr></table></figure>
-<h2 id="语法介绍"><a href="#语法介绍" class="headerlink" title="语法介绍"></a>语法介绍</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h3><ul>
-<li>终极目标：文件中第一个规则中的目标为终极目标</li>
-<li>子目标：除了终极目标，其他的目标都是子目标</li>
-<li>伪目标：这种目标没有依赖，我们称这种目标为伪目标</li>
-</ul>
-<h3 id="2-目标的生成规则"><a href="#2-目标的生成规则" class="headerlink" title="2. 目标的生成规则"></a>2. 目标的生成规则</h3><p>如果直接执行<code>make</code>命令，那么生成的是终极目标。如果想要生成指定的子目标那么，需要使用<code>make 子目标名</code>，例如：<code>make clean</code>命令</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/12/makefile%E7%BC%96%E5%86%99/" data-id="ck68ll0d9001i1dsb257pe8rd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/make/" rel="tag">make</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-程序员自我修养笔记" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/11/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time datetime="2019-08-11T05:40:00.000Z" itemprop="datePublished">2019-08-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/11/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E7%AC%94%E8%AE%B0/">程序员自我修养笔记</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-编译和链接"><a href="#1-编译和链接" class="headerlink" title="1. 编译和链接"></a>1. 编译和链接</h2><p>过程：<br><code>预处理 -&gt; 编译 -&gt; 汇编 -&gt; 链接</code></p>
-<h3 id="1-1-预处理"><a href="#1-1-预处理" class="headerlink" title="1.1 预处理"></a>1.1 预处理</h3><p><strong>在这个过程中做什么事情呢</strong></p>
-<p>在这个过程中主要是处理一些预编译指令。比如：#include 、#define等。主要规则如下：</p>
-<ul>
-<li>将所有的#define删除，并且展开所有的宏定义</li>
-<li>处理所有的条件预编译指令，比如：#ifndef、#if、#elif等</li>
-<li>处理#include，将包含的文件插入到预编译指令的位置，这个过程是递归进行的</li>
-<li>删除所有的注释</li>
-<li>保留所有的#pragma编译器指令，因为编译器需要使用它们</li>
-</ul>
-<h3 id="1-2-编译阶段"><a href="#1-2-编译阶段" class="headerlink" title="1.2 编译阶段"></a>1.2 编译阶段</h3><p>该阶段就是把预处理完的文件进行一系列的词法分析、语法分析、语义分析及优化后生成相应的汇编代码文件</p>
-<h3 id="1-3-汇编"><a href="#1-3-汇编" class="headerlink" title="1.3 汇编"></a>1.3 汇编</h3><p>该阶段是将汇编代码转换成机器可以执行的指令。</p>
-<h3 id="1-4-链接"><a href="#1-4-链接" class="headerlink" title="1.4 链接"></a>1.4 链接</h3><p>把各个模块之间的相互引用的部分处理好，使得各个模块之间能够正确的衔接。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/11/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E7%AC%94%E8%AE%B0/" data-id="ck68ll0dl00291dsbf1y34aki" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -742,7 +740,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">通用编程技术</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">数据结构和算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9E%B6%E6%9E%84/">架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%88%AC%E8%99%AB%E5%BC%80%E5%8F%91/">爬虫开发</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">通用编程技术</a></li></ul>
     </div>
   </div>
 
@@ -752,7 +750,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/burp/" rel="tag">burp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/curl/" rel="tag">curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/erlang/" rel="tag">erlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grcp/" rel="tag">grcp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/" rel="tag">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lantern/" rel="tag">lantern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/make/" rel="tag">make</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rust/" rel="tag">rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vscode/" rel="tag">vscode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" rel="tag">基础架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/burp/" rel="tag">burp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmake/" rel="tag">cmake</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/curl/" rel="tag">curl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/erlang/" rel="tag">erlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grcp/" rel="tag">grcp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/http/" rel="tag">http</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jupyter-notebook/" rel="tag">jupyter-notebook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kakfa/" rel="tag">kakfa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lantern/" rel="tag">lantern</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lua/" rel="tag">lua</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/make/" rel="tag">make</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rust/" rel="tag">rust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag">sql注入</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vscode/" rel="tag">vscode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" rel="tag">基础架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" rel="tag">机器学习基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" rel="tag">编程语言</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -762,7 +760,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/burp/" style="font-size: 10px;">burp</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/curl/" style="font-size: 10px;">curl</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/erlang/" style="font-size: 10px;">erlang</a> <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/etcd/" style="font-size: 15px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grcp/" style="font-size: 10px;">grcp</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/lantern/" style="font-size: 10px;">lantern</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/make/" style="font-size: 10px;">make</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rust/" style="font-size: 10px;">rust</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">基础架构</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">编程语言</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">网络编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/TypeScript/" style="font-size: 10px;">TypeScript</a> <a href="/tags/burp/" style="font-size: 10px;">burp</a> <a href="/tags/c/" style="font-size: 10px;">c</a> <a href="/tags/cmake/" style="font-size: 10px;">cmake</a> <a href="/tags/curl/" style="font-size: 10px;">curl</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/erlang/" style="font-size: 10px;">erlang</a> <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/etcd/" style="font-size: 15px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grcp/" style="font-size: 10px;">grcp</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/jupyter-notebook/" style="font-size: 10px;">jupyter-notebook</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/kakfa/" style="font-size: 10px;">kakfa</a> <a href="/tags/lantern/" style="font-size: 10px;">lantern</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/make/" style="font-size: 10px;">make</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/rust/" style="font-size: 10px;">rust</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/sql%E6%B3%A8%E5%85%A5/" style="font-size: 10px;">sql注入</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">基础架构</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">机器学习基础</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" style="font-size: 10px;">编程语言</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">网络编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -784,6 +782,14 @@
       <ul>
         
           <li>
+            <a href="/2020/02/05/jupyter-notebook%E4%BD%BF%E7%94%A8/">jupyter-notebook使用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">机器学习基础</a>
+          </li>
+        
+          <li>
             <a href="/2020/02/02/http%E5%8D%8F%E8%AE%AE%E5%9F%BA%E7%A1%80/">http协议基础</a>
           </li>
         
@@ -793,14 +799,6 @@
         
           <li>
             <a href="/2020/01/29/go%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/">go语言基础</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-%E7%AE%80%E4%BB%8B/">分布式系统--简介</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
           </li>
         
       </ul>
