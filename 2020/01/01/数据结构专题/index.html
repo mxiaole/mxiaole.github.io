@@ -19,6 +19,10 @@
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E5%88%A0%E9%99%A4%E5%8F%AA%E6%9C%89%E5%B7%A6%E5%AD%90%E6%A0%91%E7%9A%84%E8%8A%82%E7%82%B9.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E5%88%A0%E9%99%A4%E5%8F%AA%E6%9C%89%E5%8F%B3%E5%AD%90%E6%A0%91%E7%9A%84%E8%8A%82%E7%82%B9.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E5%88%A0%E9%99%A4%E5%8C%85%E5%90%AB%E5%B7%A6%E5%8F%B3%E5%AD%90%E6%A0%91%E7%9A%84%E8%8A%82%E7%82%B9.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/avl%E6%A0%91%E7%9A%84%E5%8F%B3%E6%97%8B.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/avl%E6%A0%91%E7%9A%84LR.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/avl%E6%A0%91%E7%9A%84%E5%B7%A6%E6%97%8B.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/avl%E6%A0%91%E7%9A%84RL.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E7%BA%BF%E6%AE%B5%E6%A0%91.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E5%AD%97%E5%85%B8%E6%A0%91.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E5%B9%B6%E6%9F%A5%E9%9B%86.png">
@@ -27,7 +31,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E6%97%A0%E7%8E%AF%E5%9B%BE.png">
 <meta property="og:image" content="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/%E8%BF%9E%E9%80%9A%E5%9B%BE%E7%9A%84%E7%94%9F%E6%88%90%E6%A0%91.png">
 <meta property="article:published_time" content="2020-01-01T02:15:04.000Z">
-<meta property="article:modified_time" content="2020-02-09T07:10:22.002Z">
+<meta property="article:modified_time" content="2020-02-09T14:30:25.297Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
@@ -318,7 +322,42 @@
 
 </li>
 </ul>
-<h3 id="6-2-二叉平衡树AVL"><a href="#6-2-二叉平衡树AVL" class="headerlink" title="6.2 二叉平衡树AVL"></a>6.2 二叉平衡树AVL</h3><h3 id="6-3-堆"><a href="#6-3-堆" class="headerlink" title="6.3 堆"></a>6.3 堆</h3><p> 二叉堆是一种完全二叉树，为此可以使用数组表示节点之间的关系。二叉堆中每个节点的值总是不大于其父亲节点的值。</p>
+<h3 id="6-2-二叉平衡树AVL"><a href="#6-2-二叉平衡树AVL" class="headerlink" title="6.2 二叉平衡树AVL"></a>6.2 二叉平衡树AVL</h3><p>二叉搜索树存在的问题：如果一组数组是有序的添加到一个二叉搜索树中的，此时二叉搜索树会退化成一个链表。AVL是发明人的首字母的组合。</p>
+<ul>
+<li>平衡二叉树：对于任意节点，左子树的高度和右子树的高度差不能超过1</li>
+<li>平衡因子：每个节点，左右子树的高度差</li>
+</ul>
+<p>avl树是一种平衡的二叉搜索树，既要满足平衡的性质也要满足二分搜索树的性质。</p>
+<h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 节点的类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span> <span class="title">extend</span> <span class="title">Comparable</span>&lt;<span class="title">K</span>&gt;, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> K key;</span><br><span class="line">    <span class="keyword">public</span> V value;</span><br><span class="line">    <span class="keyword">public</span> Node left, right;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> height;</span><br><span class="line"></span><br><span class="line"><span class="comment">// avl的类型</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AvlTree</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Node root;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="基本操作-1"><a href="#基本操作-1" class="headerlink" title="基本操作"></a>基本操作</h4><ul>
+<li><p>添加节点：添加节点之后如何判断该树是否平衡？如何维持树的平衡？</p>
+<ul>
+<li><p>我们知道在向root为根的树中添加节点的时候，要么添加到root节点的左子树，要么添加到root节点的右子树中，如果树的不平衡是因为添加到了root的左子树中，此时应该怎么处理？如果树的不平衡是因为添加到了root的右子树中，此时怎么处理？</p>
+</li>
+<li><p>如果不平衡是因为添加到了root的左子树中，进行右旋来维护平衡, 具体步骤：</p>
+<ul>
+<li>以y为根的树中插入了节点z导致了不平衡，y进行右旋转<br><img src="avl%E6%A0%91%E7%9A%84%E5%8F%B3%E6%97%8B.png" alt="avl树的LL"></li>
+<li>以y为根的数中插入了节点z导致了不平衡, 先转为LL(x进行左旋转,得到LL)，然后进行右旋维护平衡<br><img src="avl%E6%A0%91%E7%9A%84LR.png" alt="avl树的LR"></li>
+</ul>
+</li>
+<li><p>如果不平衡是因为添加到了root的右子树中，进行左旋来维护平衡，具体如下：</p>
+<ul>
+<li>以y为根的树中插入了节点z导致了不平衡，y进行左旋转<br><img src="avl%E6%A0%91%E7%9A%84%E5%B7%A6%E6%97%8B.png" alt="avl树的RR"></li>
+<li>以y为根的数中插入了节点z导致了不平衡, 先转为RR(x进行右旋,得到RR)，然后进行右旋维护平衡<br><img src="avl%E6%A0%91%E7%9A%84RL.png" alt="avl树的RL"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>查找</p>
+</li>
+<li><p>删除节点</p>
+</li>
+</ul>
+<h3 id="6-3-堆"><a href="#6-3-堆" class="headerlink" title="6.3 堆"></a>6.3 堆</h3><p> 二叉堆是一种完全二叉树，为此可以使用数组表示节点之间的关系。二叉堆中每个节点的值总是不大于其父亲节点的值。</p>
 <p> 如果一个节点对应到数组中的下标索引为i，那么它的左孩子对应到数组中的下标是：<code>leftChild=i*2</code>(数组中元素的下标从1开始时，如果从零开始<code>2 * i + 1</code>)，它的右孩子对应到数组中的下标是<code>rightChild=i*2 + 1</code>(下标从0开始时是<code>2*i + 2</code>)，它的父亲节点对应到数组中的下标是：<code>parent=i/2</code>(从0开始时是<code>(i - 1) / 2</code>)。</p>
 <h4 id="堆的基本操作"><a href="#堆的基本操作" class="headerlink" title="堆的基本操作"></a>堆的基本操作</h4><ul>
 <li><p>向堆中添加一个元素：直接在数组的末尾添加上元素，然后将这个元素进行sift-up上浮操作以维护最大堆的性质。以最大堆为例进行描述, sift-up操作的具体过程如下：</p>
@@ -350,7 +389,7 @@
 <li>如果有h层，那么一共的节点个数是2^h - 1 个节点大约是<code>2^h</code>个节点, 其中最后一层的节点数<code>2^(h-1)</code>大致等于前面层数的所有节点之和<code>2^h</code>。</li>
 <li>线段树的表示一个区间的时候，最后一层的节点的个数就是区间中元素的个数n, 有上一条的结论<code>最后一层的节点的个数大致等于所有的节点之和</code>, 所以总的节点树大致为<code>n + n = 2n</code>, 在最坏的情况下，还需要在加一层，总数为<code>2n + 2n = 4n</code></li>
 </ul>
-<h4 id="基本操作-1"><a href="#基本操作-1" class="headerlink" title="基本操作"></a>基本操作</h4><p>线段树的实现：线段树使用数组来表示，用一个新的数组来表示给定的数组中的区间的值, 新数组中的元素有两层含义</p>
+<h4 id="基本操作-2"><a href="#基本操作-2" class="headerlink" title="基本操作"></a>基本操作</h4><p>线段树的实现：线段树使用数组来表示，用一个新的数组来表示给定的数组中的区间的值, 新数组中的元素有两层含义</p>
 <ul>
 <li>表示的是给定数组的哪个区间</li>
 <li>表示的是给定数组的这段区间的相应信息的综合</li>
@@ -412,9 +451,9 @@
 <ul>
 <li>基于size的优化</li>
 <li>基于rank的优化： 使用一个数组记录以i为根的树的高度, 将高度高树的根指向高度低的树的根</li>
-<li>路径压缩：在find的时候维护，<code>parent[p] = parent[parent[0]]</code><h2 id="7-集合"><a href="#7-集合" class="headerlink" title="7 集合"></a>7 集合</h2></li>
+<li>路径压缩：在find的时候维护，<code>parent[p] = parent[parent[0]]</code></li>
 </ul>
-<p>集合中是没有重复元素的。它的实现可以使用数组、链表、二叉树、哈希表基础的数据结构实现。其中集合可以分为有序集合和无序集合，使用用搜索树可以实现有序结合，使用链表、数组、哈希表等实现无序集合</p>
+<h2 id="7-集合"><a href="#7-集合" class="headerlink" title="7 集合"></a>7 集合</h2><p>集合中是没有重复元素的。它的实现可以使用数组、链表、二叉树、哈希表基础的数据结构实现。其中集合可以分为有序集合和无序集合，使用用搜索树可以实现有序结合，使用链表、数组、哈希表等实现无序集合</p>
 <h2 id="8-映射"><a href="#8-映射" class="headerlink" title="8 映射"></a>8 映射</h2><p>映射定义了key和value。可以使用数组、链表、二叉树这些基础的数据结构实现</p>
 <h2 id="9-图"><a href="#9-图" class="headerlink" title="9 图"></a>9 图</h2><p><strong>基本概念</strong></p>
 <ul>
@@ -452,7 +491,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/" data-id="ck6ep3jf9005b93sbalaq0jyk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/01/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%93%E9%A2%98/" data-id="ck6f57los005cwusbe2wrduuz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a></li></ul>
