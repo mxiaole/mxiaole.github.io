@@ -1065,7 +1065,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-17 22:57:01" itemprop="dateModified" datetime="2020-02-17T22:57:01+08:00">2020-02-17</time>
+                <time title="Modified: 2020-02-18 03:24:03" itemprop="dateModified" datetime="2020-02-18T03:24:03+08:00">2020-02-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1111,7 +1111,7 @@
 <p>tips<br>可以使用mac上的client 连接docker-machine创建的安装了docker的虚拟机，在终端执行如下的两条命令：<br><code>docker-machine env 虚拟机的名字</code>  ,  <code>eval ($docker-machine env 虚拟机的名字)</code><br>撤销使用的命令： <code>docker-machine env --unset</code>, <code>eval $(docker-machine env --unset)</code></p>
 </blockquote>
 <p>dockerplayground可以随意的玩</p>
-<h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker_instructure.jpg" alt="docker架构图"></p>
+<h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpeg" alt="docker架构图"></p>
 <p>共享宿主机的kernel</p>
 <h2 id="docker使用的底层技术主要有："><a href="#docker使用的底层技术主要有：" class="headerlink" title="docker使用的底层技术主要有："></a>docker使用的底层技术主要有：</h2><ul>
 <li>namespace实现隔离. <a href="https://coolshell.cn/articles/17010.html" target="_blank" rel="noopener">详细了解参考</a></li>
@@ -1218,7 +1218,9 @@
 <blockquote>
 <p>tips: 快速清除多个container<br>docker container ls -aq  # 查看容器的ID<br>docker rm $(docker container ls -aq)  # 可以实现快速的删除多个container<br>docker container ls -f “status=exited” -q  # 查看所有的已经退出的container<br>docker rm $(docker container ls -f “status=exited” -q)  # 快速的清除所有已经退出的container</p>
 </blockquote>
-<h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p>TODO</p>
+<h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p><img src="docker%E7%BD%91%E7%BB%9C.png" alt="docker网络"></p>
+<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
+<p>Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络无法寻址到，如果希望容器能够被外部网络访问到，就需要通过映射容器端口到宿主机的端口</p>
 <h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
 <p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>

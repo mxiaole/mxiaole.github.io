@@ -2098,6 +2098,21 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 该命令查看Pod的处于生命周期的哪个阶段。</span><br><span class="line">kubectl get pods pod-name --template&#x3D;&quot;&#123;&#123;.status.phase&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
 
+<p>Pod被创建成功之后，首先会进入Pending阶段，然后被调度到Node后运行，进入running阶段。</p>
+<h3 id="3-4-Pod的调度"><a href="#3-4-Pod的调度" class="headerlink" title="3.4 Pod的调度"></a>3.4 Pod的调度</h3><p>所谓的Pod的调度，就是Pod被创建之后，被分配到集群中的哪个Node上。k8s中的调度算法分为两步：</p>
+<ol>
+<li>筛选出符合条件的Node：通过一系列的过滤函数，主要是对Node的cpu、内存资源，端口的使用等筛选。</li>
+<li>选择最优的Node：通过一系列的优先级函数来评估出最优的Node。</li>
+</ol>
+<p>有时需要将Pod调度到指定的Node上，此时使用Node Selector来完成。通过<code>kubectl get node</code>命令可以获取集群中的所有的Node，使用<code>kubectl label nodes hostname 标签</code>命令来为Node添加标签, 在定义Pod的时候使用Node Selector来选择Node。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">env:</span> <span class="string">test</span></span><br><span class="line">  <span class="attr">spec:</span></span><br><span class="line">    <span class="attr">nodeSelector:</span></span><br><span class="line">      <span class="attr">env:</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+<p>此外还可以直接使用：nodeName进行指定</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">nodeName:</span> <span class="string">kube-node-1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-5-问题定位"><a href="#3-5-问题定位" class="headerlink" title="3.5 问题定位"></a>3.5 问题定位</h3><p>使用<code>kubectl logs</code>命令查询Pod容器的日志。</p>
+<p>连接远程的容器：<code>kubectl attach</code>和<code>kubectl exec pod-name</code>两个命令都可以。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>《kubernets实战》</li>
 </ul>
@@ -2571,7 +2586,7 @@
 <p>tips<br>可以使用mac上的client 连接docker-machine创建的安装了docker的虚拟机，在终端执行如下的两条命令：<br><code>docker-machine env 虚拟机的名字</code>  ,  <code>eval ($docker-machine env 虚拟机的名字)</code><br>撤销使用的命令： <code>docker-machine env --unset</code>, <code>eval $(docker-machine env --unset)</code></p>
 </blockquote>
 <p>dockerplayground可以随意的玩</p>
-<h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker_instructure.jpg" alt="docker架构图"></p>
+<h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpeg" alt="docker架构图"></p>
 <p>共享宿主机的kernel</p>
 <h2 id="docker使用的底层技术主要有："><a href="#docker使用的底层技术主要有：" class="headerlink" title="docker使用的底层技术主要有："></a>docker使用的底层技术主要有：</h2><ul>
 <li>namespace实现隔离. <a href="https://coolshell.cn/articles/17010.html" target="_blank" rel="noopener">详细了解参考</a></li>
@@ -2678,7 +2693,9 @@
 <blockquote>
 <p>tips: 快速清除多个container<br>docker container ls -aq  # 查看容器的ID<br>docker rm $(docker container ls -aq)  # 可以实现快速的删除多个container<br>docker container ls -f “status=exited” -q  # 查看所有的已经退出的container<br>docker rm $(docker container ls -f “status=exited” -q)  # 快速的清除所有已经退出的container</p>
 </blockquote>
-<h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p>TODO</p>
+<h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p><img src="docker%E7%BD%91%E7%BB%9C.png" alt="docker网络"></p>
+<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
+<p>Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络无法寻址到，如果希望容器能够被外部网络访问到，就需要通过映射容器端口到宿主机的端口</p>
 <h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
 <p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>
