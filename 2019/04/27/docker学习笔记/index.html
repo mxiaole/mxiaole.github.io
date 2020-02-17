@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/docker_instructure.jpg">
 <meta property="article:published_time" content="2019-04-27T06:31:37.000Z">
-<meta property="article:modified_time" content="2019-08-19T00:38:46.000Z">
+<meta property="article:modified_time" content="2020-02-17T14:57:01.670Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
@@ -119,7 +119,7 @@
 <h1 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2. 基本概念"></a>2. 基本概念</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="docker_instructure.jpg" alt="docker架构图"></p>
 <p>共享宿主机的kernel</p>
 <h2 id="docker使用的底层技术主要有："><a href="#docker使用的底层技术主要有：" class="headerlink" title="docker使用的底层技术主要有："></a>docker使用的底层技术主要有：</h2><ul>
-<li>namespace实现隔离</li>
+<li>namespace实现隔离. <a href="https://coolshell.cn/articles/17010.html" target="_blank" rel="noopener">详细了解参考</a></li>
 <li>cgroup实现资源限制</li>
 <li>union file systems实现container和image分层</li>
 </ul>
@@ -184,7 +184,7 @@
 </li>
 <li><p>CMD: 设置容器启动之后默认执行的命令和参数, 如果在docker run的时候执行了其他的命令，那么cmd命令会被忽略；如果定义了多个cmd命令，只有最后一个会被执行。</p>
 </li>
-<li><p>ENTRYPOINT: 设置容器启动时执行的命令；让容器以应用程序或者服务的形式运行；该命令不会被忽略一会被执行；最好是写一个shell脚本作为entrypoint</p>
+<li><p>ENTRYPOINT: 设置容器启动时执行的命令；让容器以应用程序或者服务的形式运行；该命令不会被忽略,docker run 指定的启动命令作为参数传递给它设置的命令；最好是写一个shell脚本作为entrypoint</p>
 </li>
 <li><p>WORKDIR: 用来设定当前的工作目录; 尽量是用绝对路径，不要使用相对路径</p>
 <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /root</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> demo</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> <span class="built_in">pwd</span>  <span class="comment"># 输出结果应该是/root/demo</span></span></span><br></pre></td></tr></table></figure></li>
@@ -214,7 +214,7 @@
 <li>创建镜像：<code>docker build -t mxiaole/ubuntu-stress .</code></li>
 <li>使用: <code>docker run -it mxiaole/ubuntu-stress --help</code> 可以直接指定stress的命令参数</li>
 </ul>
-<h1 id="5-container操作"><a href="#5-container操作" class="headerlink" title="5. container操作"></a>5. container操作</h1><h2 id="5-1-启动容器"><a href="#5-1-启动容器" class="headerlink" title="5.1 启动容器"></a>5.1 启动容器</h2><p>最简单的启动方式就是：<code>docker run image</code></p>
+<h1 id="5-container操作"><a href="#5-container操作" class="headerlink" title="5. container操作"></a>5. container操作</h1><h2 id="5-1-启动容器"><a href="#5-1-启动容器" class="headerlink" title="5.1 启动容器"></a>5.1 启动容器</h2><p>最简单的启动方式就是：<code>docker run image</code>。容器的生命周期：运行时，运行结束后退出。</p>
 <h2 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h2><ul>
 <li>exec命令: <code>docker exec -it conainerid /bin/bash</code> 进入一个运行的容器</li>
 <li>inspect: <code>docker inspect conainerid</code> 检测一个container的信息</li>
@@ -225,6 +225,7 @@
 </blockquote>
 <h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p>TODO</p>
 <h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
+<p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>
 <p>第 1 种叫绑定挂载的 Volume (bind mount volume)：用户<strong>指定将主机上的某个目录</strong>挂载到<strong>容器中的某个目录</strong>。(-v参数指定，宿主机的目录：container的目录， 这两个目录是一一对应的)， 在运行container的时候，直接使用-v参数指定。</p>
 <p>第 2 种叫受管理的 Volume (managed volume)：所使用的主机上的位置是由 Docker daemon 创建并管理的，这些位置称为 Docker managed space, 在dockerfile文件中使用VOLUME指令指定volume的路径，然后使用-v参数给这个volume起个名字, 这个volume对应的宿主机的位置不是用户指定的，是docker运行时自动指定的。</p>
@@ -232,7 +233,7 @@
 <p>上面的命令创建的container生成的volumeID不方便使用，可以使用<code>docker run -d -v mysql:/var/lib/mysql --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql</code>创建（-v参数指定volume的名字），当把创建的MySQL container销毁之后，下一次启动一个新的container(<code>docker run -d -v mysql:/var/lib/mysql --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql</code>)的时候可以继续通过volume的名字指定使用销毁的container的volume。</p>
 <p>上述命令中的<code>-v</code>参数：指定生成的volume名字，前面的参数是volume名字:后面的是容器中备份文件的路径，</p>
 <p><strong>demo: bind mount使用</strong></p>
-<p>考虑这样一个场景：假如我们只有mac环境，但是我们在Mac上安装了docker。我们想要使用Mac的pycharm ide开发了一个Flask项目，我们可以创建一个Dockerfile，然后将这个项目创建一个镜像，然后运行这个镜像到container中。但是突然发现我们还有一个功能没有开发，这时候会频繁的修改Flask项目中的文件，如果我们每做一次修改就要重新build创建一个镜像，然后运行，实在是太麻烦了，这个时候我们可以考虑使用这个bint mount神器。具体操作如下：</p>
+<p>考虑这样一个场景：假如我们只有mac环境，但是我们在Mac上安装了docker。我们想要使用Mac的pycharm ide开发了一个Flask项目，我们可以创建一个Dockerfile，然后将这个项目创建一个镜像，然后运行这个镜像到container中。但是突然发现我们还有一个功能没有开发，这时候会频繁的修改Flask项目中的文件，如果我们每做一次修改就要重新build创建一个镜像，然后运行，实在是太麻烦了，这个时候我们可以考虑使用这个bind mount神器。具体操作如下：</p>
 <ul>
 <li>将初次的项目，创建一个镜像，然后运行的时候使用-v参数：<code>docker run -p 5000:5000 -d --name flask -v $(pwd):/root/flask mxiaole/myflask</code></li>
 <li>之后，可以在Mac上修改项目文件，这些文件或自动的同步到container中</li>
@@ -308,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6i2xjiz004z71sb58ayh0lm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="ck6qlyzno005186sb4vndbwam" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
