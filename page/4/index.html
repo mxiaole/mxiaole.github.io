@@ -1065,7 +1065,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-18 03:24:03" itemprop="dateModified" datetime="2020-02-18T03:24:03+08:00">2020-02-18</time>
+                <time title="Modified: 2020-02-18 13:36:53" itemprop="dateModified" datetime="2020-02-18T13:36:53+08:00">2020-02-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1221,7 +1221,8 @@
 <h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p><img src="docker%E7%BD%91%E7%BB%9C.png" alt="docker网络"></p>
 <p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
 <p>Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络无法寻址到，如果希望容器能够被外部网络访问到，就需要通过映射容器端口到宿主机的端口</p>
-<h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
+<h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p>Docker中的数据持久化：使用Docker数据卷将宿主机上的文件或者目录挂载到容器中。</p>
+<p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
 <p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>
 <p>第 1 种叫绑定挂载的 Volume (bind mount volume)：用户<strong>指定将主机上的某个目录</strong>挂载到<strong>容器中的某个目录</strong>。(-v参数指定，宿主机的目录：container的目录， 这两个目录是一一对应的)， 在运行container的时候，直接使用-v参数指定。</p>
