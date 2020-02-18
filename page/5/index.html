@@ -176,6 +176,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/25/kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/25/kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">kafka权威指南笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-25 19:39:03" itemprop="dateCreated datePublished" datetime="2019-04-25T19:39:03+08:00">2019-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-07 13:10:09" itemprop="dateModified" datetime="2019-12-07T13:10:09+08:00">2019-12-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">后台开发</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1 基本概念"></a>1 基本概念</h4><ul>
+<li>消息：kafka的数据单元</li>
+<li>主题：kafka中的每个消息都属于一个<code>主题</code></li>
+<li>分区：分区是消息存储的物理单元，一个主题中的消息，通过<code>分区器</code>的作用存储在不同的分区中。<code>同一个主题的多个分区，可能分布在不同的机器上</code>。</li>
+<li>生产者：将一个消息发送到某个主题的分区中</li>
+<li>消费者：消费者消费分区中的消息，通过<code>偏移量</code>来保证顺序消费某个分区中的消息。</li>
+<li>消费者群组：消费者是以消费者群组的形式存在的，消费者群组中有一个或者多个消费者，一个指定的消费者群组会订阅一个主题。群组保证每个分区只能被一个消费者使用。</li>
+<li>broker：一个部署了kafka服务的服务器被称为一个broker。每个集群中都会有一个充当集群控制器的broker。在集群中一个分区从属于一个broker，该broker被称为分区的<code>首领</code>。一个分区可以分配给多个broker。</li>
+<li>保留消息：kfka通过某种策略来对消息进行保留。</li>
+</ul>
+<h4 id="2-kafka的特性"><a href="#2-kafka的特性" class="headerlink" title="2 kafka的特性"></a>2 kafka的特性</h4><ul>
+<li>多个消费者：与其他的消息队列不同，消息一旦被一个客户端读取，其他的客户端就无法在读取它。kafka的消息可以被多个消费者读取。</li>
+<li>基于磁盘的数据存储：kafka允许消费者，非实时的进行消息的读取。消息被提交到磁盘，根据设置的保留规则进行保存。每个主题都可以设置单独的保留规则</li>
+</ul>
+<h4 id="3-安装和部署"><a href="#3-安装和部署" class="headerlink" title="3 安装和部署"></a>3 安装和部署</h4><p>kakfa使用zookeeper来保存集群的<code>元数据</code>信息和消费者消息。<br>使用进行安装部署，docker-compose.yml文件内容入如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2.1'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">zookeeper:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wurstmeister/zookeeper</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">"2181"</span></span><br><span class="line">  <span class="attr">kafka:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wurstmeister/kafka</span> </span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">"9092"</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">KAFKA_ADVERTISED_HOST_NAME:</span>  <span class="number">192.168</span><span class="number">.2</span><span class="number">.10</span> <span class="comment">#宿主机的ip地址</span></span><br><span class="line">      <span class="attr">KAFKA_ZOOKEEPER_CONNECT:</span> <span class="string">zookeeper:2181</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/run/docker.sock:/var/run/docker.sock</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4-kafka生产者"><a href="#4-kafka生产者" class="headerlink" title="4 kafka生产者"></a>4 kafka生产者</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoCallBack</span> <span class="keyword">implements</span> <span class="title">Callback</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompletion</span><span class="params">(RecordMetadata metadata, Exception exception)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (exception != <span class="keyword">null</span>) &#123;</span><br><span class="line">                exception.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生产者, 向kafka集群中发送message</span></span><br><span class="line"><span class="comment">     * produce向集群push消息</span></span><br><span class="line"><span class="comment">     * 可以同步的向集群发送消息，也可以异步的发送消息</span></span><br><span class="line"><span class="comment">     * 怎么确定将消息发送到哪个partition上呢？</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Producer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">        properties.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"127.0.0.1:32796, 127.0.0.1:32797, 127.0.0.1:32798"</span>);  <span class="comment">// consumer连接到broker集群</span></span><br><span class="line">        properties.put(<span class="string">"acks"</span>, <span class="string">"all"</span>);  <span class="comment">// 指定消息发送的模式，all</span></span><br><span class="line">        properties.put(<span class="string">"retries"</span>, <span class="number">0</span>);</span><br><span class="line">        properties.put(<span class="string">"batch.size"</span>, <span class="number">16384</span>);</span><br><span class="line">        properties.put(<span class="string">"linger.ms"</span>, <span class="number">1</span>);</span><br><span class="line">        properties.put(<span class="string">"buffer.memory"</span>, <span class="number">33554432</span>);</span><br><span class="line">        properties.put(<span class="string">"key.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">        properties.put(<span class="string">"value.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line"></span><br><span class="line">        Producer&lt;String, String&gt; producer = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(properties);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">                String msg = <span class="string">"Message "</span> + i;</span><br><span class="line">                <span class="comment">/*指定发送的topic*/</span></span><br><span class="line">                producer.send(<span class="keyword">new</span> ProducerRecord&lt;String, String&gt;(<span class="string">"test1"</span>, msg), <span class="keyword">new</span> DemoCallBack());  <span class="comment">// 指定要发送的topic和消息体</span></span><br><span class="line">                System.out.println(<span class="string">"Sent:"</span> + msg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-kafka消费者"><a href="#5-kafka消费者" class="headerlink" title="5 kafka消费者"></a>5 kafka消费者</h4><p><img src="kafka_jiagou.jpg" alt="kafka架构简图"></p>
+<blockquote>
+<p>参考文章</p>
+<ol>
+<li><a href="https://tomoyadeng.github.io/blog/2018/06/02/kafka-cluster-in-docker/index.html" target="_blank" rel="noopener">https://tomoyadeng.github.io/blog/2018/06/02/kafka-cluster-in-docker/index.html</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/21/sql%E6%B3%A8%E5%85%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -674,7 +775,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-03-17 18:13:53" itemprop="dateModified" datetime="2019-03-17T18:13:53+08:00">2019-03-17</time>
+                <time title="Modified: 2020-02-19 03:28:45" itemprop="dateModified" datetime="2020-02-19T03:28:45+08:00">2020-02-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -699,17 +800,95 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="1-mysql架构"><a href="#1-mysql架构" class="headerlink" title="1 mysql架构"></a>1 mysql架构</h1><h2 id="三层架构"><a href="#三层架构" class="headerlink" title="三层架构"></a>三层架构</h2><ul>
-<li>客户端</li>
-<li>服务器层</li>
-<li>存储引擎层</li>
+          <h2 id="1-mysql查询基础"><a href="#1-mysql查询基础" class="headerlink" title="1 mysql查询基础"></a>1 mysql查询基础</h2><h3 id="1-1-单个表的检索"><a href="#1-1-单个表的检索" class="headerlink" title="1.1 单个表的检索"></a>1.1 单个表的检索</h3><h4 id="列的选择"><a href="#列的选择" class="headerlink" title="列的选择"></a>列的选择</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column1_name, column2_name, ....</span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="行的选择"><a href="#行的选择" class="headerlink" title="行的选择"></a>行的选择</h4><p><strong>选择值不同的行</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> column_name </span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+<p><strong>限制行数</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>, <span class="number">5</span>; // 开始行和行数</span><br></pre></td></tr></table></figure>
+
+<h4 id="排序数据"><a href="#排序数据" class="headerlink" title="排序数据"></a>排序数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> column_name <span class="keyword">desc</span>;  // 单个列排序降序，升序是默认的</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> column_name1 <span class="keyword">desc</span>, column_name2 <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> column_name1=<span class="string">"cody"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> column_name1 <span class="keyword">is</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="时间和日期处理"><a href="#时间和日期处理" class="headerlink" title="时间和日期处理"></a>时间和日期处理</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">Year</span>(column_name) = <span class="number">2005</span> <span class="keyword">and</span> <span class="keyword">Month</span>(column_name) = <span class="number">9</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="汇总数据"><a href="#汇总数据" class="headerlink" title="汇总数据"></a>汇总数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*)</span><br><span class="line">from table_name; // count(*)会计算null值，count(column_name)不会计算null值</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sum</span>(column_name)</span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="分组数据"><a href="#分组数据" class="headerlink" title="分组数据"></a>分组数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> vend_id, <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> vend_id;  // 分组</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> customer_id, <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> orders</span><br><span class="line"><span class="keyword">where</span> price &gt; <span class="number">2</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> customer_id</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">count</span>(*) &gt;= <span class="number">2</span>  // <span class="keyword">having</span>对分组进行过滤，<span class="keyword">where</span>对行进行过滤</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> customer_id</span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> cust_id</span><br><span class="line"><span class="keyword">from</span> orders</span><br><span class="line"><span class="keyword">where</span> order_num <span class="keyword">in</span> (<span class="keyword">select</span> order_num <span class="keyword">from</span> orderitems <span class="keyword">where</span> prod_id=<span class="string">'TNT'</span>);  // 子查询由内向外执行</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-多个表的检索"><a href="#1-2-多个表的检索" class="headerlink" title="1.2 多个表的检索"></a>1.2 多个表的检索</h3><h4 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> vend_name, prod_name, prod_price</span><br><span class="line"><span class="keyword">from</span> vendors, products</span><br><span class="line">where vendors.vend_id = products.vend_id; // 不使用连接条件的表关系返回笛卡尔积，第一个表中的行数*第二个表中的行数</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> vend_name, prod_name, prod_price</span><br><span class="line"><span class="keyword">from</span> vendors <span class="keyword">inner</span> <span class="keyword">join</span> products <span class="keyword">on</span> vendor.id=products.vendor_id;  // 与上面的效果一样</span><br></pre></td></tr></table></figure>
+<h4 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h4><p>自己连接自己</p>
+<h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name1 <span class="keyword">left</span> <span class="keyword">join</span> table_name2</span><br><span class="line"><span class="keyword">on</span> table_name1.column_name = table_name2.column_name;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="1-3-组合查询"><a href="#1-3-组合查询" class="headerlink" title="1.3 组合查询"></a>1.3 组合查询</h3><p>union查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column1, column2</span><br><span class="line"><span class="keyword">from</span> table_name1</span><br><span class="line"><span class="keyword">where</span> column1 &lt; <span class="number">10</span>;</span><br><span class="line">union</span><br><span class="line"><span class="keyword">select</span> column1, column2</span><br><span class="line"><span class="keyword">from</span> table_name1</span><br><span class="line"><span class="keyword">where</span> column2 = <span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="1-4-创建表"><a href="#1-4-创建表" class="headerlink" title="1.4 创建表"></a>1.4 创建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> table_name(</span><br><span class="line">    customer_id <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</span><br><span class="line">    customer_name <span class="built_in">char</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (customer_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">innodb</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新表"><a href="#更新表" class="headerlink" title="更新表"></a>更新表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name</span><br><span class="line"><span class="keyword">add</span> vend_phone <span class="built_in">char</span>(<span class="number">20</span>); // 添加一列</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">column</span> vend_phone; // 删除一列</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-事务"><a href="#2-事务" class="headerlink" title="2 事务"></a>2 事务</h2><h2 id="3-索引"><a href="#3-索引" class="headerlink" title="3 索引"></a>3 索引</h2><p>根据键值，快速的找到数据。</p>
+<h3 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h3><p>非叶子节点存放的是key， 叶子节点存放的是{key: data}.在B+树中，所有的记录节点都是按键值的大小，顺序存放在同一层的叶子节点上，由各叶子节点指针连接。在数据库中B+树的高度一般为2-4层。也就是说查找某一键值的行记录最多需要2到4次的IO。</p>
+<h3 id="MyISAM索引"><a href="#MyISAM索引" class="headerlink" title="MyISAM索引"></a>MyISAM索引</h3><p>MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是<strong>数据记录的地址</strong>, 对于主索引和辅助索引都是如此。索引可以分为</p>
+<ul>
+<li>主索引: 主键对应的索引,要求key唯一</li>
+<li>辅助索引：非主键对应的索引，key可以重复</li>
 </ul>
-<h1 id="2-mysql性能分析"><a href="#2-mysql性能分析" class="headerlink" title="2 mysql性能分析"></a>2 mysql性能分析</h1><h2 id="性能分析工具"><a href="#性能分析工具" class="headerlink" title="性能分析工具"></a>性能分析工具</h2><ul>
-<li>profile</li>
-<li>status</li>
-<li>∏志</li>
+<p>索引文件和行记录文件是分开的。</p>
+<h3 id="InnoDB索引"><a href="#InnoDB索引" class="headerlink" title="InnoDB索引"></a>InnoDB索引</h3><p>InnoDB中的索引可以分为：</p>
+<ul>
+<li>聚集索引: 按照每张表的<strong>主键</strong>构造一颗B+树，同时叶子节点存放的是整张表的<strong>行记录数据</strong>。</li>
+<li>辅助索引: 叶子节点不包含行记录的全部数据而是相应记录<strong>主键的值</strong>, 每张表上可以有多个辅助索引。当通过辅助索引来查找数据的时候，Innodb存储引擎会遍历辅助索引并通过叶子节点中的指针获取指向主键索引的主键，然后在通过主键索引来查找一个完整的记录。</li>
 </ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line">connection = pymysql.Connection()</span><br><span class="line">cursor = connection.cursor()</span><br><span class="line">cursor.execute(sql)</span><br><span class="line">res = cursor.fetch()</span><br></pre></td></tr></table></figure>
+<p>InnoDB中聚集索引文件和数据文件是同一个文件。数据文件本身就是要按照主键进行聚集，innodb要求表必须有主键，如果没有显示的指定，Innodb会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整型。</p>
+<h2 id="4-InnoDB引擎中的锁"><a href="#4-InnoDB引擎中的锁" class="headerlink" title="4 InnoDB引擎中的锁"></a>4 InnoDB引擎中的锁</h2><p><img src="mysql%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png" alt="MySQL数据存储的层次结构"></p>
+<p>锁机制是用于管理对<strong>共享资源</strong>的并发访问。InnoDB会在行级别上对表数据上锁。</p>
+<p>在InnoDB中的锁有: </p>
+<ul>
+<li>latch: 可以分为mutex和rwlock。其目的是用来保证并发线程操作临界资源的正确定。</li>
+<li>lock: lock的对象是事务, 用来锁定的是数据库中的对象，如表、页、行<ul>
+<li>共享锁(S lock): 行级锁，允许事务读一行数据. </li>
+<li>排他锁(X lock): 行级锁, 允许事务删除或者更新一行数据</li>
+</ul>
+</li>
+</ul>
+<p><strong>一致性非锁定读</strong></p>
+<ol>
+<li>如果事务1和事务2可以同时获取同一行的共享锁。如果事务3想要获取该行的排它锁，需要等待事务1和事务2释放该行上的共享锁。</li>
+<li>如果事务1得到了某一行上的排他锁，此时事务2想要获取该行的共享锁，这时事务2不会等待事务1释放在该行上的排它锁，而是会读取行的一个<strong>快照数据</strong>(所谓的快照数据，是指改行的之前版本的数据)，称为一致性的非锁定读。非锁读可以极大的提高数据库的并发性。</li>
+</ol>
+<p><strong>一致性的锁定读</strong></p>
+<p>所谓的锁定读，就是事务1得到了某行的排它锁，此时事务2想要获取该行的共享锁读取该行数据，此时事务2需要等待在该行上的排它锁的释放。</p>
+<p>InnoDB引擎对select语句支持两种一致性的锁定读：</p>
+<ul>
+<li>select….. for update; 对读取的行加一个x锁，其它的事务不能对锁定的行加任何锁。</li>
+<li>select  …… lock in share mode; 对读取的行记录加一个s锁。其他事务可以对被锁定的行加s锁，但是如果加x锁，就会被阻塞。</li>
+</ul>
+<p><strong>自增长</strong></p>
+<p>每个含有自增长值的表都有一个自增长计数器，当对这种表进行插入操作时，这个计数器会被初始化。在这里使用了一种特殊的表锁机制，锁不会在事务完成后才释放，而是完成对自增长值插入的sql语句后立即释放。</p>
+<p>InnoDB存储引擎中，自增长值的列必须是索引，同时必须是索引的第一个列。</p>
+<h2 id="5-架构"><a href="#5-架构" class="headerlink" title="5 架构"></a>5 架构</h2><p><img src="mysql%E6%9E%B6%E6%9E%84.png" alt="MySQL架构"></p>
+<ul>
+<li>最上层的连接服务，用于不同语言与SQL的交互。可以通过<code>show variables like &#39;%connections%&#39;</code>命令查看MySQL实例的最大连接数和单个用户的最大连接数。</li>
+<li>第二层MySQL Server，大多数MySQL的核心服务功能都在这一层，包括查询解析、分析、优化、缓存，所有跨存储引擎的功能都集中在这一层实现。<ul>
+<li><strong>Management Services &amp; Utilities</strong>：系统管理和控制工具，备份和恢复的安全性，复制，集群，管理，配置，迁移和元数据。</li>
+<li><strong>Connection Pool</strong>：连接池，进行身份验证、线程重用，连接限制，检查内存，数据缓存；管理用户的连接，线程处理等需要缓存的需求。</li>
+<li><strong>SQL Interface</strong>：SQL 接口，进行 DML、DDL，存储过程、视图、触发器等操作和管理，用户通过 SQL 命令来查询所需结果。</li>
+<li><strong>Parser</strong>：解析器；查询翻译对象的特权，SQL 命令传递到解析器的时候会被解析器验证和解析。</li>
+<li><strong>Optimizer</strong>：查询优化器。</li>
+<li><strong>Cache 和 Buffer</strong>：查询缓存，全局和引擎特定的缓存和缓冲区。</li>
+</ul>
+</li>
+<li>第三层为存储引擎层，存储引擎负责MySQL中数据的存储和提取，服务器通过API于存储引擎进行通信。可以通过<code>SHOW ENGINES</code>命令查看各个存储引擎信息。</li>
+</ul>
+<h2 id="6-优化"><a href="#6-优化" class="headerlink" title="6 优化"></a>6 优化</h2><h3 id="库表结构优化"><a href="#库表结构优化" class="headerlink" title="库表结构优化"></a>库表结构优化</h3><h3 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h3><h3 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h3><h2 id="7-高可用架构"><a href="#7-高可用架构" class="headerlink" title="7 高可用架构"></a>7 高可用架构</h2><h3 id="主从复制架构"><a href="#主从复制架构" class="headerlink" title="主从复制架构"></a>主从复制架构</h3><h3 id=""><a href="#" class="headerlink" title=""></a></h3>
       
     </div>
 
@@ -899,7 +1078,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
