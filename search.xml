@@ -1,9 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>redis使用及原理</title>
+    <url>/2020/02/19/redis%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>本文简述了redis的基本使用及实现原理。</p>
+<a id="more"></a>
+
+<h2 id="1-基本使用"><a href="#1-基本使用" class="headerlink" title="1 基本使用"></a>1 基本使用</h2><h3 id="1-1-键的管理"><a href="#1-1-键的管理" class="headerlink" title="1.1 键的管理"></a>1.1 键的管理</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">keys *                # 查看所有的键，会遍历所有的键</span><br><span class="line">dbsize                # 键的数量, 之间获取变量的值，时间复杂度为O(1)</span><br><span class="line">exists key            # 判断键key是否存在</span><br><span class="line">del key               # 删除键</span><br><span class="line">expire key second     # 设置键key的过期时间秒</span><br><span class="line">ttl key               # 获取键的剩余过期时间</span><br><span class="line">type key              # 获取键的类型</span><br><span class="line">object encoding key   # 获取键的内部编码</span><br><span class="line"></span><br><span class="line">rename key newkey     # 重命名键</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-基本数据类型"><a href="#1-2-基本数据类型" class="headerlink" title="1.2 基本数据类型"></a>1.2 基本数据类型</h3><p>Redis提供了5种基本的数据结构：</p>
+<ul>
+<li>字符串: 底层实现raw, int, embstr，Redis会根据当前值的类型和长度选择使用哪种底层结构</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 设置key的值</span></span><br><span class="line">set key value            # 设置key</span><br><span class="line">setex key seconds value  # 设置key同时设置秒级过期时间</span><br><span class="line">setnx key value          # 键必须不存在才可以设置成功，可以用作实现分布式锁</span><br><span class="line"></span><br><span class="line">mset key value           # 批量设置</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 获取key的值</span></span><br><span class="line">get key                  # 获取key的值</span><br><span class="line">mget key                 # 批量获取key的值</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 对值进行自增</span></span><br><span class="line">incr key                 # 值是整数：直接加1；值不是整数返回错误；键不存在，按照值为0自增</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>哈希: 底层实现hashtable, ziplist</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hset key field value     # 设置值</span><br><span class="line">hget key field           # 设置key对应的field的值</span><br><span class="line">del key field            # 删除field</span><br><span class="line">hlen key                 # field的个数</span><br><span class="line"></span><br><span class="line">hmset key field          # 批量设置field</span><br><span class="line">hmget key fiedl          # 批量获取field,对应的value</span><br><span class="line"></span><br><span class="line">hexists key field        # 判断field是否存在</span><br><span class="line">hkeys key                # 获取所有的field</span><br><span class="line">hvals key                # 获取所有field的value</span><br><span class="line">hgetall key              # 获取素有的field和value</span><br><span class="line"></span><br><span class="line">hincrby key field        # 作用域是field</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>列表: 底层实现linkedlist, ziplist</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 插入元素</span></span><br><span class="line">rpush key value                # 从右边插入元素</span><br><span class="line">lpush key value                # 从左边插入元素</span><br><span class="line">linsert key befor pivot value  # 在pivot元素前或后插入一个元素</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查找元素</span></span><br><span class="line">rrange key start stop          # start到stop的值</span><br><span class="line">lindex key index               # 获取指定索引下标的元素</span><br><span class="line"></span><br><span class="line">llen key                       # 获取列表的长度</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除元素</span></span><br><span class="line">lpop key                       # 删除key最左侧的元素</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>集合: 底层实现hashtable，intset; 典型的应用场景是标签。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sadd key value                # 添加元素value</span><br><span class="line">srem Key value                # 删除元素value</span><br><span class="line">scard key                     # 计算元素个数</span><br><span class="line">sismember key value           # 判断元素value是否在key中</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 多个集合操作</span></span><br><span class="line">sinter key                    # 求多个集合的交集</span><br><span class="line">sunion key                    # 求多个集合的并集</span><br><span class="line">sdiff key                     # 求多个集合的差集</span><br></pre></td></tr></table></figure>
+<ul>
+<li>有序集合: 底层实现skiplist, ziplist。典型的应用场景是排行榜系统。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">zadd key score member         # 添加元素</span><br><span class="line">zcard key                     # 成员的个数</span><br><span class="line">zscore key member             # 获取成员的分数</span><br><span class="line">zrank key member              # member的排名</span><br><span class="line">zincrby key increament member # 增加成员的分数increament</span><br><span class="line">zrange key start end          # 返回指定排名范围内的成员</span><br><span class="line">zrangebyscore key min max     # 返回指定分数范围的成员</span><br></pre></td></tr></table></figure>
+
+<p>基于字符串的高级数据结构：</p>
+<ul>
+<li>位图</li>
+<li>HyperLogLog</li>
+</ul>
+<h3 id="1-3-数据库管理"><a href="#1-3-数据库管理" class="headerlink" title="1.3 数据库管理"></a>1.3 数据库管理</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">select db    # 切换数据库，默认配置中有16个数据库</span><br><span class="line"></span><br><span class="line">flushdb      # 清空数据库</span><br><span class="line">flushall     # 清空所有数据库</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Redis数据持久化"><a href="#2-Redis数据持久化" class="headerlink" title="2 Redis数据持久化"></a>2 Redis数据持久化</h2><p>因为Redis数据在内存中，当发生断电或者机器故障的时候，重要的数据可能会丢失，因此需要对Redis中的数据进行持久化。</p>
+<ul>
+<li>RDB：是把当前进程数据生成快照保存到硬盘的过程，RDB是一个紧凑压缩的二进制文件。触发RDB持久化过程分为手动触发和自动触发。<ul>
+<li>手动触发：对应save和bgsave命令<ul>
+<li>save命令：阻塞当前Redis服务器，直到RDB过程完成为止，对于内存 比较大的实例会造成长时间阻塞，线上环境不建议使用</li>
+<li>bgsave命令：Redis进程执行fork操作创建子进程，RDB持久化过程由子进程负责，完成后自动结束。阻塞只发生在fork阶段，一般时间很短。</li>
+</ul>
+</li>
+<li>RDB文件保存在dir配置指定的目录下，文件名通过dbfilename配 置指定。可以通过执行</li>
+</ul>
+</li>
+<li>AOF：以独立日志的方式记录每次写命令，重启时再重新执行AOF文件中的命令达到恢复数据的目的。AOF的主要作用是解决了数据持久化的实时性，目前已经是Redis持久化的主流方式.<ul>
+<li>AOF文件名通过appendfilename配置设置，默认文件名是appendonly.aof。保存路径同 RDB持久化方式一致，通过dir配置指定.</li>
+<li>AOF的工作流程操作：命令写入（append）、文件同步（sync）、文件重写（rewrite）、重启加载。</li>
+<li>随着命令不断写入AOF，文件会越来越大，为了解决这个问题，Redis引入AOF重写机制压缩文件体积。AOF文件重写是把Redis进程内的数据转 化为写命令同步到新AOF文件的过程。<ul>
+<li>为什么会变小？<ul>
+<li>进程内已经超时的数据不再写入文件</li>
+<li>旧的AOF文件含有无效命令</li>
+<li>多条写命令可以合并为一个</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AOF重写过程可以手动触发和自动触发：<ul>
+<li>手动触发：直接调用bgrewriteaof命令</li>
+<li>自动触发：根据auto-aof-rewrite-min-size和auto-aof-rewrite-percentage参 数确定自动触发时机</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-Redis实现"><a href="#3-Redis实现" class="headerlink" title="3 Redis实现"></a>3 Redis实现</h2><p>纯内存存储、IO多路复用技术、单线程架构。由于Redis的单线程架构，所以需要每个命令能被快速执行完，否则 会存在阻塞Redis的可能。Redis单线程架构导致无法充分利用CPU多核特性，通常的做法是在一 台机器上部署多个Redis实例。</p>
+<p>客户端命令到达服务端不会立刻被执行，所有命令都会进入一个队列中，然后逐个被执行。</p>
+<h3 id="3-1-慢查询"><a href="#3-1-慢查询" class="headerlink" title="3.1 慢查询"></a>3.1 慢查询</h3><p>Redis提供慢查询，通过配置可以对执行时间过长的操作进行记录</p>
+<h3 id="3-2-redis-server"><a href="#3-2-redis-server" class="headerlink" title="3.2 redis-server"></a>3.2 redis-server</h3><p><code>redis-server --test-memory 1024</code>: 用来检测当前操作系统能否稳定地分配指定容量的内存给 Redis，通过这种检测可以有效避免因为内存问题造成Redis崩溃</p>
+<h3 id="3-3-redis-benchmark"><a href="#3-3-redis-benchmark" class="headerlink" title="3.3 redis-benchmark"></a>3.3 redis-benchmark</h3><p>redis-benchmark可以为Redis做基准性能测试。</p>
+<p><code>redis-benchmark -c100 -n20000</code>代表100各个客户端同时请求Redis，一 共执行20000次。</p>
+<h3 id="3-4-pipeline"><a href="#3-4-pipeline" class="headerlink" title="3.4 pipeline"></a>3.4 pipeline</h3><h3 id="3-5-事务"><a href="#3-5-事务" class="headerlink" title="3.5 事务"></a>3.5 事务</h3><p><code>multi</code>命令代表事务开始，<code>exec</code>命令代表事务结束。事务中的语句有一个错误就会直接结束，Redis并不支持回滚功能。</p>
+<p><code>watch</code>命令</p>
+<p>Lua脚本在Redis中执行是原子的。</p>
+<h3 id="3-6-过期数据删除"><a href="#3-6-过期数据删除" class="headerlink" title="3.6 过期数据删除"></a>3.6 过期数据删除</h3><p>两种删除策略：惰性删除和定时删除。</p>
+<ul>
+<li>惰性删除：主节点每次处理读取命令时，都会检查键是否超时，如果超时则执行del命令删除键对象</li>
+<li>定时删除：Redis主节点在内部定时任务会循环采样一定数量的键，当发现采样的键过期时执行del命令<h2 id="4-Redis集群"><a href="#4-Redis集群" class="headerlink" title="4 Redis集群"></a>4 Redis集群</h2></li>
+</ul>
+<p>Redis高可用、Redis分布式。</p>
+<h3 id="4-1-主从复制"><a href="#4-1-主从复制" class="headerlink" title="4.1 主从复制"></a>4.1 主从复制</h3><p>由主节点复制到从节点，三种方式实现：</p>
+<ul>
+<li>在配置文件中加入slaveof host port</li>
+<li>在redis-server启动命令后加入–slaveof host port</li>
+<li>直接使用命令：slaveof host port生效</li>
+</ul>
+<p>主从节点复制成功建立后，可以使用<code>info replication</code>命令查看复制相关状态。复制过程是异步的。</p>
+<h4 id="一主一从"><a href="#一主一从" class="headerlink" title="一主一从"></a>一主一从</h4><p>用于主节点出现宕机时从节点 提供故障转移支持。当应用写命令并发量较高且需要持久化时，可以只在从节点上开启AOF，这样既保证数据安全性同时也避免了持久化对主节点的性能干扰。</p>
+<h4 id="一主多从"><a href="#一主多从" class="headerlink" title="一主多从"></a>一主多从</h4><p>可以利用多个从节点 实现读写分离。对于读占比较大的场景，可以把读命令发送到 从节点来分担主节点压力。对于写并发量较高的场景，多个从节点会导致主节点写命令的多次发送从而过度消耗网络带宽，同时也加重了主节点的负载影响服务稳定性。</p>
+<h4 id="复制过程"><a href="#复制过程" class="headerlink" title="复制过程"></a>复制过程</h4><p><img src="redis%E5%A4%8D%E5%88%B6.png" alt="redis复制过程"></p>
+<h4 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h4><ol>
+<li>读写分离场景中，可以将部分的读操作引流到从节点上，减轻主节点的压力，在这种情况下可能存下如下的问题：</li>
+</ol>
+<ul>
+<li>主从复制数据延迟问题，可以使用redis集群方案做水平扩展解决该问题</li>
+<li>读到过期数据问题：3.2解决了该问题</li>
+<li>从节点故障：当从节点故障时立刻切换到其他从节点或主节点上</li>
+</ul>
+<p>使用Redis做读写分离存在一定的成本。Redis本身的性能非常高，开发人员在使用额外的从节点提升读性能之前，尽量在主节点上做充分优化，比如解决慢查询，持久化阻塞，合理应用数据结构等，当主节点优化空间不大时再考虑扩展。</p>
+<ol start="2">
+<li>主从配置不一致</li>
+</ol>
+<h3 id="4-2-哨兵"><a href="#4-2-哨兵" class="headerlink" title="4.2 哨兵"></a>4.2 哨兵</h3><p>Redis高可用方案。</p>
+<p>Redis的主从复制模式下，一旦主节点由于故障不能提供服务，需要人工将从节点晋升为主节点，同时还要通知应用方更新主节点地址。哨兵架构可以解决这个问题。</p>
+<p>Redis Sentinel是一个分布式架构，其中包含若干个<strong>Sentinel节点</strong>和<strong>Redis数据节点</strong>，每个Sentinel节点会对数据节点和其余Sentinel节点进行监控，当它发现节点不可达时，会对节点做下线标识。</p>
+<ul>
+<li>如果被标识的是主节点，它还会和其他Sentinel节点进行“协商”，当大多数Sentinel节点都认为主节点不可达时，它们会选举出一个Sentinel节点来完成自动故障转移的工作，同时会将这个变化实时通知给Redis应用方。</li>
+</ul>
+<p><img src="redis%E5%93%A8%E5%85%B5.png" alt="Redis哨兵"></p>
+<h3 id="4-3-集群"><a href="#4-3-集群" class="headerlink" title="4.3 集群"></a>4.3 集群</h3><p>当遇到单机内存、并发、流量等瓶颈时，可以采用Cluster架构方案达到负载均衡的目的。Redis Cluster是Redis分布式解决方案。</p>
+<p><strong>整个数据集怎么映射到多个节点上的</strong></p>
+<p>常用的方案有：</p>
+<ul>
+<li>顺序</li>
+<li>哈希<ul>
+<li>取余</li>
+<li>一致性哈希</li>
+<li>虚拟槽：把所有的数据使用hash函数映射到一个固定范围的整数集合中，整数定义为槽。每个节点会负责一定数量的槽。</li>
+</ul>
+</li>
+</ul>
+<p>Redis使用虚拟槽16383。</p>
+<p>当向集群中添加节点的时候，需要将一部分的槽和数据迁移到新节点上。当集群中的某个节点下线的时候，也需要将它上面的槽和数据迁移到其他的节点上。</p>
+<p><strong>client请求的路由</strong></p>
+<p>服务端集群中的任意节点收到客户端的请求之后，首先计算键对应的槽，再 根据槽找出所对应的节点，如果节点是自身，则处理键命令；否则回复MOVED重定向错误，重定向信息包含了键所对应的槽以及负责该槽的节点地址，根据这些信息客户端就可以向正确的节点发起请求</p>
+<h2 id="5-缓存设计中常见的问题"><a href="#5-缓存设计中常见的问题" class="headerlink" title="5 缓存设计中常见的问题"></a>5 缓存设计中常见的问题</h2><h3 id="5-1-缓存穿透"><a href="#5-1-缓存穿透" class="headerlink" title="5.1 缓存穿透"></a>5.1 缓存穿透</h3><p>缓存穿透是指查询一个<strong>根本不存在的数据</strong>，缓存层和存储层都不会命中，通常出于容错的考虑，如果从存储层查不到数据则不写入缓存层，缓存穿透将导致不存在的数据每次请求都要到存储层去查询，失去了缓存保护后端存储的意义。</p>
+<p>造成缓存穿透的基本原因有两个。第一，自身业务代码或者数据出现问 题，第二，一些恶意攻击、爬虫等造成大量空命中。</p>
+<p>解决方案：</p>
+<ol>
+<li>缓存空对象，当存储层无法命中的时候，将空数据缓存。但是这会造成内从空间的浪费。</li>
+<li>布隆过滤器拦截，在访问缓存层和存储层之前，将存在的key用布隆过滤器提前保存起来，做第一层拦截。维护较为复杂，但是缓存空间占用少。</li>
+</ol>
+<h3 id="5-2-雪崩"><a href="#5-2-雪崩" class="headerlink" title="5.2 雪崩"></a>5.2 雪崩</h3><p>缓存层由于某些原因不能提供服务，于是所有的请求都会达到存储层，存储层的调用量会暴增，造成存储层也会级联宕机的情况。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p>1.《Redis开发和运维》</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>缓存</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>常见算法题目</title>
     <url>/2020/02/18/%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E9%A2%98%E7%9B%AE/</url>
-    <content><![CDATA[<h2 id="1-字符串常见的问题"><a href="#1-字符串常见的问题" class="headerlink" title="1 字符串常见的问题"></a>1 字符串常见的问题</h2><h3 id="数值转为字符串"><a href="#数值转为字符串" class="headerlink" title="数值转为字符串"></a>数值转为字符串</h3><p>num % 10和num / 10</p>
+    <content><![CDATA[<p>常见问题的解题思路总结。</p>
+<a id="more"></a>
+
+<h2 id="1-字符串常见的问题"><a href="#1-字符串常见的问题" class="headerlink" title="1 字符串常见的问题"></a>1 字符串常见的问题</h2><p>字符串问题常用的思路：可以看成字符数组，进行for/while迭代</p>
+<ul>
+<li>暴力法</li>
+<li>滑动窗口: 无重复字符的最长子串</li>
+<li>动态规划: 最长公共子串，最长公共子序列</li>
+<li>中心扩展法: 回文串处理</li>
+<li>KMP: 字符串匹配</li>
+<li>马拉车算法: 一个字符串的最长回文子串</li>
+</ul>
+<h3 id="数值转为字符串"><a href="#数值转为字符串" class="headerlink" title="数值转为字符串"></a>数值转为字符串</h3><p>num % 10和num / 10</p>
 <h3 id="字符串翻转"><a href="#字符串翻转" class="headerlink" title="字符串翻转"></a>字符串翻转</h3><p>while迭代</p>
 <h3 id="逆序字符串中的单词"><a href="#逆序字符串中的单词" class="headerlink" title="逆序字符串中的单词"></a>逆序字符串中的单词</h3><p>begin和end定为一个单词的开始和结束为止</p>
 <h3 id="最长公共子串"><a href="#最长公共子串" class="headerlink" title="最长公共子串"></a>最长公共子串</h3><p>动态规划</p>
@@ -133,7 +295,10 @@
   <entry>
     <title>jupyter-notebook使用</title>
     <url>/2020/02/05/jupyter-notebook%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="运行快捷键"><a href="#运行快捷键" class="headerlink" title="运行快捷键"></a>运行快捷键</h2><ul>
+    <content><![CDATA[<p>jupyter-book基本使用。</p>
+<a id="more"></a>
+
+<h2 id="运行快捷键"><a href="#运行快捷键" class="headerlink" title="运行快捷键"></a>运行快捷键</h2><ul>
 <li>运行当前的cell：command + enter</li>
 <li>运行当前并且在选中下一行cell：shift + enter</li>
 <li>运行当前并且在下面插入一行cell：option + enter</li>
@@ -1921,7 +2086,7 @@
 <p>将待排序的数组进行heapify操作，然后从最大堆中依次提取出最大值即可，此外还有原地堆排序；将heapiy的数组的最大值和最后一个元素交换位置，然后将[0, n-1]的数组进行第一个元素siftDown操作</p>
 <h3 id="3-2-查找算法"><a href="#3-2-查找算法" class="headerlink" title="3.2 查找算法"></a>3.2 查找算法</h3><h4 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h4><p>二分查找只能用在一个有序的数组中。</p>
 <p><strong>伪代码</strong></p>
-<h4 id="基于树的查找"><a href="#基于树的查找" class="headerlink" title="基于树的查找"></a>基于树的查找</h4><h3 id="3-3-字符串匹配算法"><a href="#3-3-字符串匹配算法" class="headerlink" title="3.3 字符串匹配算法"></a>3.3 字符串匹配算法</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p><strong>子串：</strong>字符串中任一连续的片段，称作其子串（substring）</p>
+<h4 id="基于树的查找"><a href="#基于树的查找" class="headerlink" title="基于树的查找"></a>基于树的查找</h4><h3 id="3-3-字符串算法"><a href="#3-3-字符串算法" class="headerlink" title="3.3 字符串算法"></a>3.3 字符串算法</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p><strong>子串：</strong>字符串中任一连续的片段，称作其子串（substring）</p>
 <p><strong>两种特殊的子串</strong>：起始于位置0、长度为k的子串称为<strong>前缀</strong>；而终止于位置n - 1、 长度为k的子串称为<strong>后缀</strong>（suffix）</p>
 <h4 id="暴力算法"><a href="#暴力算法" class="headerlink" title="暴力算法"></a>暴力算法</h4><p>时间复杂度为：O(n * m) </p>
 <p>V1</p>
@@ -1930,7 +2095,7 @@
 <p>V2:</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">match</span><span class="params">(p, t)</span>:</span></span><br><span class="line">  n, m = len(p), len(t)</span><br><span class="line">  i, j = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(n-m+<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(m):</span><br><span class="line">      <span class="keyword">if</span> t[i+j] != p[j]:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">if</span> j &gt;= m:</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">      </span><br><span class="line">  <span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
 
-<h4 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h4><p>基本的思路：当有不匹配的时候，使字符串的移动大幅度的</p>
+<h4 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h4><p>用来求解子串问题。<br>基本的思路：当有不匹配的时候，使字符串的移动大幅度的</p>
 <p><img src="kmp%E7%AE%97%E6%B3%95.png" alt="kmp基本思路"></p>
 <p>如何确定上图中的p大跨度右移的时候的跨度？这里需要引入一个前缀表的概念。如何计算p的前缀表？</p>
 <p>以<code>p = abcdabd</code>为例：</p>
@@ -2008,6 +2173,7 @@
 <p><strong>代码</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_next</span><span class="params">(p)</span>:</span></span><br><span class="line">    <span class="comment"># 已知前一个字符串的，最长前缀和后缀公共长度，怎么求后一个呢？</span></span><br><span class="line">    <span class="comment"># 已知abcd=0,怎么求abcda？只需要判断新添加的字符a是否和第一个字符相等，如果相等就对前面的值+1</span></span><br><span class="line">    <span class="comment"># 已知abcda=1,怎么求abcdab？只要判断新添加的字符b是否和第二个字符b相等，如果相等就+1</span></span><br><span class="line">    next = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(p)):</span><br><span class="line">        next.append(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(<span class="number">1</span>, len(p)):</span><br><span class="line">        c = p[index]</span><br><span class="line">        <span class="keyword">if</span> c == p[<span class="number">0</span>:index][next[index - <span class="number">1</span>]]:</span><br><span class="line">            next[index] = next[index - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            next[index] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> next</span><br></pre></td></tr></table></figure>
 
+<h4 id="马拉车算法"><a href="#马拉车算法" class="headerlink" title="马拉车算法"></a>马拉车算法</h4><p>用来查找一个字符串的最长回文子串的线性方法。</p>
 <h3 id="3-4-图相关的算法"><a href="#3-4-图相关的算法" class="headerlink" title="3.4 图相关的算法"></a>3.4 图相关的算法</h3><p>参考数据结构, 图论章节</p>
 <h2 id="5-算法技巧"><a href="#5-算法技巧" class="headerlink" title="5 算法技巧"></a>5 算法技巧</h2>]]></content>
       <categories>
