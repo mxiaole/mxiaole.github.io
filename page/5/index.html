@@ -176,6 +176,667 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/13/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/13/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">go并发编程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-13 07:38:26" itemprop="dateCreated datePublished" datetime="2019-08-13T07:38:26+08:00">2019-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-08-15 09:38:56" itemprop="dateModified" datetime="2019-08-15T09:38:56+08:00">2019-08-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h2><h3 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h3><p>内核线程：<br>绿色线程：由某种语言运行时管理的线程。</p>
+<h3 id="2-原理"><a href="#2-原理" class="headerlink" title="2. 原理"></a>2. 原理</h3><p>goroutine是和go语言的运行时库紧密联系的。go语言的runtime会观察goroutine运行时的状态，当goroutine阻塞的时候会挂起该协程，当不阻塞的时候自动的运行它们。</p>
+<p>Go’s mechanism for hosting goroutines is an implementation of what’s called an <em>M:Nscheduler</em>, which means it maps M green threads to N OS threads.Goroutines are then scheduled onto the green threads. When we have more goroutines than green threads available, the scheduler handles the distribution of the goroutines across the available threads and ensures that when these goroutines become blocked, other goroutines can be run.</p>
+<h3 id="3-channel"><a href="#3-channel" class="headerlink" title="3. channel"></a>3. channel</h3><p><strong>channel的特点</strong></p>
+<p>写channel和读channel都会使goroutine阻塞。但是对于带缓冲的channel，在channel没有写满之前是不会阻塞的，当写满了之后，这时候如果在向里面写就会出现阻塞</p>
+<p><strong>channel的类型</strong></p>
+<ul>
+<li>不带缓冲的</li>
+<li>带缓冲的</li>
+</ul>
+<p><strong>怎么定义channel</strong></p>
+<p>两种定义channel的方法：</p>
+<ul>
+<li><code>var ch chan int</code></li>
+<li><code>ch := make(chan ints)</code></li>
+</ul>
+<p><strong>怎么使用channel进行goroutine通信</strong></p>
+<p>在主goroutine中创建一个channel，然后一个goroutine去向这个channel中写入通信的消息，另一个goroutine从该channel中获取消息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mytest</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"mytest ..........."</span>)</span><br><span class="line">	ch &lt;- <span class="number">1</span></span><br><span class="line">	fmt.Println(<span class="string">"1 end..........."</span>)</span><br><span class="line"></span><br><span class="line">	ch &lt;- <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"2 end ............."</span>)</span><br><span class="line"></span><br><span class="line">	ch &lt;- <span class="number">3</span></span><br><span class="line">	fmt.Println(<span class="string">"3 end ..............."</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">2</span>)</span><br><span class="line">	<span class="keyword">defer</span> <span class="built_in">close</span>(ch)</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"begin ................."</span>)</span><br><span class="line">	<span class="keyword">go</span> mytest(ch)</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> value := <span class="keyword">range</span> ch &#123;</span><br><span class="line">			fmt.Println(value)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(<span class="string">"finished ................."</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-waitgroup"><a href="#4-waitgroup" class="headerlink" title="4. waitgroup"></a>4. waitgroup</h3><p>​                    main</p>
+<p>​                        |</p>
+<p>​                        |– fork –&gt; child</p>
+<p>​                        |                     |</p>
+<p>​                        |                     |</p>
+<p>   join point    | &lt;—-join — |</p>
+<p>​                        |                     |</p>
+<p>​                    main              child</p>
+<p>运行模型如上图，可以通过创建一个join point来阻塞main等待child的执行</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"log"</span></span><br><span class="line">    <span class="string">"net/http"</span></span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> urls = []<span class="keyword">string</span>&#123;</span><br><span class="line">    <span class="string">"https://google.com"</span>,</span><br><span class="line">    <span class="string">"https://tutorialedge.net"</span>,</span><br><span class="line">    <span class="string">"https://twitter.com"</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">fetch</span><span class="params">(url <span class="keyword">string</span>, wg *sync.WaitGroup)</span> <span class="params">(<span class="keyword">string</span>, error)</span></span> &#123;</span><br><span class="line">    resp, err := http.Get(url)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        fmt.Println(err)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>, err</span><br><span class="line">    &#125;</span><br><span class="line">    wg.Done()</span><br><span class="line">    fmt.Println(resp.Status)</span><br><span class="line">    <span class="keyword">return</span> resp.Status, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">homePage</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"HomePage Endpoint Hit"</span>)</span><br><span class="line">    <span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, url := <span class="keyword">range</span> urls &#123;</span><br><span class="line">        wg.Add(<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">go</span> fetch(url, &amp;wg)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    wg.Wait()</span><br><span class="line">    fmt.Println(<span class="string">"Returning Response"</span>)</span><br><span class="line">    fmt.Fprintf(w, <span class="string">"Responses"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleRequests</span><span class="params">()</span></span> &#123;</span><br><span class="line">    http.HandleFunc(<span class="string">"/"</span>, homePage)</span><br><span class="line">    log.Fatal(http.ListenAndServe(<span class="string">":8081"</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    handleRequests()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="5-mutex"><a href="#5-mutex" class="headerlink" title="5. mutex"></a>5. mutex</h4><p>如果两个goroutine操作两个相同的变量，可能会出现问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    mutex   sync.Mutex</span><br><span class="line">    balance <span class="keyword">int</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    balance = <span class="number">1000</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deposit</span><span class="params">(value <span class="keyword">int</span>, done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">    mutex.Lock()</span><br><span class="line">    fmt.Printf(<span class="string">"Depositing %d to account with balance: %d\n"</span>, value, balance)</span><br><span class="line">    balance += value</span><br><span class="line">    mutex.Unlock()</span><br><span class="line">    done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withdraw</span><span class="params">(value <span class="keyword">int</span>, done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">    mutex.Lock()</span><br><span class="line">    fmt.Printf(<span class="string">"Withdrawing %d from account with balance: %d\n"</span>, value, balance)</span><br><span class="line">    balance -= value</span><br><span class="line">    mutex.Unlock()</span><br><span class="line">    done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"Go Mutex Example"</span>)</span><br><span class="line"></span><br><span class="line">    done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line">    <span class="keyword">go</span> withdraw(<span class="number">700</span>, done)</span><br><span class="line">    <span class="keyword">go</span> deposit(<span class="number">500</span>, done)</span><br><span class="line">    &lt;-done</span><br><span class="line">    &lt;-done</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">"New Balance %d\n"</span>, balance)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><p><strong>what&amp;&amp;why</strong></p>
+<p>Context like a timeout or deadline or a channel to indicate stop working and return.When a request is canceled or times out, all the goroutines working on that request should exit quickly so the system can reclaim any resources they are using.</p>
+<p>在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序往往还需要创建额外的goroutine去访问后端资源，比如数据库、RPC服务等。由于这些goroutine都是在处理同一个请求，所以它们往往需要访问一些共享的资源，比如用户身份信息、认证token、请求截止时间等。而且如果请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们取消掉所有goroutine。</p>
+<p>比如一个网络请求Request，每个Request都需要开启一个goroutine做一些事情，这些goroutine又可能会开启其他的goroutine。所以我们需要一种可以跟踪goroutine的方案，才可以达到控制他们的目的，这就是Go语言为我们提供的Context，称之为上下文非常贴切，它就是goroutine的上下文。</p>
+<p><strong>code</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Context <span class="keyword">interface</span> &#123;</span><br><span class="line">    Done() &lt;-<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">    Err() error</span><br><span class="line">    Deadline() (deadline time.Time, ok <span class="keyword">bool</span>)</span><br><span class="line">    Value(key <span class="keyword">interface</span>&#123;&#125;) <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Background</span><span class="params">()</span> <span class="title">Context</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithCancel</span><span class="params">(parent Context)</span> <span class="params">(ctx Context, cancel CancelFunc)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithTimeout</span><span class="params">(parent Context, timeout time.Duration)</span> <span class="params">(Context, CancelFunc)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WithValue</span><span class="params">(parent Context, key <span class="keyword">interface</span>&#123;&#125;, val <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">Context</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>example</strong></p>
+<p>demo1</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="keyword">select</span> &#123;</span><br><span class="line">			<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">				fmt.Println(<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			<span class="keyword">default</span>:</span><br><span class="line">				fmt.Println(<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">				time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;(ctx)</span><br><span class="line"></span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的代码中，context.Background() 返回一个空的Context，这个空的Context一般用于整个Context树的根节点。<strong>然后我们使用context.WithCancel(parent)函数，创建一个可取消的子Context，然后当作参数传给goroutine使用，这样就可以使用这个子Context跟踪这个goroutine</strong>。</p>
+<p>demo2</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> key <span class="keyword">string</span>=<span class="string">"name"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line">	<span class="comment">//附加值</span></span><br><span class="line">	valueCtx:=context.WithValue(ctx,key,<span class="string">"【监控1】"</span>)</span><br><span class="line">	<span class="keyword">go</span> watch(valueCtx)</span><br><span class="line">	time.Sleep(<span class="number">10</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"可以了，通知监控停止"</span>)</span><br><span class="line">	cancel()</span><br><span class="line">	<span class="comment">//为了检测监控过是否停止，如果没有监控输出，就表示停止了</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">watch</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"监控退出，停止了..."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			<span class="comment">//取出值</span></span><br><span class="line">			fmt.Println(ctx.Value(key),<span class="string">"goroutine监控中..."</span>)</span><br><span class="line">			time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo3</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"context"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeoutWatch</span><span class="params">(ctx context.Context, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> wg.Done()</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			fmt.Println(<span class="string">"finished ............."</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			fmt.Println(<span class="string">"running .............."</span>)</span><br><span class="line">			time.Sleep(<span class="number">1</span> * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	ctx, cancel := context.WithTimeout(context.Background(), <span class="number">3</span>*time.Second)</span><br><span class="line">	wg.Add(<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">go</span> timeoutWatch(ctx, &amp;wg)</span><br><span class="line">	wg.Wait()</span><br><span class="line"></span><br><span class="line">	cancel()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考：</p>
+<ol>
+<li><a href="https://www.flysnow.org/2017/05/12/go-in-action-go-context.html" target="_blank" rel="noopener">https://www.flysnow.org/2017/05/12/go-in-action-go-context.html</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/12/makefile%E7%BC%96%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/12/makefile%E7%BC%96%E5%86%99/" class="post-title-link" itemprop="url">makefile编写</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-08-12 14:18:10 / Modified: 14:31:51" itemprop="dateCreated datePublished" datetime="2019-08-12T14:18:10+08:00">2019-08-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Makefile是一个文件，在这个文件里面记录了我们编译代码的步骤。Makefile是由很多的规则组的，很多的规则组成一起就成了Makefile文件。</p>
+<p><strong>文件的结构：</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">规则1</span><br><span class="line">规则2</span><br><span class="line">规则3</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p><strong>Makefile文件的命名规则：</strong></p>
+<p>makeflie 或者 Makefile。</p>
+<p><strong>Makefile文件的规则：</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target: dependency</span></span><br><span class="line">	command   <span class="comment"># command前面必须有一个缩进</span></span><br></pre></td></tr></table></figure>
+<h2 id="语法介绍"><a href="#语法介绍" class="headerlink" title="语法介绍"></a>语法介绍</h2><h3 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h3><ul>
+<li>终极目标：文件中第一个规则中的目标为终极目标</li>
+<li>子目标：除了终极目标，其他的目标都是子目标</li>
+<li>伪目标：这种目标没有依赖，我们称这种目标为伪目标</li>
+</ul>
+<h3 id="2-目标的生成规则"><a href="#2-目标的生成规则" class="headerlink" title="2. 目标的生成规则"></a>2. 目标的生成规则</h3><p>如果直接执行<code>make</code>命令，那么生成的是终极目标。如果想要生成指定的子目标那么，需要使用<code>make 子目标名</code>，例如：<code>make clean</code>命令</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/11/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/11/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">程序员自我修养笔记</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-11 13:40:00" itemprop="dateCreated datePublished" datetime="2019-08-11T13:40:00+08:00">2019-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-07 13:12:58" itemprop="dateModified" datetime="2019-12-07T13:12:58+08:00">2019-12-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程基础</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-编译和链接"><a href="#1-编译和链接" class="headerlink" title="1. 编译和链接"></a>1. 编译和链接</h2><p>过程：<br><code>预处理 -&gt; 编译 -&gt; 汇编 -&gt; 链接</code></p>
+<h3 id="1-1-预处理"><a href="#1-1-预处理" class="headerlink" title="1.1 预处理"></a>1.1 预处理</h3><p><strong>在这个过程中做什么事情呢</strong></p>
+<p>在这个过程中主要是处理一些预编译指令。比如：#include 、#define等。主要规则如下：</p>
+<ul>
+<li>将所有的#define删除，并且展开所有的宏定义</li>
+<li>处理所有的条件预编译指令，比如：#ifndef、#if、#elif等</li>
+<li>处理#include，将包含的文件插入到预编译指令的位置，这个过程是递归进行的</li>
+<li>删除所有的注释</li>
+<li>保留所有的#pragma编译器指令，因为编译器需要使用它们</li>
+</ul>
+<h3 id="1-2-编译阶段"><a href="#1-2-编译阶段" class="headerlink" title="1.2 编译阶段"></a>1.2 编译阶段</h3><p>该阶段就是把预处理完的文件进行一系列的词法分析、语法分析、语义分析及优化后生成相应的汇编代码文件</p>
+<h3 id="1-3-汇编"><a href="#1-3-汇编" class="headerlink" title="1.3 汇编"></a>1.3 汇编</h3><p>该阶段是将汇编代码转换成机器可以执行的指令。</p>
+<h3 id="1-4-链接"><a href="#1-4-链接" class="headerlink" title="1.4 链接"></a>1.4 链接</h3><p>把各个模块之间的相互引用的部分处理好，使得各个模块之间能够正确的衔接。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/11/shell%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/11/shell%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">shell编程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-11 11:48:03" itemprop="dateCreated datePublished" datetime="2019-08-11T11:48:03+08:00">2019-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-17 21:41:55" itemprop="dateModified" datetime="2019-11-17T21:41:55+08:00">2019-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="test命令"><a href="#test命令" class="headerlink" title="test命令"></a>test命令</h3><p>该命令可以用来判断某个条件是否成立</p>
+<p>if 条件 -h参数</p>
+<h3 id="条件表达式"><a href="#条件表达式" class="headerlink" title="条件表达式"></a>条件表达式</h3><h4 id="1-文件属性测试"><a href="#1-文件属性测试" class="headerlink" title="1. 文件属性测试"></a>1. 文件属性测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -h </span></span><br><span class="line"><span class="comment"># 如果file存在且是一个符号连接则为真 </span></span><br><span class="line"><span class="keyword">if</span> [ -h file ]; <span class="keyword">then</span></span><br><span class="line">	ehco <span class="string">"hello world"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-字符串测试"><a href="#2-字符串测试" class="headerlink" title="2. 字符串测试"></a>2. 字符串测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-z string  <span class="comment"># 如果字符串长度为0 为真</span></span><br><span class="line">-n string  <span class="comment"># 字符串长度不为0 为真</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="command命令"><a href="#command命令" class="headerlink" title="command命令"></a>command命令</h3><p>该命令是bash内置的命令，无视shell脚本中的”同名函数”，执行特定的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断某个命令是否存在</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span> -v <span class="built_in">pwd</span> &gt;/dev/null; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"command has found"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"command not found"</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p><code>&gt;</code>等价于<code>1&gt;</code>，1是系统默认的标准输出，可以省略。<br><code>&amp;</code>表示等同的意思：<code>2&gt;&amp;1</code>表示2的输出重定向和1的输出重定向一样</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">1&gt;</span><span class="bash">/dev/null 2&gt;&amp;1</span></span><br></pre></td></tr></table></figure>
+
+<p>上述语句：</p>
+<ul>
+<li>1&gt;/dev/null : 表示将标准输出重定向到空设备文件</li>
+<li>2&gt;&amp;1 : 将标准错误的输出重定向和标准输出一样，标准输出重定向到哪里，标准错误就重定向到哪里</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/cmake%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/10/cmake%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">cmake使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-10 16:00:27" itemprop="dateCreated datePublished" datetime="2019-08-10T16:00:27+08:00">2019-08-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-12 21:25:08" itemprop="dateModified" datetime="2020-02-12T21:25:08+08:00">2020-02-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">工具</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>cmake是一个构建工具，使用该工具可以用来构建C/C++项目的时候使用cmake命令可以自动生成Makefile文件，然后使用make工具进行项目的编译。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基本使用规范"><a href="#基本使用规范" class="headerlink" title="基本使用规范"></a>基本使用规范</h3><p>cmake构建系统是通过多个目标文件组织在一起生成一个二进制可执行文件的，每一个目标对应一个可执行文件或者库文件。</p>
+<h4 id="1-可执行目标文件"><a href="#1-可执行目标文件" class="headerlink" title="1. 可执行目标文件"></a>1. 可执行目标文件</h4><p>通过<code>add_executable(target dependency1 dependency2 ....)</code>命令来实现添加希望生成的可执行文件</p>
+<h4 id="2-库文件"><a href="#2-库文件" class="headerlink" title="2. 库文件"></a>2. 库文件</h4><p>通过<code>add_library(lib dependency1 dependency2 ...)</code>命令来实现添加生成目标文件。</p>
+<p><strong>怎么指定是生成动态库还是静态库呢？</strong></p>
+<blockquote>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成动态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive STATIC archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成静态库，默认是静态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive MODULE <span class="number">7</span>z.cpp) </span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="3-给目标文件添加文件目录"><a href="#3-给目标文件添加文件目录" class="headerlink" title="3. 给目标文件添加文件目录"></a>3. 给目标文件添加文件目录</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(<span class="keyword">target</span> directory)</span><br></pre></td></tr></table></figure>
+
+<p>该命令是用来在生成目标文件时指定生成目标文件依赖的源代码的目录。</p>
+<h4 id="4-file命令"><a href="#4-file命令" class="headerlink" title="4. file命令"></a>4. file命令</h4><p>这是一个文件操作命令。通过该命令可以有如下的操作：</p>
+<ul>
+<li>从文件中读</li>
+<li>向文件中追加内容，重写内容</li>
+</ul>
+<p>常用的命令有如下：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">file</span>(READ &lt;filename&gt; &lt;variable&gt; [OFFSET &lt;offset&gt;] [LIMIT &lt;max-in&gt;] [HEX])  <span class="comment"># 从文件中读取内容，并且保存到变量里，可以选择开始读取文件的偏移量和读取的最长字节数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(STRINGS &lt;filename&gt; &lt;variable&gt; [&lt;options&gt;...])  <span class="comment"># 按行文件中读取内容，保存在变量中。可以通过option参数对读取到的行进行过滤，只有满足参数条件的字符串才能够被命中保存到变量中，具体的参数值可以参考:https://cmake.org/cmake/help/v3.7/command/file.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(WRITE &lt;filename&gt; &lt;content&gt;...)  <span class="comment"># 将content写入到filename文件中。如果文件不存在就创建，如果文件存在，WRITE模式就会覆盖原文件的内容，APPEND模式就会追加到文件中</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-字符串操作命令"><a href="#5-字符串操作命令" class="headerlink" title="5. 字符串操作命令"></a>5. 字符串操作命令</h4><p>cmake提供了对字符串进行操作的命令，可以通过这写命令来对输入的字符串进行查找，过滤、正则匹配等操作。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span>(FIND &lt;<span class="keyword">string</span>&gt; &lt;substring&gt; &lt;output variable&gt; [REVERSE])  <span class="comment"># 将子串在字符串中的位置赋值给变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REPLACE &lt;match_string&gt; &lt;replace_string&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用replace_string来替换所有匹配input中的的match_string，然后将结果保存在变量中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REGEX MATCH &lt;regular_expression&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用正则进行处理字符串</span></span><br></pre></td></tr></table></figure>
+<h4 id="6-set命令"><a href="#6-set命令" class="headerlink" title="6. set命令"></a>6. set命令</h4><p>使用该命令来对变量值进行设置。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(&lt;variable&gt; &lt;value&gt;... [PARENT_SCOPE])  <span class="comment"># 将value值设置到variable上，如果value是多个的话，那么变量就是一个list，可选参数[PARENT_SOCPE]用来限定设置哪个范围的变量</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7-project命令"><a href="#7-project命令" class="headerlink" title="7. project命令"></a>7. project命令</h4><p>使用改命令来设置项目的信息，项目的名称，版本</p>
+<h4 id="8-option命令"><a href="#8-option命令" class="headerlink" title="8. option命令"></a>8. option命令</h4><p>该命令用来与用户进行交互</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">option</span>(&lt;option_variable&gt; <span class="string">"help string describing option"</span> [initial value])  <span class="comment"># 如果没有设置init value默认使用false</span></span><br></pre></td></tr></table></figure>
+<h4 id="9-link-libraires"><a href="#9-link-libraires" class="headerlink" title="9. link_libraires"></a>9. link_libraires</h4><p>该命令是用来给最后生成的app指定以来的库。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_libraires(item1 item2 ...)  <span class="comment"># item为依赖的库名</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：<br>该命令和target_link_libraries命令.</p>
+<ul>
+<li>link_libraries* is used to supply a list of libraries (object archives) to the linker. If the linked item is a cmake target, with specified include directories, they don’t need to be specified separately with.</li>
+<li>The target_* versions apply only to the target that is given as an operand. The non-target versions apply to all targets in the directory. The target_* versions should be used whenever possible (i.e. pretty much always).</li>
+</ul>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<ol>
+<li><a href="https://cmake.org/cmake/help/v3.7" target="_blank" rel="noopener">https://cmake.org/cmake/help/v3.7</a></li>
+<li><a href="https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories" target="_blank" rel="noopener">https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/27/%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">常用的基础架构</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-27 14:30:39" itemprop="dateCreated datePublished" datetime="2019-07-27T14:30:39+08:00">2019-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-29 20:40:07" itemprop="dateModified" datetime="2020-02-29T20:40:07+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在项目部署的时候，如果业务量不大，单台机器能够抗住业务量的需求，此时采用最简单的架构就可以解决需求。直接将数据库和服务部署到一台机器上。随着业务量的增大，单机的可能无法满足需求，</p>
+<p>架构的选型，只有合适与不合适。</p>
+<h3 id="1-单体架构"><a href="#1-单体架构" class="headerlink" title="1 单体架构"></a>1 单体架构</h3><p>当业务量不大的时候，使用此种架构可以快速的开发产品。</p>
+<p>此种架构将所有的代码都放在一个里面。部署项目的时候，只需要开启一个端口，所有的接口都是通过该端口提供服务。另外开发的服务，数据库同时部署到一台机器上。如下图：<br><img src="%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84.png" alt="单体架构"></p>
+<p><strong>优点</strong>：容易开发和测试，本地启动一个服务可以测试所有的接口；</p>
+<ul>
+<li>易于开发</li>
+<li>易于部署</li>
+<li>易于扩展</li>
+</ul>
+<p><strong>缺点</strong>：如果有一个地方进行了修改，整个的服务都要重新进行部署。</p>
+<p>存在的问题思考：</p>
+<ol>
+<li><p>当有大量的客户端请求的时候，服务器模型？</p>
+<ul>
+<li>单进程</li>
+<li>单线程</li>
+<li>多进程</li>
+<li>多线程</li>
+<li>多路IO复用</li>
+</ul>
+</li>
+<li><p>处理一个请求的耗时？</p>
+<ul>
+<li>请求从客户端到达服务器：整个过程中网络耗时</li>
+<li>服务器收到请求，建立和客户端的三次握手过程中的耗时？</li>
+<li>连接建立之后，数据从内核缓冲区到达服务进程中的时间消耗？</li>
+<li>服务器进程处理数据耗时？<ul>
+<li>从数据库获取数据耗时</li>
+<li>进行数据处理耗时</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-垂直架构"><a href="#2-垂直架构" class="headerlink" title="2 垂直架构"></a>2 垂直架构</h3><p>不同的业务模块分开，是一种模块化的开发思想</p>
+<h3 id="3-soa架构"><a href="#3-soa架构" class="headerlink" title="3 soa架构"></a>3 soa架构</h3><p>面向服务的架构。所有的服务通过企业服务总线ESB进行通信。</p>
+<h3 id="4-微服务架构"><a href="#4-微服务架构" class="headerlink" title="4 微服务架构"></a>4 微服务架构</h3><p>将每一个具体的业务拆分出来做成一个服务。</p>
+<p><strong>优点</strong></p>
+<p><strong>缺点</strong></p>
+<ul>
+<li>服务过多会导致服务治理的成本增加</li>
+<li>系统的复杂性增加，定位问题会更加的复杂</li>
+</ul>
+<h4 id="问题思考："><a href="#问题思考：" class="headerlink" title="问题思考："></a>问题思考：</h4><p><img src="%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84.png" alt="服务架构"></p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>服务端：<ul>
+<li>service-1和service-2服务部署在主机-A上</li>
+<li>service-3服务部署在主机-B上</li>
+<li>service-4服务部署在主机-C上</li>
+<li>service-5服务部署在了主机-D、主机-E、主机-F上，后期由于业务量的加大service-5服务添加了主机G</li>
+</ul>
+</li>
+<li>网关：<ul>
+<li>接口A调用service-1、service-2、service-3三个服务</li>
+<li>接口B调用service-3、service-4、service-5三个服务</li>
+</ul>
+</li>
+</ul>
+<p><strong>问题1：</strong>接口A的压力过大的时候，可能导致什么问题？</p>
+<ul>
+<li>service-1服务压力过大，导致服务挂掉</li>
+<li>主机-A宕机，service-2服务无法提供服务：解决方案服务隔离</li>
+</ul>
+<ul>
+<li>service-3挂掉，service-3也无法为接口B提供服务</li>
+</ul>
+<p><strong>问题2：</strong>接口B在调用service-5的时候，怎么确定调用哪个主机上的服务</p>
+<p><strong>问题3：</strong>service-5由于压力过大，添加新的机器的时候，接口B怎么知道有新的机器添加了进来，进而能够调用到它？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -713,116 +1374,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/20/es%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/20/es%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">ElasticSearch学习</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-04-20 16:05:30" itemprop="dateCreated datePublished" datetime="2019-04-20T16:05:30+08:00">2019-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-04-23 08:27:45" itemprop="dateModified" datetime="2019-04-23T08:27:45+08:00">2019-04-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
-                    <span itemprop="name">后台开发</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-入门基础"><a href="#1-入门基础" class="headerlink" title="1. 入门基础"></a>1. 入门基础</h4><h5 id="1-1-安装部署"><a href="#1-1-安装部署" class="headerlink" title="1.1 安装部署"></a>1.1 安装部署</h5><p>在物理机上部署：官网下载es，然后直接解压，执行bin/elasticsearch，通过指定-d参数可以实现后台启动。<br>也可以采用docker进行部署，<a href="https://www.jianshu.com/p/fdfead5acc23" target="_blank" rel="noopener">参考地址</a></p>
-<h5 id="1-2-基本概念"><a href="#1-2-基本概念" class="headerlink" title="1.2 基本概念"></a>1.2 基本概念</h5><p>es中存储的是文档，这些文档是使用json进行序列化的。<code>文档</code>可以理解为关系型数据库中的<code>行记录</code>，es中的<code>索引</code>可以理解为关系型数据库中的<code>数据库</code>，<code>类型</code>可以理解为关系型数据库中的<code>表</code>。</p>
-<h4 id="2-es-restful-api简单操作"><a href="#2-es-restful-api简单操作" class="headerlink" title="2. es restful api简单操作"></a>2. es restful api简单操作</h4><ul>
-<li><p>创建索引: <code>curl -X PUT &quot;localhost:9200/索引名字&quot;</code></p>
-</li>
-<li><p>删除索引：<code>curl -X DELETE &#39;localhost:9200/索引的名字&#39;</code></p>
-</li>
-<li><p>查看es中的所有索引: <code>curl -XGET &#39;localhost:9200/_cat/indices?v&amp;pretty&#39;</code></p>
-</li>
-<li><p>插入文档</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT 'localhost:9200/accounts/person/1' -d '</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"user"</span>: <span class="string">"张三"</span>,</span><br><span class="line">    <span class="attr">"title"</span>: <span class="string">"工程师"</span>,</span><br><span class="line">    <span class="attr">"desc"</span>: <span class="string">"数据库管理"</span></span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
-
-<p>  上述api中: accounts表示索引的名字，person表示类型的名字，1表示带插入的文档的id。也可以不指定id但是要使用post发送请求，如下</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST 'localhost:9200/accounts/person' -d '</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"user"</span>: <span class="string">"李四"</span>,</span><br><span class="line">    <span class="attr">"title"</span>: <span class="string">"工程师"</span>,</span><br><span class="line">    <span class="attr">"desc"</span>: <span class="string">"系统管理"</span></span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查询指定索引中的指定类型的某个id的文档数据</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 'localhost:9200/accounts/person/1?pretty=true'</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查询指定索引的指定类型的所有的文档数据</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 'localhost:9200/accounts/person/_search?pretty=true'</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除指定id的文档</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X DELETE 'localhost:9200/accounts/person/1'</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>更新文档</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT 'localhost:9200/accounts/person/1' -d '</span><br><span class="line">&#123;</span><br><span class="line">    "user" : "张三",</span><br><span class="line">    "title" : "工程师",</span><br><span class="line">    "desc" : "数据库管理，软件开发"</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h4 id="3-查询详解"><a href="#3-查询详解" class="headerlink" title="3 查询详解"></a>3 查询详解</h4><h5 id="查询字符串搜索"><a href="#查询字符串搜索" class="headerlink" title="查询字符串搜索"></a>查询字符串搜索</h5><p>就是在查询的语句中使用q进行参数传递</p>
-<h5 id="DSL搜索"><a href="#DSL搜索" class="headerlink" title="DSL搜索"></a>DSL搜索</h5><h4 id="2-java-api"><a href="#2-java-api" class="headerlink" title="2. java api"></a>2. java api</h4><h4 id="3-python-api"><a href="#3-python-api" class="headerlink" title="3. python api"></a>3. python api</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ESManager</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    elasticsearch操作类</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hosts)</span>:</span></span><br><span class="line">        self.client = Elasticsearch(hosts=hosts)</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(self, index, body=None)</span>:</span></span><br><span class="line">        res = self.client.search(index, body)</span><br><span class="line">        hits = res[<span class="string">"hits"</span>][<span class="string">"hits"</span>]</span><br><span class="line">        <span class="keyword">return</span> json.dumps(hits, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">query_one_by_id</span><span class="params">(self, index, id, _type)</span>:</span></span><br><span class="line">        res = self.client.get(index, id, _type)</span><br><span class="line">        source = res[<span class="string">"_source"</span>]</span><br><span class="line">        <span class="keyword">return</span> source</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">query_many_by_ids</span><span class="params">(self, ids: list, doc_type: str, index: str)</span> -&gt; iter:</span></span><br><span class="line">        body = &#123;<span class="string">"ids"</span>: ids&#125;</span><br><span class="line">        res = self.client.mget(body, doc_type, index)</span><br><span class="line">        docs = res[<span class="string">"docs"</span>]</span><br><span class="line">        <span class="keyword">for</span> doc <span class="keyword">in</span> docs:</span><br><span class="line">            source = doc[<span class="string">"_source"</span>]</span><br><span class="line">            <span class="keyword">yield</span> json.dumps(source, ensure_ascii=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    node = [<span class="string">"localhost:9200"</span>]</span><br><span class="line"></span><br><span class="line">    client = ESManager(node)</span><br><span class="line">    body = &#123;</span><br><span class="line">        <span class="string">"query"</span>: &#123;</span><br><span class="line">            <span class="string">"bool"</span>: &#123;</span><br><span class="line">                <span class="string">"must"</span>: [</span><br><span class="line">                    &#123;<span class="string">"match"</span>: &#123;<span class="string">"title"</span>: <span class="string">"Search"</span>&#125;&#125;,</span><br><span class="line">                    &#123;<span class="string">"match"</span>: &#123;<span class="string">"content"</span>: <span class="string">"Elasticsearch"</span>&#125;&#125;</span><br><span class="line">                ],</span><br><span class="line">                <span class="string">"filter"</span>: [</span><br><span class="line">                    &#123;<span class="string">"term"</span>: &#123;<span class="string">"status"</span>: <span class="string">"published"</span>&#125;&#125;,</span><br><span class="line">                    &#123;<span class="string">"range"</span>: &#123;<span class="string">"publish_date"</span>: &#123;<span class="string">"gte"</span>: <span class="string">"2015-01-01"</span>&#125;&#125;&#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询多条</span></span><br><span class="line">    res = client.search(<span class="string">"books"</span>, body)</span><br><span class="line">    res = client.search(<span class="string">"books"</span>)</span><br><span class="line">    <span class="comment"># print(res)</span></span><br><span class="line">    <span class="comment"># 根据id查询</span></span><br><span class="line">    <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">    res = client.query_one_by_id(<span class="string">"books"</span>, <span class="string">"Cx1nCWQB-ZDs_wiUraqf"</span>, <span class="string">"novel"</span>)</span><br><span class="line">    <span class="comment"># print(res)</span></span><br><span class="line">    id_list = [<span class="string">"Cx1nCWQB-ZDs_wiUraqf"</span>, <span class="string">"BB1nCWQB-ZDs_wiUraqL"</span>, <span class="string">"FB1nCWQB-ZDs_wiUraq3"</span>]</span><br><span class="line">    a = time.time()</span><br><span class="line">    res = client.query_many_by_ids(id_list, <span class="string">"novel"</span>, <span class="string">"books"</span>)</span><br><span class="line">    print(time.time() - a)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> res:</span><br><span class="line">        print(r)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>参考文章<br><a href="https://blog.csdn.net/ax8785r8C32nef593/article/details/78988443" target="_blank" rel="noopener">https://blog.csdn.net/ax8785r8C32nef593/article/details/78988443</a></p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/20/ElasticSearch%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -957,628 +1508,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/20/lua%E7%BC%96%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/20/lua%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">lua编程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2019-04-20 15:42:49 / Modified: 17:22:04" itemprop="dateCreated datePublished" datetime="2019-04-20T15:42:49+08:00">2019-04-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">编程语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://github.com/andycai/luaprimer/blob/master/01.md" target="_blank" rel="noopener">参考</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/18/python%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">python深入理解</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-04-18 09:00:51" itemprop="dateCreated datePublished" datetime="2019-04-18T09:00:51+08:00">2019-04-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-04-23 08:28:16" itemprop="dateModified" datetime="2019-04-23T08:28:16+08:00">2019-04-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">编程语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-python的编译结果"><a href="#1-python的编译结果" class="headerlink" title="1. python的编译结果"></a>1. python的编译结果</h4><h5 id="1-1-python程序的执行程"><a href="#1-1-python程序的执行程" class="headerlink" title="1.1 python程序的执行程"></a>1.1 python程序的执行程</h5><p>python文件的执行是通过<code>解释器</code>来执行的。当敲入python命令的时候，目的就是为了激活解释器，在真正开始执行之前，python解释器要首先编译.py文件，通过编译得到python的<code>字节码.pyc</code>文件，然后将编译的字节码<code>.pyc</code>文件交给python<code>虚拟机</code>，虚拟机按<br>照顺序一条条的执行字节码。在.py文件进行编译之后除了产生.pyc文件，还会产生其他的一些信息。<br>在.pyc文件中保存的是.py源代码中出现的一切有用的<code>静态信息</code>，在python运行期间这些静态信息会被存储在一个<code>运行时的对象</code>中。<strong>当python运行结束后，这个运行对象中包含的信息会存储在pyc文件中</strong>。这个运行时的对象就是<code>PyCodeObject</code>。</p>
-<blockquote>
-<p>在程序运行期间，编译结果存在于内存的PyCodeObject对象中，而python运行结束后，编译结果保存在pyc文件中。当下一次运行相同的程序时，python会根据pyc文件中记录的编译结果直接建立内存中的PyCodeObject对象，不用在对源文件进行编译了。</p>
-</blockquote>
-<h5 id="PyCodeObject对象"><a href="#PyCodeObject对象" class="headerlink" title="PyCodeObject对象"></a>PyCodeObject对象</h5><p><strong>对于源代码中的一个<code>code block</code>，python编译器在对源代码进行编译的时候就会创建一个<code>PyCodeObject对象</code>与这个代码块进行对应。</strong> 那么一个code block是多少代码呢？当进入一个新的名字或者作用域时，就算是进入了一个新的code block。如下的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># demo.py</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">a = A()</span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
-
-<p>上述的代码会产生三个PyCodeObject对象：一个对应demo.py文件，一个对应class A代表的code block，最后一个是fun所对应的code block。</p>
-<h5 id="名字空间"><a href="#名字空间" class="headerlink" title="名字空间"></a>名字空间</h5><p>名字空间是符号的上下文环境，名字空间可以一个套一个形成一个<code>名字空间链</code>。python虚拟机在执行的时候，会有很大一部分时间消耗在从这条名字空间链中确定一个<code>符号所应该对应的对象</code>是什么。在python中，类、函数、module都对应着一个独立的名字空间。名字空间实际上式维护这变量名和变量值之间关系的PyDictObject。</p>
-<h4 id="1-2-pyc文件"><a href="#1-2-pyc文件" class="headerlink" title="1.2 pyc文件"></a>1.2 pyc文件</h4><p>每一个PyCodeObject对象中，都包含每一个code block中所有的python源代码经过编译后得到的byte code序列。</p>
-<h5 id="import机制与pyc文件生成"><a href="#import机制与pyc文件生成" class="headerlink" title="import机制与pyc文件生成"></a>import机制与pyc文件生成</h5><p>python中的import会触发pyc文件的生成。python在运行的时候，碰到import abc这样的语句，那么python将到设定好的path中国寻找abc.pyc文件，如果没有找到，而只是找到了abc.py文件，那么python首先将abc.py编译成PyCodeObjct中间结果，然后创建abc.pyc文件，并将中间结果写入该文件。之后才会对abc.pyc文件执行import动作。</p>
-<h5 id="pyc文件的内容"><a href="#pyc文件的内容" class="headerlink" title="pyc文件的内容"></a>pyc文件的内容</h5><p>pyc文件主要包含了三部分独立的信息：</p>
-<ul>
-<li>python的magic number，该信息是用来保证python的兼容性的。python在加载pyc文件的时候，会首先检查这个值，如果python自身的magic number与待加载的pyc文件中记录的该值不一致，就会拒绝加载该文件。</li>
-<li>pyc文件的创建时间信息，如果我们修改了生成pyc文件的原文件，那么python在加载的时候会发现pyc文件时间早于py文件的时间，于是会重新编译pyc文件的原文件，生成新的pyc文件</li>
-<li>PyCodeObject对象</li>
-</ul>
-<h5 id="python字节码指令"><a href="#python字节码指令" class="headerlink" title="python字节码指令"></a>python字节码指令</h5><p>使用dis标准库来解析code对象，查看code对象里的字节码指令信息。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = open(<span class="string">"aa.py"</span>).read()</span><br><span class="line">co = compile(s, <span class="string">"aa.py"</span>, <span class="string">"exec"</span>)</span><br><span class="line"><span class="keyword">import</span> dis</span><br><span class="line">dis.dis(co)</span><br></pre></td></tr></table></figure>
-
-<p>示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.py</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>, <span class="number">2</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
-
-<p>执行如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = open(<span class="string">"test.py"</span>).read()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>co = compile(s, <span class="string">"test.py"</span>, <span class="string">"exec"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> dis</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dis.dis(co)</span><br><span class="line"> <span class="number">18</span>    <span class="number">0</span> LOAD_CONST     <span class="number">0</span> (<span class="string">'\n@Time : 2018/1/11 09:17\n'</span>)  </span><br><span class="line">       <span class="number">2</span> STORE_NAME     <span class="number">0</span> (__doc__)</span><br><span class="line"> <span class="number">20</span>    <span class="number">4</span> SETUP_LOOP     <span class="number">28</span> (to <span class="number">34</span>)</span><br><span class="line">       <span class="number">6</span> LOAD_NAME      <span class="number">1</span> (range)</span><br><span class="line">       ...</span><br></pre></td></tr></table></figure>
-
-<p>其中的，最左边的一列表示的是在源文件中的行号，第二列显示当前的字节码指令的偏移位置，第三列显示的是当前字节码指令，最后一列显示的是当前字节码指令的参数</p>
-<h4 id="2-python虚拟机框架"><a href="#2-python虚拟机框架" class="headerlink" title="2 python虚拟机框架"></a>2 python虚拟机框架</h4><p>python字节码虚拟机的执行原理：python的虚拟机会从编译得到的PyCodeObject对象中依次读取每一条字节码指令，并在当前的上下文环境中执行这条字节码指令。python虚拟机实际上是模拟操作系统运行可执行文件的过程，即函数栈帧执行原理（对一个函数而言所有的局部变量的操作都是在<code>自己的栈帧</code>中完成的，而函数之间的调用则通过<code>创建新的栈帧</code>来完成），从而完成了python字节码指令序列的执行。</p>
-<p>举例说明执行过程，有如下的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="string">"Python"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    i = <span class="number">9999</span></span><br><span class="line">    print(i)</span><br><span class="line"></span><br><span class="line">f()</span><br><span class="line">print(i)</span><br></pre></td></tr></table></figure>
-
-<p>上述代码的执行过程，可以描述如下：在运行第一条表达式的时候，python已经建立了一个<code>执行环境A</code>，所有的字节码指令都会在这个函数中执行，python可以从这个环境中获取变量的值，也可以根据字节码的指令修改执行环境中某个变量的值，以影响后序字节码指令，这个过程会一直执行下去，直到发生了函数调用，当函数在执行环境中调用f的字节码指令时，会在当前环境之外重新创建一个新的执行环境B。这个执行环境就是PyFrameObject对象。</p>
-<p>在python实际的执行中会产生很多的PyFrameObject对象，这些对象是被链接起来的，形成一条执行环境链表。</p>
-<p>在python中访问PyFrameObject对象：python中的 fram Object是对python源码中PyFrameObject结构体的包装。可以通过sys模块中的_getframe方法来获得当前处于活动状态的frame object。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">value = <span class="number">3</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">g</span><span class="params">()</span>:</span></span><br><span class="line">    frame = sys._getframe()</span><br><span class="line">    <span class="comment"># get current function name</span></span><br><span class="line">    print(<span class="string">"current function is "</span>, frame.f_code.co_name)</span><br><span class="line">    caller = frame.f_back</span><br><span class="line">    print(<span class="string">"caller function is "</span>, caller.f_code.co_name)</span><br><span class="line">    print(<span class="string">"caller's local namespace"</span>, caller.f_locals)</span><br><span class="line">    print(<span class="string">"caller's global namespace"</span>, caller.f_globals.keys())</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">2</span></span><br><span class="line">    g()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">()</span>:</span></span><br><span class="line">    f()</span><br><span class="line">show()</span><br></pre></td></tr></table></figure>
-
-<p>输出如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(&#39;current function is &#39;, &#39;g&#39;)</span><br><span class="line">(&#39;caller function is &#39;, &#39;f&#39;)</span><br><span class="line">(&quot;caller&#39;s local namespace&quot;, &#123;&#39;a&#39;: 1, &#39;b&#39;: 2&#125;)</span><br><span class="line">(&quot;caller&#39;s global namespace&quot;, [&#39;g&#39;, &#39;f&#39;, &#39;__builtins__&#39;, &#39;__file__&#39;, &#39;show&#39;, &#39;value&#39;, &#39;__package__&#39;, &#39;sys&#39;,&#39;__name__&#39;, &#39;__doc__&#39;])</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-python运行环境初始化"><a href="#3-python运行环境初始化" class="headerlink" title="3 python运行环境初始化"></a>3 python运行环境初始化</h4><h4 id="3-1-线程环境初始化"><a href="#3-1-线程环境初始化" class="headerlink" title="3.1 线程环境初始化"></a>3.1 线程环境初始化</h4><ul>
-<li>在python启动的时候，会依次创建代表进程和线程的c结构体，并在他们之间建立联系;</li>
-<li>之后，开始设置系统的module, 其中第一个被创建的module是<strong>buildin</strong> module</li>
-<li>在某个名字空间中，找到某个符号所对应的对象</li>
-</ul>
-<blockquote>
-<p>参考<br>《python源码剖析》</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/burpsuite%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/17/burpsuite%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">burpsuite使用</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2019-03-17 12:43:26 / Modified: 12:44:45" itemprop="dateCreated datePublished" datetime="2019-03-17T12:43:26+08:00">2019-03-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">渗透测试</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/13/mysql%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/13/mysql%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">mysql总结</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-13 09:36:59" itemprop="dateCreated datePublished" datetime="2019-03-13T09:36:59+08:00">2019-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-19 12:10:38" itemprop="dateModified" datetime="2020-02-19T12:10:38+08:00">2020-02-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
-                    <span itemprop="name">后台开发</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-mysql查询基础"><a href="#1-mysql查询基础" class="headerlink" title="1 mysql查询基础"></a>1 mysql查询基础</h2><h3 id="1-1-单个表的检索"><a href="#1-1-单个表的检索" class="headerlink" title="1.1 单个表的检索"></a>1.1 单个表的检索</h3><h4 id="列的选择"><a href="#列的选择" class="headerlink" title="列的选择"></a>列的选择</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column1_name, column2_name, ....</span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
-
-<h4 id="行的选择"><a href="#行的选择" class="headerlink" title="行的选择"></a>行的选择</h4><p><strong>选择值不同的行</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> column_name </span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
-<p><strong>限制行数</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>, <span class="number">5</span>; // 开始行和行数</span><br></pre></td></tr></table></figure>
-
-<h4 id="排序数据"><a href="#排序数据" class="headerlink" title="排序数据"></a>排序数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> column_name <span class="keyword">desc</span>;  // 单个列排序降序，升序是默认的</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * </span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> column_name1 <span class="keyword">desc</span>, column_name2 <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> column_name1=<span class="string">"cody"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> column_name1 <span class="keyword">is</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="时间和日期处理"><a href="#时间和日期处理" class="headerlink" title="时间和日期处理"></a>时间和日期处理</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">Year</span>(column_name) = <span class="number">2005</span> <span class="keyword">and</span> <span class="keyword">Month</span>(column_name) = <span class="number">9</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="汇总数据"><a href="#汇总数据" class="headerlink" title="汇总数据"></a>汇总数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*)</span><br><span class="line">from table_name; // count(*)会计算null值，count(column_name)不会计算null值</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sum</span>(column_name)</span><br><span class="line"><span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
-
-<h4 id="分组数据"><a href="#分组数据" class="headerlink" title="分组数据"></a>分组数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> vend_id, <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> vend_id;  // 分组</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> customer_id, <span class="keyword">count</span>(*) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> orders</span><br><span class="line"><span class="keyword">where</span> price &gt; <span class="number">2</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> customer_id</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">count</span>(*) &gt;= <span class="number">2</span>  // <span class="keyword">having</span>对分组进行过滤，<span class="keyword">where</span>对行进行过滤</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> customer_id</span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> cust_id</span><br><span class="line"><span class="keyword">from</span> orders</span><br><span class="line"><span class="keyword">where</span> order_num <span class="keyword">in</span> (<span class="keyword">select</span> order_num <span class="keyword">from</span> orderitems <span class="keyword">where</span> prod_id=<span class="string">'TNT'</span>);  // 子查询由内向外执行</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2-多个表的检索"><a href="#1-2-多个表的检索" class="headerlink" title="1.2 多个表的检索"></a>1.2 多个表的检索</h3><h4 id="内连接"><a href="#内连接" class="headerlink" title="内连接"></a>内连接</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> vend_name, prod_name, prod_price</span><br><span class="line"><span class="keyword">from</span> vendors, products</span><br><span class="line">where vendors.vend_id = products.vend_id; // 不使用连接条件的表关系返回笛卡尔积，第一个表中的行数*第二个表中的行数</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> vend_name, prod_name, prod_price</span><br><span class="line"><span class="keyword">from</span> vendors <span class="keyword">inner</span> <span class="keyword">join</span> products <span class="keyword">on</span> vendor.id=products.vendor_id;  // 与上面的效果一样</span><br></pre></td></tr></table></figure>
-<h4 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h4><p>自己连接自己</p>
-<h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> table_name1 <span class="keyword">left</span> <span class="keyword">join</span> table_name2</span><br><span class="line"><span class="keyword">on</span> table_name1.column_name = table_name2.column_name;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="1-3-组合查询"><a href="#1-3-组合查询" class="headerlink" title="1.3 组合查询"></a>1.3 组合查询</h3><p>union查询</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column1, column2</span><br><span class="line"><span class="keyword">from</span> table_name1</span><br><span class="line"><span class="keyword">where</span> column1 &lt; <span class="number">10</span>;</span><br><span class="line">union</span><br><span class="line"><span class="keyword">select</span> column1, column2</span><br><span class="line"><span class="keyword">from</span> table_name1</span><br><span class="line"><span class="keyword">where</span> column2 = <span class="number">20</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-
-<h3 id="1-4-创建表"><a href="#1-4-创建表" class="headerlink" title="1.4 创建表"></a>1.4 创建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> table_name(</span><br><span class="line">    customer_id <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span> auto_increment,</span><br><span class="line">    customer_name <span class="built_in">char</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">    primary <span class="keyword">key</span> (customer_id)</span><br><span class="line">) <span class="keyword">engine</span>=<span class="keyword">innodb</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="更新表"><a href="#更新表" class="headerlink" title="更新表"></a>更新表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name</span><br><span class="line"><span class="keyword">add</span> vend_phone <span class="built_in">char</span>(<span class="number">20</span>); // 添加一列</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">column</span> vend_phone; // 删除一列</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-事务"><a href="#2-事务" class="headerlink" title="2 事务"></a>2 事务</h2><p>事务的目的：事务会把数据库从一种一致状态转换为另一种一致状态。事务的特性有如下：ACID。</p>
-<ul>
-<li>原子性： redo log重做日志实现。</li>
-<li>一致性: undo log来实现。</li>
-<li>隔离性: 通过锁来实现。</li>
-<li>持久性: redo log实现。</li>
-</ul>
-<h3 id="2-1-事务的隔离级别"><a href="#2-1-事务的隔离级别" class="headerlink" title="2.1 事务的隔离级别"></a>2.1 事务的隔离级别</h3><p>InnoDB默认的隔离级别是READ REPEATABLE</p>
-<ul>
-<li>read uncommited: 事务2读取到事务1未提交的数据, 脏读</li>
-<li>read comitted: 事务2读取到事务1已提交的数据，造成不可重复读</li>
-<li>repeatable read： 造成幻读。</li>
-<li>serializable：此隔离级别是，每个select语句都会自动加上一个共享锁，此时对一致性的非锁定读不再支持。</li>
-</ul>
-<h3 id="2-2-事务日志"><a href="#2-2-事务日志" class="headerlink" title="2.2 事务日志"></a>2.2 事务日志</h3><h4 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h4><p>redo由两部分组成：</p>
-<ul>
-<li>内存中的重做日志缓冲</li>
-<li>日志文件</li>
-</ul>
-<p>InnoDB在<strong>事务提交</strong>的时候，必须将事务的所有日志写入到redo日志文件。为了保证每次日志都写入重做日志文件，在每次将<strong>重做日志缓冲</strong>写入重做日志文件后，InnoDB存储引擎都会调用一次<code>fsync</code>系统调用，因为这时的写入可能在文件系统缓存中该系统调用将数据刷新到磁盘上。</p>
-<p>如果在事务每次提交的时候都进行<code>fsync</code>系统调用会影响性能，所以InnoDB允许设置<code>fsync</code>调用的时机来控制重做日志刷新到磁盘上的策略。使用<code>innodb_flush_log_at_trx_commit</code>参数来实现，参数的值有如下：</p>
-<ul>
-<li>0, 表示事务提交时，不进行写入重做日志操作</li>
-<li>1， 默认值，表示事务提交时，必须进行一次fsync操作。</li>
-<li>2, 表示事务提交时将重做日志写入到日志文件中，但是仅写入到文件系统的缓存中，不进行fsync操作。</li>
-</ul>
-<p>redo log基本上都是顺序写的，数据库运行时不需要对该日志进行读写操作。</p>
-<p><strong>redo log和binlo的区别</strong></p>
-<ul>
-<li>redo是存储引擎层面的，binlog是MySQL层面的</li>
-<li>binlog是一种逻辑日志，记录的是对应的SQL语句，redo log是物理格式，记录的是每个页的修改</li>
-<li>两种日志写入磁盘的时间点不同。binlog在事务提交完成后一次性写入，redolog是事务进行中。</li>
-</ul>
-<h4 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h4><p>redo log存放在日志文件中，undo log存放在数据库内部的一个特殊段中，这个段叫做undo段，位于共享表空间内。undo是逻辑日志，可以将数据库恢复到执行事务之前的样子。</p>
-<p>另外，InnoDB的多版本并发控制(MVVC)也是通过undo实现的。</p>
-<p>undo会产生redo log</p>
-<h3 id="2-3-事务控制语句"><a href="#2-3-事务控制语句" class="headerlink" title="2.3 事务控制语句"></a>2.3 事务控制语句</h3><p>在mysql命令行，默认设置的事务是自动提交的。</p>
-<h3 id="undo"><a href="#undo" class="headerlink" title="undo"></a>undo</h3><h2 id="3-索引"><a href="#3-索引" class="headerlink" title="3 索引"></a>3 索引</h2><p>根据键值，快速的找到数据。</p>
-<h3 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h3><p>非叶子节点存放的是key， 叶子节点存放的是{key: data}.在B+树中，所有的记录节点都是按键值的大小，顺序存放在同一层的叶子节点上，由各叶子节点指针连接。在数据库中B+树的高度一般为2-4层。也就是说查找某一键值的行记录最多需要2到4次的IO。</p>
-<h3 id="MyISAM索引"><a href="#MyISAM索引" class="headerlink" title="MyISAM索引"></a>MyISAM索引</h3><p>MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是<strong>数据记录的地址</strong>, 对于主索引和辅助索引都是如此。索引可以分为</p>
-<ul>
-<li>主索引: 主键对应的索引,要求key唯一</li>
-<li>辅助索引：非主键对应的索引，key可以重复</li>
-</ul>
-<p>索引文件和行记录文件是分开的。</p>
-<h3 id="InnoDB索引"><a href="#InnoDB索引" class="headerlink" title="InnoDB索引"></a>InnoDB索引</h3><p>InnoDB中的索引可以分为：</p>
-<ul>
-<li>聚集索引: 按照每张表的<strong>主键</strong>构造一颗B+树，同时叶子节点存放的是整张表的<strong>行记录数据</strong>。</li>
-<li>辅助索引: 叶子节点不包含行记录的全部数据而是相应记录<strong>主键的值</strong>, 每张表上可以有多个辅助索引。当通过辅助索引来查找数据的时候，Innodb存储引擎会遍历辅助索引并通过叶子节点中的指针获取指向主键索引的主键，然后在通过主键索引来查找一个完整的记录。</li>
-</ul>
-<p>InnoDB中聚集索引文件和数据文件是同一个文件。数据文件本身就是要按照主键进行聚集，innodb要求表必须有主键，如果没有显示的指定，Innodb会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整型。</p>
-<h2 id="4-InnoDB引擎中的锁"><a href="#4-InnoDB引擎中的锁" class="headerlink" title="4 InnoDB引擎中的锁"></a>4 InnoDB引擎中的锁</h2><p><img src="mysql%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.png" alt="MySQL数据存储的层次结构"></p>
-<p>锁机制是用于管理对<strong>共享资源</strong>的并发访问。InnoDB会在行级别上对表数据上锁。</p>
-<p>在InnoDB中的锁有: </p>
-<ul>
-<li>latch: 可以分为mutex和rwlock。其目的是用来保证并发线程操作临界资源的正确定。</li>
-<li>lock: lock的对象是事务, 用来锁定的是数据库中的对象，如表、页、行<ul>
-<li>共享锁(S lock): 行级锁，允许事务读一行数据. </li>
-<li>排他锁(X lock): 行级锁, 允许事务删除或者更新一行数据</li>
-</ul>
-</li>
-</ul>
-<p><strong>一致性非锁定读</strong></p>
-<ol>
-<li>如果事务1和事务2同时获取同一行的共享锁。如果事务3想要获取该行的排它锁，需要等待事务1和事务2释放该行上的共享锁。</li>
-<li>如果事务1得到了某一行上的排他锁，此时事务2想要获取该行的共享锁，这时事务2不会等待事务1释放在该行上的排它锁，而是会读取行的一个<strong>快照数据</strong>(所谓的快照数据，是指改行的之前版本的数据)，称为一致性的非锁定读。非锁读可以极大的提高数据库的并发性。</li>
-</ol>
-<p><strong>一致性的锁定读</strong></p>
-<p>所谓的锁定读，就是事务1得到了某行的排它锁，此时事务2想要获取该行的共享锁读取该行数据，此时事务2需要等待在该行上的排它锁的释放。</p>
-<p>InnoDB引擎对select语句支持两种一致性的锁定读：</p>
-<ul>
-<li>select….. for update; 对读取的行加一个x锁，其它的事务不能对锁定的行加任何锁。</li>
-<li>select  …… lock in share mode; 对读取的行记录加一个s锁。其他事务可以对被锁定的行加s锁，但是如果加x锁，就会被阻塞。</li>
-</ul>
-<p><strong>自增长</strong></p>
-<p>每个含有自增长值的表都有一个自增长计数器，当对这种表进行插入操作时，这个计数器会被初始化。在这里使用了一种特殊的表锁机制，锁不会在事务完成后才释放，而是完成对自增长值插入的sql语句后立即释放。</p>
-<p>InnoDB存储引擎中，自增长值的列必须是索引，同时必须是索引的第一个列。</p>
-<h2 id="5-架构"><a href="#5-架构" class="headerlink" title="5 架构"></a>5 架构</h2><p><img src="mysql%E6%9E%B6%E6%9E%84.png" alt="MySQL架构"></p>
-<ul>
-<li>最上层的连接服务，用于不同语言与SQL的交互。可以通过<code>show variables like &#39;%connections%&#39;</code>命令查看MySQL实例的最大连接数和单个用户的最大连接数。</li>
-<li>第二层MySQL Server，大多数MySQL的核心服务功能都在这一层，包括查询解析、分析、优化、缓存，所有跨存储引擎的功能都集中在这一层实现。<ul>
-<li><strong>Management Services &amp; Utilities</strong>：系统管理和控制工具，备份和恢复的安全性，复制，集群，管理，配置，迁移和元数据。</li>
-<li><strong>Connection Pool</strong>：连接池，进行身份验证、线程重用，连接限制，检查内存，数据缓存；管理用户的连接，线程处理等需要缓存的需求。</li>
-<li><strong>SQL Interface</strong>：SQL 接口，进行 DML、DDL，存储过程、视图、触发器等操作和管理，用户通过 SQL 命令来查询所需结果。</li>
-<li><strong>Parser</strong>：解析器；查询翻译对象的特权，SQL 命令传递到解析器的时候会被解析器验证和解析。</li>
-<li><strong>Optimizer</strong>：查询优化器。</li>
-<li><strong>Cache 和 Buffer</strong>：查询缓存，全局和引擎特定的缓存和缓冲区。</li>
-</ul>
-</li>
-<li>第三层为存储引擎层，存储引擎负责MySQL中数据的存储和提取，服务器通过API于存储引擎进行通信。可以通过<code>SHOW ENGINES</code>命令查看各个存储引擎信息。</li>
-</ul>
-<h2 id="6-优化"><a href="#6-优化" class="headerlink" title="6 优化"></a>6 优化</h2><h3 id="库表结构优化"><a href="#库表结构优化" class="headerlink" title="库表结构优化"></a>库表结构优化</h3><p><strong>字段类型选择</strong></p>
-<p>尽量使用整数来表示字符串：整型的优势（存储空间固定，运算速度快）;<br>字符串类型的选择: char, varchar, text的确定：varchar占用字段的总空间，text不占用字段的总空间，数据独立存储，字段的总空间是有限的默认为65535字节；</p>
-<ul>
-<li>尽可能选择小的数据类型</li>
-<li>尽可能使用not null<ul>
-<li>非空字段的处理，要比空字段的处理效率高，null的存储需要额外的空间，运算也需要特殊的运算符</li>
-<li>null参与常规运算结果就是null，除非使用is null 和 is not null</li>
-<li>在mysql中的每条记录会使用额外的存储空间，表示每个字段是否为null</li>
-<li>对于要设置为空的字段我们常使用一个占位符来处理</li>
-</ul>
-</li>
-</ul>
-<p><strong>分库分表优化</strong></p>
-<h3 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h3><p><strong>最左前缀</strong></p>
-<p><strong>多列索引</strong></p>
-<h3 id="查询优化"><a href="#查询优化" class="headerlink" title="查询优化"></a>查询优化</h3><p><img src="sql%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B.png" alt="查询执行"></p>
-<p>在MySQL Server中首先有一个 Cache，用来缓存 SQL 查询语句的查询结果，如果缓存命中，则直接返回结果，如果缓存没有命中，则对 SQL 语句进行语法分析，预处理和查询优化，最终得到该查询的执行计划，之后，该执行计划被送往数据库引擎, 调用存储引擎的API来执行查询，得到最终查询到的数据。数据库引擎并不会严格按照执行计划进行执行，而是会根据自身的架构和特性进行一些调整，以提高执行效率。多数连接MySQL的库函数都可以获取服务器响应的全部结果集并缓存到内存中。MySQL在将所有的数据发送给客户端之后才会释放这条查询所占用的资源。接收全部服务器返回的结果可以减少服务器的压力。</p>
-<p>首先应该清楚一点即查询是由许多的子任务组成的，所谓的优化就是优化这些子任务，要么消除一些子任务，要么减少子任务的执行次数，要么让子任务运行的更快。那么问题来了，mysql在执行查询的时候有哪些子任务呢？哪些子任务运行的慢呢？</p>
-<p>通常来说一条查询大致的子任务有如下：从客户端，到服务器，然后在服务器上进行解析，生成执行计划，执行，并返回结果给客户端。在完成这些任务的时候，查询需要在不同的地方花费时间，包括：网络、CPU计算、生成统计信息和执行计划、锁等待等操作，尤其是向底层的存储引擎检索数据的调用操作。优化查询的目的就是减小和消除这些操作所花费的时间。</p>
-<p>查询性能低下的最基本原因是访问的数据太多。对于查询慢的，我们可以从以下两个方面考虑：</p>
-<ul>
-<li>应用程序是否请求了大量不需要的数据；</li>
-<li>服务器为了返回结果是否扫描了大量没用的数据行（响应时间、扫描的行数、返回的行数，这三个指标都会记录到MySQL的慢日志中）。</li>
-</ul>
-<p><strong>慢查询日志</strong></p>
-<p><strong>响应时间</strong></p>
-<p>响应时间：服务时间+等待时间；服务时间是指数据库处理这个查询真正花费的时间。排队时间是指因为服务器因为等待某些资源而没有真正执行查询的时间-可能是等待IO操作完成，也可能是等待行锁。快速上限法估计响应时间（了解这个查询需要哪些索引以及它的执行计划是什么，然后计算大概需要多少个顺序和随机IO，再乘以具体硬件条件下一次IO的消耗时间）。</p>
-<p><strong>扫描行数和返回行数</strong></p>
-<p>理想情况下，扫描的行数和返回的行数应该是相同的。但是实际中，扫描的行数：返回的行数一般在1：1和10：1之间。扫描的行数可以在explain结果中的row列预估出来。</p>
-<p>MySQL从表中找到某一行数据的成本。MySQL有好几种访问方式可以查找并返回一行结果。访问方式可以在explain语句中的type列反映了扫描类型：</p>
-<ul>
-<li>全表扫描(ALL，通过读物理表获取数据，顺序读磁盘文件), 从头到尾去找需要的行</li>
-<li>索引全扫描(index，查询时遍历索引树来扫描，如果数据不是密集的会产生随机io), 这个跟全表扫描一样，只是在扫描表的时候按索引次序进行，而不是按照行</li>
-<li>范围扫描(range),它从索引里的某一个点开始，返回匹配这个值域的行。当mysql去查找一系列值的时候入in(）和or（）列表。此类扫描的开销跟索引类型相当</li>
-<li>唯一索引查询(ref)</li>
-<li>常数引用(const)等</li>
-</ul>
-<h2 id="7-高可用架构"><a href="#7-高可用架构" class="headerlink" title="7 高可用架构"></a>7 高可用架构</h2><h3 id="主从架构"><a href="#主从架构" class="headerlink" title="主从架构"></a>主从架构</h3><p><img src="mysql%E4%B8%BB%E4%BB%8E%E6%9E%B6%E6%9E%84.png" alt="高可用架构"></p>
-<p><strong>主从复制的基本流程</strong></p>
-<p>slave订阅master的binlog。</p>
-<ol>
-<li>Slave上面的IO进程连接上Master，并请求从指定日志文件的指定位置（或者从最开始的日志）之后的日志内容。</li>
-<li>Master接收到来自Slave的IO进程的请求后，负责复制的IO进程会根据请求信息读取日志指定位置之后的日志信息，返回给Slave的IO进程。返回信息中除了日志所包含的信息之外，还包括本次返回的信息已经到Master端的bin-log文件的名称以及bin-log的位置。</li>
-<li>Slave的IO进程接收到信息后，将接收到的日志内容依次添加到Slave端的relay-log文件的最末端，并将读取到的Master端的 bin-log的文件名和位置记录到master-info文件中，以便在下一次读取的时候能够清楚的告诉Master“我需要从某个bin-log的哪个位置开始往后的日志内容，请发给我”。</li>
-<li>Slave的Sql进程检测到relay-log中新增加了内容后，会马上解析relay-log的内容成为在Master端真实执行时候的那些可执行的内容，并在自身执行。</li>
-</ol>
-<p><strong>一主多从复制复制</strong></p>
-<p>如果一主多从的话，这时主库既要负责写又要负责为几个从库提供二进制日志。此时可以稍做调整，将二进制日志只给某一从，这一从再开启二进制日志并将自己的二进制日志再发给其它从。或者是干脆这个从不记录只负责将二进制日志转发给其它从，这样架构起来性能可能要好得多，而且数据之间的延时应该也稍微要好一些。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
-<p>《MySQL必知必会》<br>《高性能MySQL》<br>《MySQL技术内幕-InnoDB存储引擎》</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/10/nginx%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/10/nginx%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">nginx配置</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-10 09:48:06" itemprop="dateCreated datePublished" datetime="2019-03-10T09:48:06+08:00">2019-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-04-20 18:07:43" itemprop="dateModified" datetime="2019-04-20T18:07:43+08:00">2019-04-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
-                    <span itemprop="name">后台开发</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-版本介绍"><a href="#1-版本介绍" class="headerlink" title="1 版本介绍"></a>1 版本介绍</h2><ul>
-<li>开发版</li>
-<li>稳定版</li>
-<li>历史版</li>
-</ul>
-<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2 安装"></a>2 安装</h2><ul>
-<li>首先安装依赖包 <code>libpcre3</code>（解析正则的库） <code>libpcre3-dev</code> <code>zlib1g-dev</code></li>
-<li>下载nginx包</li>
-<li>安装nginx</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./config  生成makefiel</span><br><span class="line">make 编译文件</span><br><span class="line">make install 安装</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-功能"><a href="#3-功能" class="headerlink" title="3 功能"></a>3 功能</h2><h2 id="4-配置解读"><a href="#4-配置解读" class="headerlink" title="4 配置解读"></a>4 配置解读</h2><h2 id="5-nginx的日志类型"><a href="#5-nginx的日志类型" class="headerlink" title="5 nginx的日志类型"></a>5 nginx的日志类型</h2><ul>
-<li>error.log</li>
-<li>access.log</li>
-</ul>
-<h3 id="错误日志的配置"><a href="#错误日志的配置" class="headerlink" title="错误日志的配置"></a>错误日志的配置</h3><h3 id="nginx中有哪些变量"><a href="#nginx中有哪些变量" class="headerlink" title="nginx中有哪些变量"></a>nginx中有哪些变量</h3><ul>
-<li><p>请求的变量</p>
-</li>
-<li><p>需求，我们想要记录用户的user-agent，应该怎么处理</p>
-<ul>
-<li>request的请求变量是http_请求头信息，如http_user_agent</li>
-</ul>
-</li>
-<li><p>nginx -c -t config  检查配置文件的配置是否正确</p>
-</li>
-</ul>
-<h2 id="不同场景下的配置"><a href="#不同场景下的配置" class="headerlink" title="不同场景下的配置"></a>不同场景下的配置</h2><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="http请求"><a href="#http请求" class="headerlink" title="http请求"></a>http请求</h3><ul>
-<li>curl -v <a href="http://ww.baidu.com" target="_blank" rel="noopener">http://ww.baidu.com</a>  # 详细的查看每次的请求信息</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1644,7 +1578,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1657,7 +1591,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
