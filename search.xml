@@ -1,6 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>软件工程</title>
+    <url>/2020/03/08/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/</url>
+    <content><![CDATA[<p>开发的规范应该如何制定，如何保证持续交付。</p>
+<p>一个project最后的交付物是什么？</p>
+<ul>
+<li>是一个工具？</li>
+<li>是一个web应用？</li>
+<li>是一个提供给别人的包？</li>
+</ul>
+<p><strong>终极目标</strong>：只需点击一下鼠标，就可以将软件部署到任何目标环境，包括开发环境、测试环境和生产环境</p>
+<p>一个可工作的软件可以分成以下几个部分：</p>
+<ul>
+<li>代码</li>
+<li>配置</li>
+<li>环境</li>
+<li>数据</li>
+</ul>
+<p>以上四个部分任何一个的改变都应该能够被控制，并且都会被验证。</p>
+<p>使软件一直处于可发布状态：持续集成。</p>
+<p>哪些文件应该放在版本控制里面？</p>
+<h2 id="1-开发阶段"><a href="#1-开发阶段" class="headerlink" title="1 开发阶段"></a>1 开发阶段</h2><ul>
+<li>选择project语言？</li>
+<li>project的版本控制</li>
+<li>如何保证代码质量？</li>
+</ul>
+<h3 id="1-1-版本控制"><a href="#1-1-版本控制" class="headerlink" title="1.1 版本控制"></a>1.1 版本控制</h3><p>git工具进行版本控制</p>
+<h4 id="1-1-1-project中的哪些文件应该进行版本控制"><a href="#1-1-1-project中的哪些文件应该进行版本控制" class="headerlink" title="1.1.1 project中的哪些文件应该进行版本控制"></a>1.1.1 project中的哪些文件应该进行版本控制</h4><p>与项目相关的所有东西都放到版本控制库中。<br>如果一个新人入职，直接checkout之后，就可以开始进行工作。能够有助于达成这一目标的所有的文件都应该放在版本控制中。</p>
+<h4 id="1-1-2-git使用的最佳实践"><a href="#1-1-2-git使用的最佳实践" class="headerlink" title="1.1.2 git使用的最佳实践"></a>1.1.2 git使用的最佳实践</h4><p><strong>commit的原则</strong></p>
+<p>保证每次的提交，都不会破坏原有系统。每一次提交的注释都是意义明显的。</p>
+<ul>
+<li>提交代码之前运行测试套件</li>
+<li>增量式引入变化，每完成一个小功能或一次重构之后就提交代码</li>
+<li>按照一定的规范使用注释</li>
+</ul>
+<h3 id="1-2-代码质量"><a href="#1-2-代码质量" class="headerlink" title="1.2 代码质量"></a>1.2 代码质量</h3><ul>
+<li>编码规范</li>
+<li>单元测试，集成测试</li>
+<li>code review</li>
+<li>重构</li>
+</ul>
+<h4 id="1-2-1-编码规范"><a href="#1-2-1-编码规范" class="headerlink" title="1.2.1 编码规范"></a>1.2.1 编码规范</h4><h4 id="1-2-2-单元测试"><a href="#1-2-2-单元测试" class="headerlink" title="1.2.2 单元测试"></a>1.2.2 单元测试</h4><h4 id="1-2-3-重构"><a href="#1-2-3-重构" class="headerlink" title="1.2.3 重构"></a>1.2.3 重构</h4><p>《重构-改善既有代码的设计》</p>
+<h2 id="2-构建阶段"><a href="#2-构建阶段" class="headerlink" title="2 构建阶段"></a>2 构建阶段</h2><p>构建工具</p>
+<h2 id="3-部署阶段"><a href="#3-部署阶段" class="headerlink" title="3 部署阶段"></a>3 部署阶段</h2><p>如何做到高效的部署?</p>
+<ul>
+<li>自动化部署</li>
+<li>docker &amp; k8s</li>
+</ul>
+<h2 id="4-测试阶段"><a href="#4-测试阶段" class="headerlink" title="4 测试阶段"></a>4 测试阶段</h2><ul>
+<li>功能测试</li>
+<li>性能测试<ul>
+<li>时间性能</li>
+<li>空间性能</li>
+<li>手动测试 &amp; 自动化测试</li>
+</ul>
+</li>
+<li>安全测试</li>
+</ul>
+<h2 id="5-发布阶段"><a href="#5-发布阶段" class="headerlink" title="5 发布阶段"></a>5 发布阶段</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<ol>
+<li>《持续交付：发布可靠软件的系统方法》</li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件工程</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>自动化测试</title>
+    <url>/2020/03/08/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>linux使用</title>
+    <url>/2020/03/08/linux%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="1-基础命令"><a href="#1-基础命令" class="headerlink" title="1 基础命令"></a>1 基础命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">less /etc/passwd        # 分屏显示，空格下一页，b上一页，q退出 </span><br><span class="line">locate file_name        # 在系统创建的文件索引中查找文件</span><br><span class="line">passwd                  # 修改密码</span><br><span class="line"></span><br><span class="line">ln -s target link_name  # 给target设置软连接</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">### 归档和解压 ####</span></span></span><br><span class="line"></span><br><span class="line">gunzip file.gz                   # 解压.gz文件</span><br><span class="line">gzip file                        # 压缩文件</span><br><span class="line">tar cvf archive.tar file1 file2  # 归档多个文件</span><br><span class="line">tar xvf archive.tar              # 解压tar文件</span><br></pre></td></tr></table></figure>
+
+<p>查看帮助文档：man，info<br><img src="linux-man%E4%BD%BF%E7%94%A8.png" alt="帮助文档"></p>
+<p><strong>任务控制</strong></p>
+<p>ctrl + z : 向进程发送TSTP信号，然后使用fg或者bg继续运行进程。使用<code>jobs</code>查看暂停了哪些进程</p>
+<h2 id="2-设备管理"><a href="#2-设备管理" class="headerlink" title="2 设备管理"></a>2 设备管理</h2><p>dd命令：从输入文件或者输入流读取数据后写入到输出文件或者输出流</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=/dev/zero of=new_file bs=1024 count=1           <span class="comment"># 从/dev/zero设备复制一个大小为1024字节的数据块到new_file文件中</span></span><br></pre></td></tr></table></figure>
+
+<p>lsscsi：查看系统中的SCSI设备</p>
+<h2 id="3-磁盘和文件系统"><a href="#3-磁盘和文件系统" class="headerlink" title="3 磁盘和文件系统"></a>3 磁盘和文件系统</h2><p>为磁盘设备进行分区：</p>
+<ul>
+<li>parted</li>
+<li>gparted</li>
+<li>fdisk</li>
+<li>gdisk</li>
+</ul>
+<p>创建文件系统：</p>
+<ul>
+<li><code>mkfs -t ext4 /dev/sdf2</code>: 在/dev/sdf2上创建ext4分区</li>
+</ul>
+<p>挂载文件系统：</p>
+<ul>
+<li><code>mount /def/sdf2 /home/extra</code>: 挂载/dev/sdf2设备到/home/extra</li>
+</ul>
+<h2 id="4-systemed"><a href="#4-systemed" class="headerlink" title="4 systemed"></a>4 systemed</h2><p>通过systemctl命令与systemd进行诸如激活服务、关闭服务、显示状态、重新加载 配置等的交互操作.</p>
+<ul>
+<li>systemctl 命令来显示系统中所有激活的单元</li>
+<li></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<ol>
+<li>《精通Linux》</li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vagrant使用</title>
+    <url>/2020/03/07/vagrant%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>Vagrant是一个虚拟机管理软件，需要结合虚拟机软件来使用。</p>
+<a id="more"></a>
+
+<h3 id="box"><a href="#box" class="headerlink" title="box"></a>box</h3><p>可以理解成模板，也可以理解成docker中的镜像.</p>
+<p><strong>操作</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vagrant box list                     <span class="comment"># 列出虚机模板</span></span><br><span class="line">vagrant box add USERNAME/BOX_NAME    <span class="comment"># 添加vagrant云仓库里别人做好的box模板，在线下载, 仓库地址:https://app.vagrantup.com/boxes/search, http://www.vagrantbox.es/</span></span><br><span class="line">vagrant box add box-name file/path   <span class="comment"># 添加本地离线下载好的box, --name参数指定本地离线添加的文件导入vagrant程序后的名字</span></span><br><span class="line">vagrant box remove                   <span class="comment"># 移除虚机</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>自定义box</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vagrant package                       <span class="comment"># 关机并打包虚机，会在项目目录生成一个package.box模板文件</span></span><br><span class="line">vagrant box add box-name package.box  <span class="comment"># 打包的虚机模板可以作为模板进行创建虚机。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h3><p>创建一个目录, 然后在该目录下执行操作。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 虚拟机的创建和启动 #</span></span><br><span class="line">vagrant init  BOX          <span class="comment"># 初始化一个Vagrantfile文件。BOX为虚机模板名</span></span><br><span class="line"></span><br><span class="line">vagrant up [VM_NAME]       <span class="comment"># 启动虚机。不跟参数默认启动所有，指定虚机名字（VM_NAME）启动指定的虚机</span></span><br><span class="line">vagrant <span class="built_in">suspend</span> [VM_NAME]  <span class="comment"># 挂起虚机。不跟参数默认关闭所有，指定虚机名字（VM_NAME）挂起指定的虚机</span></span><br><span class="line">vagrant halt [VM_NAME]     <span class="comment"># 关闭虚机。不跟参数默认关闭所有，指定虚机名字（VM_NAME）关闭指定的虚机</span></span><br><span class="line"></span><br><span class="line">vagrant status  [VM_NAME]  <span class="comment"># 虚拟机状态。不跟参数默认查看所有虚机，指定虚机名字（VM_NAME）查看指定的虚机状态</span></span><br><span class="line">vagrant destroy [VM_NAME]  <span class="comment"># 删除虚机。不跟参数默认删除所有，指定虚机名字（VM_NAME）删除指定的虚机</span></span><br><span class="line"></span><br><span class="line">vagrant resume [VM_NAME]   <span class="comment"># 从挂起状态恢复运行。不跟参数默认恢复所有，指定虚机名字（VM_NAME）恢复指定的虚机</span></span><br><span class="line">vagrant reload [VM_NAME]   <span class="comment"># 从挂起状态恢复运行。不跟参数默认恢复所有，指定虚机名字（VM_NAME）恢复指定的虚机</span></span><br><span class="line"></span><br><span class="line">vagrant ssh                <span class="comment"># 登录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://www.jianshu.com/p/d56d42b8d97f" target="_blank" rel="noopener">https://www.jianshu.com/p/d56d42b8d97f</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>vagrant</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>开源项目</title>
+    <url>/2020/03/06/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h2 id="如何参与开源项目"><a href="#如何参与开源项目" class="headerlink" title="如何参与开源项目"></a>如何参与开源项目</h2><ol>
+<li>找一个自己感兴趣的项目</li>
+<li>将项目跑起来</li>
+<li>阅读、调试源码</li>
+<li>基于项目的二次开发</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>通用编程技术-工具</title>
     <url>/2020/03/06/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<p>常用的工具：git，docker，k8s，make，cmake，npm，maven，gradle</p>
@@ -9,7 +168,42 @@
   <entry>
     <title>gradle使用</title>
     <url>/2020/03/06/gradle%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h2 id="1-开始"><a href="#1-开始" class="headerlink" title="1 开始"></a>1 开始</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://gradle.org/releases/" target="_blank" rel="noopener">去官网下载</a>, 然后配置环境变量。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> GRADLE_HOME = <span class="variable">$baseDir</span>/gradle</span><br><span class="line"><span class="built_in">export</span> <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GRADLE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>每一个构建都是由一个或多个 projects 构成的；每一个 project 是由一个或多个 tasks 构成的. 一个 task 代表一些更加细化的构建. 可能是编译一些 classes, 创建一个 JAR, 生成 javadoc, 或者生成某个目录的压缩文件。</p>
+<p>在每个gradle的project的项目的根目录下都有一个<code>build.gradle</code>文件，称为构建脚本。使用gradle进行项目的构建的时候就是根据该文件进行构建。</p>
+<p>简单的demo</p>
+<ul>
+<li>创建<code>build.gradle</code>文件，输入如下的内容：  <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &#123;  <span class="comment">// 定义一个task，叫做hello</span></span><br><span class="line">    <span class="keyword">doLast</span> &#123;</span><br><span class="line">        <span class="keyword">println</span> <span class="string">"hello world"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>执行命令<code>gradle hello</code>: 执行叫做hello的task; 如果不想输入gradle的日志可以使用参数<code>gradle -q hello</code></li>
+</ul>
+<p><strong>task之间的依赖关系</strong></p>
+<p>可以声明task之间的依赖关系：</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">"hello world"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">task</span> intro(dependOn: hello) &#123;  <span class="comment">// intro依赖hello</span></span><br><span class="line">    <span class="keyword">println</span> <span class="string">"it is gradle"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>wrapper</strong></p>
+<p>wrapper：将project和具体的gradle版本进行绑定.</p>
+<ul>
+<li>在项目目录下运行<code>gradle wrapper</code>, 之后会生成如下<br>  <img src="gradle-wrapper.png" alt="gradle wrapper"></li>
+<li>将项目拷贝到到其他的项目之后，可以直接使用<code>./gradlew</code>命令来进行项目的构建<ul>
+<li>该命令会下载需要的gradle版本，下载到<code>~/.gradle/wrapper/dists</code>目录下</li>
+</ul>
+</li>
+</ul>
+<p><strong>daemo</strong></p>
+<p>可以理解成gradle的服务端，执行gradle命令的时候，是创建一个client，然后client将命令发送给daemo，执行完命令之后client会销毁，但是daemo存才，下一次执行的时候还可以直接使用。</p>
+<h2 id="2-使用gradle构建项目"><a href="#2-使用gradle构建项目" class="headerlink" title="2 使用gradle构建项目"></a>2 使用gradle构建项目</h2><p>gradle可以用来构建不同语言开发的project，gradle对project的构建是通过插件实现的。例如：使用java插件来构建java项目。</p>
+<p><strong>使用gradle构建java项目-demo</strong></p>
+<p>gradle默认在 src/main/java 目录下寻找到你的正式（生产）源码, 在 src/test/java 目录下寻找到你的测试源码, 并在src/main/resources目录下寻找到你准备打包进jar的资源文件。测试代码会被加入到环境变量中设置的目录里运行。所有的输出文件都会被创建在构建目录里, 生成的JAR文件会被存放在 build/libs 目录下</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">apply plugin: <span class="string">'java'</span>  <span class="comment">// 将java插件加入到项目中</span></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>查看project项目中的tasks：<code>gradle tasks</code></li>
+<li></li>
+</ul>
+]]></content>
       <categories>
         <category>工具</category>
       </categories>
@@ -1394,14 +1588,16 @@
       </tags>
   </entry>
   <entry>
-    <title>网络编程</title>
-    <url>/2020/01/04/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</url>
+    <title>unix编程</title>
+    <url>/2020/01/04/unix%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<p>本文简单的记录了网编编程相关的一些基础知识。</p>
 <a id="more"></a>
 
-<h2 id="1-网络编程基础"><a href="#1-网络编程基础" class="headerlink" title="1 网络编程基础"></a>1 网络编程基础</h2><p>在开始学习网络编程之前，先了解一些Linux的基础知识。</p>
-<h3 id="1-1-Linux架构"><a href="#1-1-Linux架构" class="headerlink" title="1.1 Linux架构"></a>1.1 Linux架构</h3><p><img src="linux_arch.jpg" alt="linux架构简图"></p>
+
+<p>在开始学习网络编程之前，先了解一些Linux的基础知识。</p>
+<h1 id="系统编程"><a href="#系统编程" class="headerlink" title="系统编程"></a>系统编程</h1><p><img src="linux_arch.jpg" alt="linux架构简图"></p>
 <p>上图是Linux简单的系统架构图（不一定准确）。应用程序与内核的交互是通过Linux内核提供的系统调用了来实现的。在应用程序中可以直接调用内核提供的API，也可以使用C语言标准库中对内核中API进一步进行封装的API。</p>
+<h2 id="1-文件IO"><a href="#1-文件IO" class="headerlink" title="1 文件IO"></a>1 文件IO</h2><p>文件的基本操作：打开文件、读文件、写文件等。常用的函数有<code>open</code>, <code>read</code>, <code>write</code>, <code>lseek</code>, <code>close</code></p>
 <h3 id="1-2-数据包的流转路径"><a href="#1-2-数据包的流转路径" class="headerlink" title="1.2 数据包的流转路径"></a>1.2 数据包的流转路径</h3><p><img src="pkg_flow.jpg" alt="数据包处理流程图"></p>
 <p>首先是网卡收包，然后交给内核协议栈，最后数据到达用户进程。</p>
 <h4 id="1-2-1-网卡收包"><a href="#1-2-1-网卡收包" class="headerlink" title="1.2.1 网卡收包"></a>1.2.1 网卡收包</h4><p>从整体上来说，网卡收包是网线中的高低电平转换到网卡FIFO存储然后再拷贝到主内存的过程。网卡需要有驱动才能工作，驱动是加载到内核中的模块，负责衔接网卡和内核的网络模块。驱动在加载的时候将自己注册进内核的网络模块，当相应的网卡收到数据包时，网络模块会调用相应的驱动程序处理数据。具体过程如下：</p>
@@ -1418,7 +1614,7 @@
 </ul>
 <h4 id="1-2-2-内核协议栈处理数据包的流程"><a href="#1-2-2-内核协议栈处理数据包的流程" class="headerlink" title="1.2.2 内核协议栈处理数据包的流程"></a>1.2.2 内核协议栈处理数据包的流程</h4><p>socket 层是网络子系统的标准 API，它为各种网络协议提供了一个用户接口。</p>
 <h4 id="1-2-3-用户进程处理数据包"><a href="#1-2-3-用户进程处理数据包" class="headerlink" title="1.2.3 用户进程处理数据包"></a>1.2.3 用户进程处理数据包</h4><p>数据到达用户程序之后，在用户程序中使用socket层提供的系统API，根据自己的协议（可以是http协议）进行数据包的处理。</p>
-<h2 id="2-网络IO模型"><a href="#2-网络IO模型" class="headerlink" title="2 网络IO模型"></a>2 网络IO模型</h2><p>IO操作是指：在应用程序中使用内核提供的系统调用，<strong>将内核缓冲区中的数据拷贝到用户空间的缓冲区中</strong>。</p>
+<h2 id="1-网络编程基础"><a href="#1-网络编程基础" class="headerlink" title="1 网络编程基础"></a>1 网络编程基础</h2><h2 id="2-网络IO模型"><a href="#2-网络IO模型" class="headerlink" title="2 网络IO模型"></a>2 网络IO模型</h2><p>IO操作是指：在应用程序中使用内核提供的系统调用，<strong>将内核缓冲区中的数据拷贝到用户空间的缓冲区中</strong>。</p>
 <p><strong>阻塞IO</strong>：在应用程序中使用此种系统调用，如果内核缓冲区中没有数据，应用程序会被阻塞，将CPU让出。</p>
 <p><strong>非阻塞IO</strong>：在应用程序中使用此种系统调用，如果内核缓冲区中没有数据，应用程序不会被阻塞，而是返回一个错误码，CPU不会让出，在应用程序中是使用轮询的方式，轮询将会不断地询问内核，这将占用大量的CPU时间。</p>
 <p><strong>IO复用</strong>：select, epoll系统调用，该系统调用会使程序阻塞。所谓的复用是复用线程，在一个线程中对多个内核缓冲区进行监控，如果监控的多个内核缓冲区都没有数据，应用程序被阻塞；当监控的多个内核缓冲区中任何一个或多个有数据的时候，都会调用它相对应的IO操作函数，将数据从内核缓冲区拷贝到用户进程。</p>
@@ -1429,7 +1625,7 @@
         <category>后台开发</category>
       </categories>
       <tags>
-        <tag>网络编程</tag>
+        <tag>unix</tag>
       </tags>
   </entry>
   <entry>
@@ -2162,6 +2358,16 @@
 </ol>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge --no-ff hotfix-1.2.1</span><br><span class="line">git tag -a 1.2.1</span><br><span class="line"></span><br><span class="line">git checkout develop</span><br><span class="line">git merge --no-ff hotfix-1.2.1</span><br><span class="line">git branch -d hotfix-1.2.1</span><br></pre></td></tr></table></figure>
 
+<p>–</p>
+<p>github搜索</p>
+<ul>
+<li>in:name flask        # 搜索名字里面包含flask的项目</li>
+<li>in:readme flask      # 搜索readme里面包含flask的项目</li>
+<li>in:description flask # description中包含flask的项目</li>
+<li>stars:&gt;3000           # 搜索star数量大于3000的项目</li>
+<li>language:python      # 限定语言</li>
+<li>pushed:&gt;2020         # 限定最后一次的push时间</li>
+</ul>
 <p>参考</p>
 <blockquote>
 <p><a href="https://wangchujiang.com/linux-command/c/git.html" target="_blank" rel="noopener">https://wangchujiang.com/linux-command/c/git.html</a><br><a href="https://opensource.com/article/18/4/git-tips" target="_blank" rel="noopener">https://opensource.com/article/18/4/git-tips</a><br><a href="https://github.com/twtrubiks/Git-Tutorials" target="_blank" rel="noopener">https://github.com/twtrubiks/Git-Tutorials</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzAwMjk5Mjk3Mw==&mid=2247487043&idx=2&sn=1824a77f2fc2657dcefd97a4bcb8f169&chksm=9ac0b061adb73977fe4e6538cae71ebbeb4e46ce6db3543b26c9248e3d3fcb29d3debf762354&mpshare=1&scene=1&srcid=0101VuPUEx2NJgjPzMHJAGgn&sharer_sharetime=1577855337261&sharer_shareid=bd726766a074fa81de1978890c5213aa%23rd" target="_blank" rel="noopener">团队开发中 Git 最佳实践，不给队友拖后腿</a></p>
@@ -3224,9 +3430,19 @@
 <p>tips: 快速清除多个container<br>docker container ls -aq  # 查看容器的ID<br>docker rm $(docker container ls -aq)  # 可以实现快速的删除多个container<br>docker container ls -f “status=exited” -q  # 查看所有的已经退出的container<br>docker rm $(docker container ls -f “status=exited” -q)  # 快速的清除所有已经退出的container</p>
 </blockquote>
 <h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p><img src="docker%E7%BD%91%E7%BB%9C.png" alt="docker网络"></p>
-<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
+<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥, 网桥可以理解为一个软件交换机。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
 <p>Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络无法寻址到，如果希望容器能够被外部网络访问到，就需要通过映射容器端口到宿主机的端口</p>
+<p><a href="https://juejin.im/post/5c3363bf6fb9a049e2322cdb" target="_blank" rel="noopener">docker网络参考：</a></p>
 <h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p>Docker中的数据持久化：使用Docker数据卷将宿主机上的文件或者目录挂载到容器中。</p>
+<p>docker中管理数据主要有两种方式：</p>
+<ul>
+<li>数据卷：就是在容器中创建一个数据卷，然后将宿主机上的目录或者文件挂载到这个数据卷上。<ul>
+<li>创建数据卷的命令是<code>docker volume create test</code>，创建一个数据卷，名字是test,这种数据卷是<strong>普通数据卷</strong></li>
+<li>可以在run的时候使用-v来创建数据卷，这种方式创建的数据卷是<strong>绑定数据卷</strong>，<code>docker run -v /temp:/opt/test</code>将本地的/temp路径挂载到容器的/opt/test下s</li>
+</ul>
+</li>
+<li>数据卷容器：创建一个容器，这个容器专门用来存储数据</li>
+</ul>
 <p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
 <p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>

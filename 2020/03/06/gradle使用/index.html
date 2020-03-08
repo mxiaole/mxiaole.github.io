@@ -20,16 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="1 开始安装去官网下载, 然后配置环境变量。 12export GRADLE_HOME &#x3D; $baseDir&#x2F;gradleexport export PATH&#x3D;$PATH:$GRADLE_HOME&#x2F;bin  基本概念每一个构建都是由一个或多个 projects 构成的；每一个 project 是由一个或多个 tasks 构成的. 一个 task 代表一些更加细化的构建. 可能是编译一些 class">
+<meta property="og:type" content="article">
 <meta property="og:title" content="gradle使用">
 <meta property="og:url" content="http://yoursite.com/2020/03/06/gradle%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="人生识字忧患始，不待扬鞭自奋蹄">
+<meta property="og:description" content="1 开始安装去官网下载, 然后配置环境变量。 12export GRADLE_HOME &#x3D; $baseDir&#x2F;gradleexport export PATH&#x3D;$PATH:$GRADLE_HOME&#x2F;bin  基本概念每一个构建都是由一个或多个 projects 构成的；每一个 project 是由一个或多个 tasks 构成的. 一个 task 代表一些更加细化的构建. 可能是编译一些 class">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/03/06/gradle%E4%BD%BF%E7%94%A8/gradle-wrapper.png">
 <meta property="article:published_time" content="2020-03-06T04:56:20.000Z">
-<meta property="article:modified_time" content="2020-03-06T05:02:29.329Z">
+<meta property="article:modified_time" content="2020-03-07T10:03:55.101Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="gradle">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/06/gradle%E4%BD%BF%E7%94%A8/gradle-wrapper.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/06/gradle%E4%BD%BF%E7%94%A8/">
 
@@ -201,10 +205,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-03-06 12:56:20 / Modified: 13:02:29" itemprop="dateCreated datePublished" datetime="2020-03-06T12:56:20+08:00">2020-03-06</time>
+              <time title="Created: 2020-03-06 12:56:20" itemprop="dateCreated datePublished" datetime="2020-03-06T12:56:20+08:00">2020-03-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-07 18:03:55" itemprop="dateModified" datetime="2020-03-07T18:03:55+08:00">2020-03-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -228,7 +238,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="1-开始"><a href="#1-开始" class="headerlink" title="1 开始"></a>1 开始</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://gradle.org/releases/" target="_blank" rel="noopener">去官网下载</a>, 然后配置环境变量。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GRADLE_HOME = <span class="variable">$baseDir</span>/gradle</span><br><span class="line"><span class="built_in">export</span> <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GRADLE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>每一个构建都是由一个或多个 projects 构成的；每一个 project 是由一个或多个 tasks 构成的. 一个 task 代表一些更加细化的构建. 可能是编译一些 classes, 创建一个 JAR, 生成 javadoc, 或者生成某个目录的压缩文件。</p>
+<p>在每个gradle的project的项目的根目录下都有一个<code>build.gradle</code>文件，称为构建脚本。使用gradle进行项目的构建的时候就是根据该文件进行构建。</p>
+<p>简单的demo</p>
+<ul>
+<li>创建<code>build.gradle</code>文件，输入如下的内容：  <figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &#123;  <span class="comment">// 定义一个task，叫做hello</span></span><br><span class="line">    <span class="keyword">doLast</span> &#123;</span><br><span class="line">        <span class="keyword">println</span> <span class="string">"hello world"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>执行命令<code>gradle hello</code>: 执行叫做hello的task; 如果不想输入gradle的日志可以使用参数<code>gradle -q hello</code></li>
+</ul>
+<p><strong>task之间的依赖关系</strong></p>
+<p>可以声明task之间的依赖关系：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &lt;&lt; &#123;</span><br><span class="line">    <span class="keyword">println</span> <span class="string">"hello world"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">task</span> intro(dependOn: hello) &#123;  <span class="comment">// intro依赖hello</span></span><br><span class="line">    <span class="keyword">println</span> <span class="string">"it is gradle"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>wrapper</strong></p>
+<p>wrapper：将project和具体的gradle版本进行绑定.</p>
+<ul>
+<li>在项目目录下运行<code>gradle wrapper</code>, 之后会生成如下<br>  <img src="gradle-wrapper.png" alt="gradle wrapper"></li>
+<li>将项目拷贝到到其他的项目之后，可以直接使用<code>./gradlew</code>命令来进行项目的构建<ul>
+<li>该命令会下载需要的gradle版本，下载到<code>~/.gradle/wrapper/dists</code>目录下</li>
+</ul>
+</li>
+</ul>
+<p><strong>daemo</strong></p>
+<p>可以理解成gradle的服务端，执行gradle命令的时候，是创建一个client，然后client将命令发送给daemo，执行完命令之后client会销毁，但是daemo存才，下一次执行的时候还可以直接使用。</p>
+<h2 id="2-使用gradle构建项目"><a href="#2-使用gradle构建项目" class="headerlink" title="2 使用gradle构建项目"></a>2 使用gradle构建项目</h2><p>gradle可以用来构建不同语言开发的project，gradle对project的构建是通过插件实现的。例如：使用java插件来构建java项目。</p>
+<p><strong>使用gradle构建java项目-demo</strong></p>
+<p>gradle默认在 src/main/java 目录下寻找到你的正式（生产）源码, 在 src/test/java 目录下寻找到你的测试源码, 并在src/main/resources目录下寻找到你准备打包进jar的资源文件。测试代码会被加入到环境变量中设置的目录里运行。所有的输出文件都会被创建在构建目录里, 生成的JAR文件会被存放在 build/libs 目录下</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">'java'</span>  <span class="comment">// 将java插件加入到项目中</span></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>查看project项目中的tasks：<code>gradle tasks</code></li>
+<li></li>
+</ul>
+
     </div>
 
     
@@ -312,6 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-开始"><span class="nav-number">1.</span> <span class="nav-text">1 开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.2.</span> <span class="nav-text">基本概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用gradle构建项目"><span class="nav-number">2.</span> <span class="nav-text">2 使用gradle构建项目</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -325,20 +371,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

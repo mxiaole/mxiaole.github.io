@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/docker%E6%9E%B6%E6%9E%84%E5%9B%BE.jpeg">
 <meta property="og:image" content="http://yoursite.com/2019/04/27/docker%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/docker%E7%BD%91%E7%BB%9C.png">
 <meta property="article:published_time" content="2019-04-27T06:31:37.000Z">
-<meta property="article:modified_time" content="2020-02-18T05:36:53.100Z">
+<meta property="article:modified_time" content="2020-03-08T12:32:53.728Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
@@ -214,7 +214,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-18 13:36:53" itemprop="dateModified" datetime="2020-02-18T13:36:53+08:00">2020-02-18</time>
+                <time title="Modified: 2020-03-08 20:32:53" itemprop="dateModified" datetime="2020-03-08T20:32:53+08:00">2020-03-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -368,9 +368,19 @@
 <p>tips: 快速清除多个container<br>docker container ls -aq  # 查看容器的ID<br>docker rm $(docker container ls -aq)  # 可以实现快速的删除多个container<br>docker container ls -f “status=exited” -q  # 查看所有的已经退出的container<br>docker rm $(docker container ls -f “status=exited” -q)  # 快速的清除所有已经退出的container</p>
 </blockquote>
 <h1 id="6-网络管理"><a href="#6-网络管理" class="headerlink" title="6. 网络管理"></a>6. 网络管理</h1><p><img src="docker%E7%BD%91%E7%BB%9C.png" alt="docker网络"></p>
-<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
+<p>Docker使用Linux桥接，在宿主机上虚拟一个Docker网桥, 网桥可以理解为一个软件交换机。Docker在启动一个容器时会根据Docker网桥的网段分配容器的IP，同时Docker网桥是每个容器的默认网关。</p>
 <p>Docker网桥是宿主机虚拟出来的，并不是真实存在的网络设备，外部网络无法寻址到，如果希望容器能够被外部网络访问到，就需要通过映射容器端口到宿主机的端口</p>
+<p><a href="https://juejin.im/post/5c3363bf6fb9a049e2322cdb" target="_blank" rel="noopener">docker网络参考：</a></p>
 <h1 id="7-数据持久化"><a href="#7-数据持久化" class="headerlink" title="7. 数据持久化"></a>7. 数据持久化</h1><p>Docker中的数据持久化：使用Docker数据卷将宿主机上的文件或者目录挂载到容器中。</p>
+<p>docker中管理数据主要有两种方式：</p>
+<ul>
+<li>数据卷：就是在容器中创建一个数据卷，然后将宿主机上的目录或者文件挂载到这个数据卷上。<ul>
+<li>创建数据卷的命令是<code>docker volume create test</code>，创建一个数据卷，名字是test,这种数据卷是<strong>普通数据卷</strong></li>
+<li>可以在run的时候使用-v来创建数据卷，这种方式创建的数据卷是<strong>绑定数据卷</strong>，<code>docker run -v /temp:/opt/test</code>将本地的/temp路径挂载到容器的/opt/test下s</li>
+</ul>
+</li>
+<li>数据卷容器：创建一个容器，这个容器专门用来存储数据</li>
+</ul>
 <p><strong>如果使用容器，启动一个myql，当这个container销毁后，如果MySQL中的数据保存在container中，那么MySQL中的数据也会消失；这时候应该怎么处理呢？</strong></p>
 <p>将宿主机上的目录或者文件挂载到容器中，即使容器销毁，数据卷中的数据仍然保留在宿主机上，下次启动的时候可以使用。</p>
 <p>共有两种 Volume 类型。每种 Volume 都是宿主机上的的一个目录对应到container内的一个目录，其不同只在于主机上的位置。</p>
@@ -550,20 +560,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
