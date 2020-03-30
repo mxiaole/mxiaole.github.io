@@ -12,12 +12,12 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="本文总结了常用的算法思想、常用的算法以及常见的算法技巧。">
@@ -208,13 +208,6 @@
 
               <time title="Created: 2019-08-21 14:37:41" itemprop="dateCreated datePublished" datetime="2019-08-21T14:37:41+08:00">2019-08-21</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-19 18:16:09" itemprop="dateModified" datetime="2020-02-19T18:16:09+08:00">2020-02-19</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -495,7 +488,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-绪论"><span class="nav-number">1.</span> <span class="nav-text">0 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学习目标"><span class="nav-number">1.1.</span> <span class="nav-text">学习目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-时间复杂度"><span class="nav-number">2.</span> <span class="nav-text">1 时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-算法设计模式"><span class="nav-number">3.</span> <span class="nav-text">2 算法设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-暴力搜索"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 暴力搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-分治"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 分治</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-图的搜索"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 图的搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-动态规划"><span class="nav-number">3.4.</span> <span class="nav-text">2.4 动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-贪心"><span class="nav-number">3.5.</span> <span class="nav-text">2.5 贪心</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-算法实现"><span class="nav-number">4.</span> <span class="nav-text">3 算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-递归与迭代"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 递归与迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-树的递归"><span class="nav-number">4.1.1.</span> <span class="nav-text">2.1.1 树的递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-链表的递归"><span class="nav-number">4.1.2.</span> <span class="nav-text">2.1.2 链表的递归</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-顺序、并行与分布式"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 顺序、并行与分布式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-经典算法"><span class="nav-number">5.</span> <span class="nav-text">4 经典算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-排序算法"><span class="nav-number">5.1.</span> <span class="nav-text">3.1 排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择排序"><span class="nav-number">5.1.1.</span> <span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">5.1.2.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归并排序"><span class="nav-number">5.1.3.</span> <span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速排序"><span class="nav-number">5.1.4.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆排序"><span class="nav-number">5.1.5.</span> <span class="nav-text">堆排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-查找算法"><span class="nav-number">5.2.</span> <span class="nav-text">3.2 查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找"><span class="nav-number">5.2.1.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于树的查找"><span class="nav-number">5.2.2.</span> <span class="nav-text">基于树的查找</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-字符串算法"><span class="nav-number">5.3.</span> <span class="nav-text">3.3 字符串算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本概念"><span class="nav-number">5.3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力算法"><span class="nav-number">5.3.2.</span> <span class="nav-text">暴力算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KMP算法"><span class="nav-number">5.3.3.</span> <span class="nav-text">KMP算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#马拉车算法"><span class="nav-number">5.3.4.</span> <span class="nav-text">马拉车算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-图相关的算法"><span class="nav-number">5.4.</span> <span class="nav-text">3.4 图相关的算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-算法技巧"><span class="nav-number">6.</span> <span class="nav-text">5 算法技巧</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-绪论"><span class="nav-text">0 绪论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学习目标"><span class="nav-text">学习目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-时间复杂度"><span class="nav-text">1 时间复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-算法设计模式"><span class="nav-text">2 算法设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-暴力搜索"><span class="nav-text">2.1 暴力搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-分治"><span class="nav-text">2.2 分治</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-图的搜索"><span class="nav-text">2.3 图的搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-动态规划"><span class="nav-text">2.4 动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-贪心"><span class="nav-text">2.5 贪心</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-算法实现"><span class="nav-text">3 算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-递归与迭代"><span class="nav-text">3.1 递归与迭代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-树的递归"><span class="nav-text">2.1.1 树的递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-链表的递归"><span class="nav-text">2.1.2 链表的递归</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-顺序、并行与分布式"><span class="nav-text">3.2 顺序、并行与分布式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-经典算法"><span class="nav-text">4 经典算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-排序算法"><span class="nav-text">3.1 排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择排序"><span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归并排序"><span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速排序"><span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆排序"><span class="nav-text">堆排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-查找算法"><span class="nav-text">3.2 查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找"><span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于树的查找"><span class="nav-text">基于树的查找</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-字符串算法"><span class="nav-text">3.3 字符串算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本概念"><span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力算法"><span class="nav-text">暴力算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KMP算法"><span class="nav-text">KMP算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#马拉车算法"><span class="nav-text">马拉车算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-图相关的算法"><span class="nav-text">3.4 图相关的算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-算法技巧"><span class="nav-text">5 算法技巧</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -509,20 +502,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -564,7 +557,7 @@
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
   </div>
 
         

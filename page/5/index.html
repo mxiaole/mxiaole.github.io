@@ -12,12 +12,12 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta property="og:type" content="website">
@@ -176,6 +176,168 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/etcd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/19/etcd/" class="post-title-link" itemprop="url">etcd</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-19 16:25:39" itemprop="dateCreated datePublished" datetime="2019-08-19T16:25:39+08:00">2019-08-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">后台开发</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>etcd是一个高可用的键值存储系统，通过raft算法处理日志复制以保证强一致性。</p>
+<p><img src="etcd%E6%9E%B6%E6%9E%84.png" alt="etcd架构图"></p>
+<ul>
+<li>httpserver: 用于处理用户发送的API请求，以及其他的etcd节点的同步与心跳信息请求。</li>
+<li>Store: 用于处理etcd支持的各类功能的事务</li>
+<li>Raft: 强一致算法的具体实现。</li>
+<li>WAL: write ahead log是etcd的数据存储方式。由日志存储和快照存储两部分组成，其中Entry负责存储具体的日志内容，而snapshot负责在日志内容发生变化的时候保存raft的状态。</li>
+</ul>
+<p>通常对于一个请求，会先由httpserver转发给Store进行具体的事务处理，如果涉及到节点的修改，则交给raft模块进行状态的变更、日志记录，然后在同步给其他的Etcd节点以确认数据提交，最后进行数据的提交、再次同步。</p>
+<p>etcd集群是一个分布式系统，多个节点相互通信构成整体对外提供服务，每个节点都存储完整的数据，并通过raft协议保证每个节点的数据是一致的。</p>
+<p>在任意时刻，集群中的每台机器只可能处于Leader、Follower、Candidate三种状态；处于正常状态时，集群中只会存在一个Leader，其余的服务器都是Follower。所有的 Follower 节点都是被动的，它们不会主动发出任何的请求，只会响应 Leader 和 Candidate 发出的请求，对于每一个用户的可变操作，都会被路由给 Leader 节点进行处理，除了 Leader 和 Follower 节点之外，Candidate 节点其实只是集群运行过程中的一个临时状态。</p>
+<h2 id="Raft协议"><a href="#Raft协议" class="headerlink" title="Raft协议"></a>Raft协议</h2><p>Raft 协议分成三个子问题：节点选举、日志复制以及安全性</p>
+<h3 id="节点选举"><a href="#节点选举" class="headerlink" title="节点选举"></a>节点选举</h3><p>所有节点一开始都被初始化为 Follower 状态</p>
+<ul>
+<li>当Follower在一定时间内没有收到来自主节点的心跳，会将自己角色改变为Candidate，并发起一次选主投票；当收到包括自己在内超过半数节点赞成后，选举成功；当收到票数不足半数选举失败，或者选举超时。若本轮未选出主节点，将进行下一轮选举（出现这种情况，是由于多个节点同时选举，所有节点均为获得过半选票）。<br>Candidate节点收到来自主节点的信息后，会立即终止选举过程，进入Follower角色。</li>
+</ul>
+<h3 id="日志复制"><a href="#日志复制" class="headerlink" title="日志复制"></a>日志复制</h3><p>所谓日志复制，是指主节点将每次操作形成日志条目，并持久化到本地磁盘，然后通过网络IO发送给其他节点。其他节点根据日志的逻辑时钟(TERM，每次选主都会形成一个唯一的TERM编号，相当于逻辑时钟。每一条日志都有全局唯一的编号)和日志编号(INDEX)来判断是否将该日志记录持久化到本地。当主节点收到包括自己在内超过半数节点成功返回，那么认为该日志是可提交的(committed），并将日志输入到状态机，将结果返回给客户端。</p>
+<p>主节点通过网络IO向其他节点追加日志。若某节点收到日志追加的消息，首先判断该日志的TERM是否过期，以及该日志条目的INDEX是否比当前以及提交的日志的INDEX跟早。若已过期，或者比提交的日志更早，那么就拒绝追加，并返回该节点当前的已提交的日志的编号。否则，将日志追加，并返回成功。</p>
+<p>当主节点收到其他节点关于日志追加的回复后，若发现有拒绝，则根据该节点返回的已提交日志编号，发生其编号下一条日志。</p>
+<p>主节点像其他节点同步日志，还作了拥塞控制。具体地说，主节点发现日志复制的目标节点拒绝了某次日志追加消息，将进入日志探测阶段，一条一条发送日志，直到目标节点接受日志，然后进入快速复制阶段，可进行批量日志追加。</p>
+<p>按照日志复制的逻辑，我们可以看到，集群中慢节点不影响整个集群的性能。另外一个特点是，数据只从主节点复制到Follower节点，这样大大简化了逻辑流程。</p>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>Raft解决的办法是，在选主逻辑中，对能够成为主的节点加以限制，确保选出的节点已定包含了集群已经提交的所有日志。如果新选出的主节点已经包含了集群所有提交的日志，那就不需要从和其他节点比对数据了。简化了流程，缩短了集群恢复服务的时间。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
+<p><a href="https://draveness.me/etcd-introduction" target="_blank" rel="noopener">https://draveness.me/etcd-introduction</a><br><a href="https://www.ipcpu.com/2017/09/etcd-start/" target="_blank" rel="noopener">https://www.ipcpu.com/2017/09/etcd-start/</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/cobra%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Cody">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/08/19/cobra%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">cobra包的使用</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-19 15:05:36" itemprop="dateCreated datePublished" datetime="2019-08-19T15:05:36+08:00">2019-08-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1. 介绍"></a>1. 介绍</h1><p>使用该包可以创建命令行程序. 在cobra中有几个重要的概念command、argument、flag，其中command代表的是命令、argument表示命令行参数、flag为参数选项</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/19/lantern%E4%BB%A3%E7%90%86%E7%BB%88%E7%AB%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -199,9 +361,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-08-19 10:33:50 / Modified: 10:37:00" itemprop="dateCreated datePublished" datetime="2019-08-19T10:33:50+08:00">2019-08-19</time>
+              <time title="Created: 2019-08-19 10:33:50" itemprop="dateCreated datePublished" datetime="2019-08-19T10:33:50+08:00">2019-08-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,13 +434,6 @@
 
               <time title="Created: 2019-08-19 08:39:57" itemprop="dateCreated datePublished" datetime="2019-08-19T08:39:57+08:00">2019-08-19</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-18 14:08:12" itemprop="dateModified" datetime="2020-02-18T14:08:12+08:00">2020-02-18</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -356,13 +510,6 @@
 
               <time title="Created: 2019-08-15 12:58:43" itemprop="dateCreated datePublished" datetime="2019-08-15T12:58:43+08:00">2019-08-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-07 13:10:58" itemprop="dateModified" datetime="2019-12-07T13:10:58+08:00">2019-12-07</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -497,9 +644,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-08-14 14:16:53 / Modified: 15:04:34" itemprop="dateCreated datePublished" datetime="2019-08-14T14:16:53+08:00">2019-08-14</time>
+              <time title="Created: 2019-08-14 14:16:53" itemprop="dateCreated datePublished" datetime="2019-08-14T14:16:53+08:00">2019-08-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -588,13 +734,6 @@
 
               <time title="Created: 2019-08-14 11:04:07" itemprop="dateCreated datePublished" datetime="2019-08-14T11:04:07+08:00">2019-08-14</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-08-15 12:12:49" itemprop="dateModified" datetime="2019-08-15T12:12:49+08:00">2019-08-15</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -721,13 +860,6 @@
 
               <time title="Created: 2019-08-13 07:38:26" itemprop="dateCreated datePublished" datetime="2019-08-13T07:38:26+08:00">2019-08-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-08-15 09:38:56" itemprop="dateModified" datetime="2019-08-15T09:38:56+08:00">2019-08-15</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -853,9 +985,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-08-12 14:18:10 / Modified: 14:31:51" itemprop="dateCreated datePublished" datetime="2019-08-12T14:18:10+08:00">2019-08-12</time>
+              <time title="Created: 2019-08-12 14:18:10" itemprop="dateCreated datePublished" datetime="2019-08-12T14:18:10+08:00">2019-08-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -938,13 +1069,6 @@
 
               <time title="Created: 2019-08-11 13:40:00" itemprop="dateCreated datePublished" datetime="2019-08-11T13:40:00+08:00">2019-08-11</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-07 13:12:58" itemprop="dateModified" datetime="2019-12-07T13:12:58+08:00">2019-12-07</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -996,222 +1120,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/11/shell%E7%BC%96%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/11/shell%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">shell编程</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-08-11 11:48:03" itemprop="dateCreated datePublished" datetime="2019-08-11T11:48:03+08:00">2019-08-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-11-17 21:41:55" itemprop="dateModified" datetime="2019-11-17T21:41:55+08:00">2019-11-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
-                    <span itemprop="name">编程语言</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="test命令"><a href="#test命令" class="headerlink" title="test命令"></a>test命令</h3><p>该命令可以用来判断某个条件是否成立</p>
-<p>if 条件 -h参数</p>
-<h3 id="条件表达式"><a href="#条件表达式" class="headerlink" title="条件表达式"></a>条件表达式</h3><h4 id="1-文件属性测试"><a href="#1-文件属性测试" class="headerlink" title="1. 文件属性测试"></a>1. 文件属性测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -h </span></span><br><span class="line"><span class="comment"># 如果file存在且是一个符号连接则为真 </span></span><br><span class="line"><span class="keyword">if</span> [ -h file ]; <span class="keyword">then</span></span><br><span class="line">	ehco <span class="string">"hello world"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="2-字符串测试"><a href="#2-字符串测试" class="headerlink" title="2. 字符串测试"></a>2. 字符串测试</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-z string  <span class="comment"># 如果字符串长度为0 为真</span></span><br><span class="line">-n string  <span class="comment"># 字符串长度不为0 为真</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="command命令"><a href="#command命令" class="headerlink" title="command命令"></a>command命令</h3><p>该命令是bash内置的命令，无视shell脚本中的”同名函数”，执行特定的命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断某个命令是否存在</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span> -v <span class="built_in">pwd</span> &gt;/dev/null; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"command has found"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"command not found"</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p><code>&gt;</code>等价于<code>1&gt;</code>，1是系统默认的标准输出，可以省略。<br><code>&amp;</code>表示等同的意思：<code>2&gt;&amp;1</code>表示2的输出重定向和1的输出重定向一样</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">1&gt;</span><span class="bash">/dev/null 2&gt;&amp;1</span></span><br></pre></td></tr></table></figure>
-
-<p>上述语句：</p>
-<ul>
-<li>1&gt;/dev/null : 表示将标准输出重定向到空设备文件</li>
-<li>2&gt;&amp;1 : 将标准错误的输出重定向和标准输出一样，标准输出重定向到哪里，标准错误就重定向到哪里</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/cmake%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Cody">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="人生识字忧患始，不待扬鞭自奋蹄">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/08/10/cmake%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">cmake使用</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-08-10 16:00:27" itemprop="dateCreated datePublished" datetime="2019-08-10T16:00:27+08:00">2019-08-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-12 21:25:08" itemprop="dateModified" datetime="2020-02-12T21:25:08+08:00">2020-02-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">工具</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>cmake是一个构建工具，使用该工具可以用来构建C/C++项目的时候使用cmake命令可以自动生成Makefile文件，然后使用make工具进行项目的编译。</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="基本使用规范"><a href="#基本使用规范" class="headerlink" title="基本使用规范"></a>基本使用规范</h3><p>cmake构建系统是通过多个目标文件组织在一起生成一个二进制可执行文件的，每一个目标对应一个可执行文件或者库文件。</p>
-<h4 id="1-可执行目标文件"><a href="#1-可执行目标文件" class="headerlink" title="1. 可执行目标文件"></a>1. 可执行目标文件</h4><p>通过<code>add_executable(target dependency1 dependency2 ....)</code>命令来实现添加希望生成的可执行文件</p>
-<h4 id="2-库文件"><a href="#2-库文件" class="headerlink" title="2. 库文件"></a>2. 库文件</h4><p>通过<code>add_library(lib dependency1 dependency2 ...)</code>命令来实现添加生成目标文件。</p>
-<p><strong>怎么指定是生成动态库还是静态库呢？</strong></p>
-<blockquote>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">add_library</span>(archive SHARED archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成动态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive STATIC archive.cpp zip.cpp lzma.cpp)  <span class="comment"># 生成静态库，默认是静态库</span></span><br><span class="line"><span class="keyword">add_library</span>(archive MODULE <span class="number">7</span>z.cpp) </span><br></pre></td></tr></table></figure>
-</blockquote>
-<h4 id="3-给目标文件添加文件目录"><a href="#3-给目标文件添加文件目录" class="headerlink" title="3. 给目标文件添加文件目录"></a>3. 给目标文件添加文件目录</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">target_include_directories</span>(<span class="keyword">target</span> directory)</span><br></pre></td></tr></table></figure>
-
-<p>该命令是用来在生成目标文件时指定生成目标文件依赖的源代码的目录。</p>
-<h4 id="4-file命令"><a href="#4-file命令" class="headerlink" title="4. file命令"></a>4. file命令</h4><p>这是一个文件操作命令。通过该命令可以有如下的操作：</p>
-<ul>
-<li>从文件中读</li>
-<li>向文件中追加内容，重写内容</li>
-</ul>
-<p>常用的命令有如下：</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">file</span>(READ &lt;filename&gt; &lt;variable&gt; [OFFSET &lt;offset&gt;] [LIMIT &lt;max-in&gt;] [HEX])  <span class="comment"># 从文件中读取内容，并且保存到变量里，可以选择开始读取文件的偏移量和读取的最长字节数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(STRINGS &lt;filename&gt; &lt;variable&gt; [&lt;options&gt;...])  <span class="comment"># 按行文件中读取内容，保存在变量中。可以通过option参数对读取到的行进行过滤，只有满足参数条件的字符串才能够被命中保存到变量中，具体的参数值可以参考:https://cmake.org/cmake/help/v3.7/command/file.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">file</span>(WRITE &lt;filename&gt; &lt;content&gt;...)  <span class="comment"># 将content写入到filename文件中。如果文件不存在就创建，如果文件存在，WRITE模式就会覆盖原文件的内容，APPEND模式就会追加到文件中</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="5-字符串操作命令"><a href="#5-字符串操作命令" class="headerlink" title="5. 字符串操作命令"></a>5. 字符串操作命令</h4><p>cmake提供了对字符串进行操作的命令，可以通过这写命令来对输入的字符串进行查找，过滤、正则匹配等操作。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span>(FIND &lt;<span class="keyword">string</span>&gt; &lt;substring&gt; &lt;output variable&gt; [REVERSE])  <span class="comment"># 将子串在字符串中的位置赋值给变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REPLACE &lt;match_string&gt; &lt;replace_string&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用replace_string来替换所有匹配input中的的match_string，然后将结果保存在变量中</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span>(REGEX MATCH &lt;regular_expression&gt; &lt;output variable&gt; &lt;input&gt; [&lt;input&gt;...])  <span class="comment"># 使用正则进行处理字符串</span></span><br></pre></td></tr></table></figure>
-<h4 id="6-set命令"><a href="#6-set命令" class="headerlink" title="6. set命令"></a>6. set命令</h4><p>使用该命令来对变量值进行设置。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>(&lt;variable&gt; &lt;value&gt;... [PARENT_SCOPE])  <span class="comment"># 将value值设置到variable上，如果value是多个的话，那么变量就是一个list，可选参数[PARENT_SOCPE]用来限定设置哪个范围的变量</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="7-project命令"><a href="#7-project命令" class="headerlink" title="7. project命令"></a>7. project命令</h4><p>使用改命令来设置项目的信息，项目的名称，版本</p>
-<h4 id="8-option命令"><a href="#8-option命令" class="headerlink" title="8. option命令"></a>8. option命令</h4><p>该命令用来与用户进行交互</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">option</span>(&lt;option_variable&gt; <span class="string">"help string describing option"</span> [initial value])  <span class="comment"># 如果没有设置init value默认使用false</span></span><br></pre></td></tr></table></figure>
-<h4 id="9-link-libraires"><a href="#9-link-libraires" class="headerlink" title="9. link_libraires"></a>9. link_libraires</h4><p>该命令是用来给最后生成的app指定以来的库。</p>
-<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_libraires(item1 item2 ...)  <span class="comment"># item为依赖的库名</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意：<br>该命令和target_link_libraries命令.</p>
-<ul>
-<li>link_libraries* is used to supply a list of libraries (object archives) to the linker. If the linked item is a cmake target, with specified include directories, they don’t need to be specified separately with.</li>
-<li>The target_* versions apply only to the target that is given as an operand. The non-target versions apply to all targets in the directory. The target_* versions should be used whenever possible (i.e. pretty much always).</li>
-</ul>
-</blockquote>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
-<ol>
-<li><a href="https://cmake.org/cmake/help/v3.7" target="_blank" rel="noopener">https://cmake.org/cmake/help/v3.7</a></li>
-<li><a href="https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories" target="_blank" rel="noopener">https://stackoverflow.com/questions/56565665/difference-between-target-link-libraries-and-target-include-directories</a></li>
-</ol>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1277,20 +1190,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1332,7 +1245,7 @@
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
   </div>
 
         

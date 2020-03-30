@@ -1,14 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>linux-文件系统</title>
+    <url>/2020/03/28/linux-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>Linux文件系统涉及到的知识点：</p>
+<ol>
+<li>虚拟文件系统：它用来提供一种操作文件、目录及其他对象的统一方法。</li>
+<li>Ext4文件系统实现</li>
+</ol>
+<a id="more"></a>
+
+<p><img src="linux-vfs.png" alt="Linux文件系统"></p>
+<h2 id="1-文件系统接口"><a href="#1-文件系统接口" class="headerlink" title="1. 文件系统接口"></a>1. 文件系统接口</h2><h2 id="2-Linux虚拟文件系统"><a href="#2-Linux虚拟文件系统" class="headerlink" title="2. Linux虚拟文件系统"></a>2. Linux虚拟文件系统</h2><p>用户空间处理文件是使用<strong>文件描述符</strong>，内核处理文件主要是使用<strong>inode</strong>。</p>
+<p>inode的结构：</p>
+<ul>
+<li>描述文件状态的元数据，例如：访问权限、上次修改的日期</li>
+<li>保存实际文件内容的数据段（或指向数据的指针）</li>
+</ul>
+<h2 id="3-Ext4文件系统"><a href="#3-Ext4文件系统" class="headerlink" title="3. Ext4文件系统"></a>3. Ext4文件系统</h2>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>文件系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>flutter开发</title>
+    <url>/2020/03/26/flutter%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<p>在移动端的APP是由多个page组成的，在这些page之间可以进行数据的传递。每个page中有哪些组件组成，每个组件之间怎么进行布局的是app开发中需要解决的首要问题。</p>
+<h2 id="常用的基础组件"><a href="#常用的基础组件" class="headerlink" title="常用的基础组件"></a>常用的基础组件</h2><p>基础组件包含：</p>
+<ul>
+<li>文本组件: Text</li>
+<li>按钮组件: RaisedButton, FlatButton, OutlineButton, IconButton</li>
+<li>图片: Image</li>
+<li>单选框和复选框: Switch, Checkbox</li>
+<li>输入框: TextField</li>
+<li>表单: Form</li>
+<li>进度指示器: LinearProgressIndicator, CircularProgressIndicator</li>
+</ul>
+<h2 id="布局相关的组件"><a href="#布局相关的组件" class="headerlink" title="布局相关的组件"></a>布局相关的组件</h2><h2 id="容器类组件"><a href="#容器类组件" class="headerlink" title="容器类组件"></a>容器类组件</h2><h2 id="可滚动组件"><a href="#可滚动组件" class="headerlink" title="可滚动组件"></a>可滚动组件</h2><h2 id="功能型组件"><a href="#功能型组件" class="headerlink" title="功能型组件"></a>功能型组件</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://book.flutterchina.club/" target="_blank" rel="noopener">《flutter实战》</a></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>flutter</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>软件工程</title>
     <url>/2020/03/08/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/</url>
-    <content><![CDATA[<p>开发的规范应该如何制定，如何保证持续交付。</p>
+    <content><![CDATA[<p>关于软件开发的一些简单思考.</p>
+<a id="more"></a>
+
+<p>开发的规范应该如何制定，如何保证持续交付。</p>
 <p>一个project最后的交付物是什么？</p>
 <ul>
 <li>是一个工具？</li>
 <li>是一个web应用？</li>
-<li>是一个提供给别人的包？</li>
+<li>是一个对外提供的第三方包？</li>
 </ul>
 <p><strong>终极目标</strong>：只需点击一下鼠标，就可以将软件部署到任何目标环境，包括开发环境、测试环境和生产环境</p>
 <p>一个可工作的软件可以分成以下几个部分：</p>
@@ -20,7 +74,6 @@
 </ul>
 <p>以上四个部分任何一个的改变都应该能够被控制，并且都会被验证。</p>
 <p>使软件一直处于可发布状态：持续集成。</p>
-<p>哪些文件应该放在版本控制里面？</p>
 <h2 id="1-开发阶段"><a href="#1-开发阶段" class="headerlink" title="1 开发阶段"></a>1 开发阶段</h2><ul>
 <li>选择project语言？</li>
 <li>project的版本控制</li>
@@ -41,14 +94,35 @@
 <li>code review</li>
 <li>重构</li>
 </ul>
-<h4 id="1-2-1-编码规范"><a href="#1-2-1-编码规范" class="headerlink" title="1.2.1 编码规范"></a>1.2.1 编码规范</h4><h4 id="1-2-2-单元测试"><a href="#1-2-2-单元测试" class="headerlink" title="1.2.2 单元测试"></a>1.2.2 单元测试</h4><h4 id="1-2-3-重构"><a href="#1-2-3-重构" class="headerlink" title="1.2.3 重构"></a>1.2.3 重构</h4><p>《重构-改善既有代码的设计》</p>
+<h4 id="1-2-1-编码规范"><a href="#1-2-1-编码规范" class="headerlink" title="1.2.1 编码规范"></a>1.2.1 编码规范</h4><h4 id="1-2-2-单元测试"><a href="#1-2-2-单元测试" class="headerlink" title="1.2.2 单元测试"></a>1.2.2 单元测试</h4><h5 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h5><p>所谓的单元测试就是对软件中的<strong>最小单元</strong>进行检查和验证。</p>
+<h5 id="如何实践单元测试"><a href="#如何实践单元测试" class="headerlink" title="如何实践单元测试"></a>如何实践单元测试</h5><ul>
+<li><p>模块接口的测试：对通过所有被测模块的数据流进行测试</p>
+</li>
+<li><p>局部数据结构测试：检查模块中的数据结构是否正确的定义和使用</p>
+</li>
+<li><p>边界条件测试：检查数据流或者控制流中条件或者数据处于边界时的出错可能性</p>
+</li>
+<li><p>独立路径测试：对模块中重要的执行路径进行测试</p>
+</li>
+<li><p>出错处理：检查模块的错误处理功能或者缺陷</p>
+</li>
+</ul>
+<h5 id="单元测试的原则"><a href="#单元测试的原则" class="headerlink" title="单元测试的原则"></a>单元测试的原则</h5><ul>
+<li>快速的</li>
+<li>独立的</li>
+<li>可重复的</li>
+<li>自我验证的</li>
+<li>及时的：最好是在代码开发之前，就完成单元测试代码的编写，TDD测试驱动开发</li>
+</ul>
+<h4 id="1-2-3-重构"><a href="#1-2-3-重构" class="headerlink" title="1.2.3 重构"></a>1.2.3 重构</h4><p>《重构-改善既有代码的设计》</p>
 <h2 id="2-构建阶段"><a href="#2-构建阶段" class="headerlink" title="2 构建阶段"></a>2 构建阶段</h2><p>构建工具</p>
 <h2 id="3-部署阶段"><a href="#3-部署阶段" class="headerlink" title="3 部署阶段"></a>3 部署阶段</h2><p>如何做到高效的部署?</p>
 <ul>
 <li>自动化部署</li>
 <li>docker &amp; k8s</li>
 </ul>
-<h2 id="4-测试阶段"><a href="#4-测试阶段" class="headerlink" title="4 测试阶段"></a>4 测试阶段</h2><ul>
+<h2 id="4-测试阶段"><a href="#4-测试阶段" class="headerlink" title="4 测试阶段"></a>4 测试阶段</h2><p><strong>测试是为发现错误而执行程序的过程</strong></p>
+<ul>
 <li>功能测试</li>
 <li>性能测试<ul>
 <li>时间性能</li>
@@ -58,11 +132,7 @@
 </li>
 <li>安全测试</li>
 </ul>
-<h2 id="5-发布阶段"><a href="#5-发布阶段" class="headerlink" title="5 发布阶段"></a>5 发布阶段</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
-<ol>
-<li>《持续交付：发布可靠软件的系统方法》</li>
-</ol>
-</blockquote>
+<h2 id="5-发布阶段"><a href="#5-发布阶段" class="headerlink" title="5 发布阶段"></a>5 发布阶段</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.《持续交付：发布可靠软件的系统方法》<br>2.《软件测试的艺术》<br>3.《重构-改善既有代码的设计》</p>
 ]]></content>
       <categories>
         <category>软件工程</category>
@@ -163,12 +233,17 @@
     <title>通用编程技术-工具</title>
     <url>/2020/03/06/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<p>常用的工具：git，docker，k8s，make，cmake，npm，maven，gradle</p>
+<a id="more"></a>
+
+<h2 id="1-版本控制工具"><a href="#1-版本控制工具" class="headerlink" title="1 版本控制工具"></a>1 版本控制工具</h2><p>git</p>
+<h2 id="2-项目构建工具"><a href="#2-项目构建工具" class="headerlink" title="2 项目构建工具"></a>2 项目构建工具</h2><p>js项目：npm<br>c/c++项目：cmake，make<br>java项目：maven，gradle</p>
+<h2 id="3-项目部署工具"><a href="#3-项目部署工具" class="headerlink" title="3 项目部署工具"></a>3 项目部署工具</h2><p>docker<br>k8s</p>
 ]]></content>
   </entry>
   <entry>
     <title>gradle使用</title>
     <url>/2020/03/06/gradle%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="1-开始"><a href="#1-开始" class="headerlink" title="1 开始"></a>1 开始</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://gradle.org/releases/" target="_blank" rel="noopener">去官网下载</a>, 然后配置环境变量。</p>
+    <content><![CDATA[<h2 id="1-开始"><a href="#1-开始" class="headerlink" title="1 开始"></a>1 开始</h2><h2 id="gradle的版本："><a href="#gradle的版本：" class="headerlink" title="gradle的版本："></a>gradle的版本：</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p><a href="https://gradle.org/releases/" target="_blank" rel="noopener">去官网下载</a>, 然后配置环境变量。</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> GRADLE_HOME = <span class="variable">$baseDir</span>/gradle</span><br><span class="line"><span class="built_in">export</span> <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GRADLE_HOME</span>/bin</span><br></pre></td></tr></table></figure>
 
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>每一个构建都是由一个或多个 projects 构成的；每一个 project 是由一个或多个 tasks 构成的. 一个 task 代表一些更加细化的构建. 可能是编译一些 classes, 创建一个 JAR, 生成 javadoc, 或者生成某个目录的压缩文件。</p>
@@ -187,10 +262,12 @@
 <ul>
 <li>在项目目录下运行<code>gradle wrapper</code>, 之后会生成如下<br>  <img src="gradle-wrapper.png" alt="gradle wrapper"></li>
 <li>将项目拷贝到到其他的项目之后，可以直接使用<code>./gradlew</code>命令来进行项目的构建<ul>
-<li>该命令会下载需要的gradle版本，下载到<code>~/.gradle/wrapper/dists</code>目录下</li>
+<li><code>./gradlew wrapper</code>: 该命令会下载绑定的版本的gradle，下载到<code>~/.gradle/wrapper/dists</code>目录下</li>
 </ul>
 </li>
 </ul>
+<p><strong>说明</strong>：</p>
+<p>gradlew是一个shell脚本，该脚本会首先启动一个jvm，然后加载上图gradle目录下的wrapper/gradle-wrapper.jar</p>
 <p><strong>daemo</strong></p>
 <p>可以理解成gradle的服务端，执行gradle命令的时候，是创建一个client，然后client将命令发送给daemo，执行完命令之后client会销毁，但是daemo存才，下一次执行的时候还可以直接使用。</p>
 <h2 id="2-使用gradle构建项目"><a href="#2-使用gradle构建项目" class="headerlink" title="2 使用gradle构建项目"></a>2 使用gradle构建项目</h2><p>gradle可以用来构建不同语言开发的project，gradle对project的构建是通过插件实现的。例如：使用java插件来构建java项目。</p>
@@ -323,8 +400,12 @@
   <entry>
     <title>linux性能优化</title>
     <url>/2020/03/04/linux%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<p>性能优化的基本流程：</p>
-<ul>
+    <content><![CDATA[<p>本文主要讲述了Linux的<strong>性能分析</strong>和<strong>优化</strong>的一些常用的工具和手段。</p>
+<a id="more"></a>
+
+<h2 id="1-性能的衡量指标"><a href="#1-性能的衡量指标" class="headerlink" title="1 性能的衡量指标"></a>1 性能的衡量指标</h2><p><strong>吞吐</strong>和<strong>延时</strong>是衡量一个系统性能的核心指标。在考虑系统性能的时候，还需要考虑到<strong>系统的资源消耗</strong>情况。</p>
+<p>性能优化的基本流程：</p>
+<ol>
 <li>查看当前的系统负载</li>
 <li>查看性能的瓶颈在哪里<ul>
 <li>CPU</li>
@@ -334,10 +415,16 @@
 </ul>
 </li>
 <li>针对问题，进行性能的优化</li>
-</ul>
-<h2 id="查看系统负载的命令"><a href="#查看系统负载的命令" class="headerlink" title="查看系统负载的命令"></a>查看系统负载的命令</h2><p>top</p>
-<p>uptime</p>
+</ol>
+<h2 id="2-查看系统负载的命令"><a href="#2-查看系统负载的命令" class="headerlink" title="2 查看系统负载的命令"></a>2 查看系统负载的命令</h2><p>使用top和uptime命令可以查看系统的负载情况。</p>
+<p>top: <img src="top.png" alt="top命令"><br>平均负载：单位时间内，系统的平均活跃的进程数。当平均负载超过CPU数量的70%的时候，意味着系统可能处于过载状态。</p>
 ]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>分布式存储系统</title>
@@ -1669,7 +1756,11 @@
   <entry>
     <title>通用编程技术-编程语言</title>
     <url>/2020/01/04/%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/</url>
-    <content><![CDATA[<p>本文简单的记录了Rust, Go, Python, TypeScript, Erlang的基本语法。</p>
+    <content><![CDATA[<p>本文简单的记录了Rust, Go, Python, TypeScript, Erlang的基本语法。<br>首先知道编程的最终产出是什么？</p>
+<ul>
+<li>是一个命令行的工具还是一个web服务</li>
+<li>项目中使用了哪些标准库和第三方库，第三方库时怎么进行管理的</li>
+</ul>
 <a id="more"></a>
 
 <h2 id="1-变量"><a href="#1-变量" class="headerlink" title="1 变量"></a>1 变量</h2><h3 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h3><h3 id="1-2-类型"><a href="#1-2-类型" class="headerlink" title="1.2 类型"></a>1.2 类型</h3><h2 id="2-逻辑控制"><a href="#2-逻辑控制" class="headerlink" title="2 逻辑控制"></a>2 逻辑控制</h2><h3 id="2-1-条件"><a href="#2-1-条件" class="headerlink" title="2.1 条件"></a>2.1 条件</h3><h3 id="2-2-循环"><a href="#2-2-循环" class="headerlink" title="2.2 循环"></a>2.2 循环</h3><h2 id="3-函数"><a href="#3-函数" class="headerlink" title="3 函数"></a>3 函数</h2><h3 id="3-1-定义"><a href="#3-1-定义" class="headerlink" title="3.1 定义"></a>3.1 定义</h3><h3 id="3-2-调用"><a href="#3-2-调用" class="headerlink" title="3.2 调用"></a>3.2 调用</h3><h3 id="3-3-其他"><a href="#3-3-其他" class="headerlink" title="3.3 其他"></a>3.3 其他</h3><h2 id="4-面向对象"><a href="#4-面向对象" class="headerlink" title="4 面向对象"></a>4 面向对象</h2><h3 id="4-1-类"><a href="#4-1-类" class="headerlink" title="4.1 类"></a>4.1 类</h3><h3 id="4-2-接口"><a href="#4-2-接口" class="headerlink" title="4.2 接口"></a>4.2 接口</h3><h3 id="4-3-对象"><a href="#4-3-对象" class="headerlink" title="4.3 对象"></a>4.3 对象</h3><h2 id="5-错误和异常处理"><a href="#5-错误和异常处理" class="headerlink" title="5 错误和异常处理"></a>5 错误和异常处理</h2><h2 id="6-包和模块"><a href="#6-包和模块" class="headerlink" title="6 包和模块"></a>6 包和模块</h2><h2 id="7-并发编程"><a href="#7-并发编程" class="headerlink" title="7 并发编程"></a>7 并发编程</h2><h2 id="8-网络编程"><a href="#8-网络编程" class="headerlink" title="8 网络编程"></a>8 网络编程</h2><h2 id="9-最佳实践"><a href="#9-最佳实践" class="headerlink" title="9 最佳实践"></a>9 最佳实践</h2>]]></content>

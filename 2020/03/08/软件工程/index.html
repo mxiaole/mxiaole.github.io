@@ -12,23 +12,23 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="开发的规范应该如何制定，如何保证持续交付。 一个project最后的交付物是什么？  是一个工具？ 是一个web应用？ 是一个提供给别人的包？  终极目标：只需点击一下鼠标，就可以将软件部署到任何目标环境，包括开发环境、测试环境和生产环境 一个可工作的软件可以分成以下几个部分：  代码 配置 环境 数据  以上四个部分任何一个的改变都应该能够被控制，并且都会被验证。 使软件一直处于可发布状态：持续">
+  <meta name="description" content="关于软件开发的一些简单思考.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="软件工程">
 <meta property="og:url" content="http://yoursite.com/2020/03/08/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/index.html">
 <meta property="og:site_name" content="人生识字忧患始，不待扬鞭自奋蹄">
-<meta property="og:description" content="开发的规范应该如何制定，如何保证持续交付。 一个project最后的交付物是什么？  是一个工具？ 是一个web应用？ 是一个提供给别人的包？  终极目标：只需点击一下鼠标，就可以将软件部署到任何目标环境，包括开发环境、测试环境和生产环境 一个可工作的软件可以分成以下几个部分：  代码 配置 环境 数据  以上四个部分任何一个的改变都应该能够被控制，并且都会被验证。 使软件一直处于可发布状态：持续">
+<meta property="og:description" content="关于软件开发的一些简单思考.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-03-08T07:56:06.000Z">
-<meta property="article:modified_time" content="2020-03-08T09:35:11.295Z">
+<meta property="article:modified_time" content="2020-03-30T07:55:44.730Z">
 <meta property="article:author" content="Cody">
 <meta property="article:tag" content="思考">
 <meta name="twitter:card" content="summary">
@@ -203,9 +203,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-03-08 15:56:06 / Modified: 17:35:11" itemprop="dateCreated datePublished" datetime="2020-03-08T15:56:06+08:00">2020-03-08</time>
+              <time title="Created: 2020-03-08 15:56:06" itemprop="dateCreated datePublished" datetime="2020-03-08T15:56:06+08:00">2020-03-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,12 +229,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>开发的规范应该如何制定，如何保证持续交付。</p>
+        <p>关于软件开发的一些简单思考.</p>
+<a id="more"></a>
+
+<p>开发的规范应该如何制定，如何保证持续交付。</p>
 <p>一个project最后的交付物是什么？</p>
 <ul>
 <li>是一个工具？</li>
 <li>是一个web应用？</li>
-<li>是一个提供给别人的包？</li>
+<li>是一个对外提供的第三方包？</li>
 </ul>
 <p><strong>终极目标</strong>：只需点击一下鼠标，就可以将软件部署到任何目标环境，包括开发环境、测试环境和生产环境</p>
 <p>一个可工作的软件可以分成以下几个部分：</p>
@@ -247,7 +249,6 @@
 </ul>
 <p>以上四个部分任何一个的改变都应该能够被控制，并且都会被验证。</p>
 <p>使软件一直处于可发布状态：持续集成。</p>
-<p>哪些文件应该放在版本控制里面？</p>
 <h2 id="1-开发阶段"><a href="#1-开发阶段" class="headerlink" title="1 开发阶段"></a>1 开发阶段</h2><ul>
 <li>选择project语言？</li>
 <li>project的版本控制</li>
@@ -268,14 +269,35 @@
 <li>code review</li>
 <li>重构</li>
 </ul>
-<h4 id="1-2-1-编码规范"><a href="#1-2-1-编码规范" class="headerlink" title="1.2.1 编码规范"></a>1.2.1 编码规范</h4><h4 id="1-2-2-单元测试"><a href="#1-2-2-单元测试" class="headerlink" title="1.2.2 单元测试"></a>1.2.2 单元测试</h4><h4 id="1-2-3-重构"><a href="#1-2-3-重构" class="headerlink" title="1.2.3 重构"></a>1.2.3 重构</h4><p>《重构-改善既有代码的设计》</p>
+<h4 id="1-2-1-编码规范"><a href="#1-2-1-编码规范" class="headerlink" title="1.2.1 编码规范"></a>1.2.1 编码规范</h4><h4 id="1-2-2-单元测试"><a href="#1-2-2-单元测试" class="headerlink" title="1.2.2 单元测试"></a>1.2.2 单元测试</h4><h5 id="什么是单元测试"><a href="#什么是单元测试" class="headerlink" title="什么是单元测试"></a>什么是单元测试</h5><p>所谓的单元测试就是对软件中的<strong>最小单元</strong>进行检查和验证。</p>
+<h5 id="如何实践单元测试"><a href="#如何实践单元测试" class="headerlink" title="如何实践单元测试"></a>如何实践单元测试</h5><ul>
+<li><p>模块接口的测试：对通过所有被测模块的数据流进行测试</p>
+</li>
+<li><p>局部数据结构测试：检查模块中的数据结构是否正确的定义和使用</p>
+</li>
+<li><p>边界条件测试：检查数据流或者控制流中条件或者数据处于边界时的出错可能性</p>
+</li>
+<li><p>独立路径测试：对模块中重要的执行路径进行测试</p>
+</li>
+<li><p>出错处理：检查模块的错误处理功能或者缺陷</p>
+</li>
+</ul>
+<h5 id="单元测试的原则"><a href="#单元测试的原则" class="headerlink" title="单元测试的原则"></a>单元测试的原则</h5><ul>
+<li>快速的</li>
+<li>独立的</li>
+<li>可重复的</li>
+<li>自我验证的</li>
+<li>及时的：最好是在代码开发之前，就完成单元测试代码的编写，TDD测试驱动开发</li>
+</ul>
+<h4 id="1-2-3-重构"><a href="#1-2-3-重构" class="headerlink" title="1.2.3 重构"></a>1.2.3 重构</h4><p>《重构-改善既有代码的设计》</p>
 <h2 id="2-构建阶段"><a href="#2-构建阶段" class="headerlink" title="2 构建阶段"></a>2 构建阶段</h2><p>构建工具</p>
 <h2 id="3-部署阶段"><a href="#3-部署阶段" class="headerlink" title="3 部署阶段"></a>3 部署阶段</h2><p>如何做到高效的部署?</p>
 <ul>
 <li>自动化部署</li>
 <li>docker &amp; k8s</li>
 </ul>
-<h2 id="4-测试阶段"><a href="#4-测试阶段" class="headerlink" title="4 测试阶段"></a>4 测试阶段</h2><ul>
+<h2 id="4-测试阶段"><a href="#4-测试阶段" class="headerlink" title="4 测试阶段"></a>4 测试阶段</h2><p><strong>测试是为发现错误而执行程序的过程</strong></p>
+<ul>
 <li>功能测试</li>
 <li>性能测试<ul>
 <li>时间性能</li>
@@ -285,11 +307,7 @@
 </li>
 <li>安全测试</li>
 </ul>
-<h2 id="5-发布阶段"><a href="#5-发布阶段" class="headerlink" title="5 发布阶段"></a>5 发布阶段</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote>
-<ol>
-<li>《持续交付：发布可靠软件的系统方法》</li>
-</ol>
-</blockquote>
+<h2 id="5-发布阶段"><a href="#5-发布阶段" class="headerlink" title="5 发布阶段"></a>5 发布阶段</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.《持续交付：发布可靠软件的系统方法》<br>2.《软件测试的艺术》<br>3.《重构-改善既有代码的设计》</p>
 
     </div>
 
@@ -311,7 +329,10 @@
     <a href="/2020/03/08/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" rel="prev" title="自动化测试">
       <i class="fa fa-chevron-left"></i> 自动化测试
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/26/flutter%E5%BC%80%E5%8F%91/" rel="next" title="flutter开发">
+      flutter开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -371,7 +392,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-开发阶段"><span class="nav-number">1.</span> <span class="nav-text">1 开发阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-版本控制"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 版本控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-project中的哪些文件应该进行版本控制"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 project中的哪些文件应该进行版本控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-git使用的最佳实践"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2 git使用的最佳实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-代码质量"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 代码质量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-编码规范"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 编码规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-单元测试"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 单元测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-重构"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.2.3 重构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-构建阶段"><span class="nav-number">2.</span> <span class="nav-text">2 构建阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-部署阶段"><span class="nav-number">3.</span> <span class="nav-text">3 部署阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-测试阶段"><span class="nav-number">4.</span> <span class="nav-text">4 测试阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-发布阶段"><span class="nav-number">5.</span> <span class="nav-text">5 发布阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-开发阶段"><span class="nav-text">1 开发阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-版本控制"><span class="nav-text">1.1 版本控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-project中的哪些文件应该进行版本控制"><span class="nav-text">1.1.1 project中的哪些文件应该进行版本控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-git使用的最佳实践"><span class="nav-text">1.1.2 git使用的最佳实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-代码质量"><span class="nav-text">1.2 代码质量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-编码规范"><span class="nav-text">1.2.1 编码规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-单元测试"><span class="nav-text">1.2.2 单元测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是单元测试"><span class="nav-text">什么是单元测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何实践单元测试"><span class="nav-text">如何实践单元测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#单元测试的原则"><span class="nav-text">单元测试的原则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-重构"><span class="nav-text">1.2.3 重构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-构建阶段"><span class="nav-text">2 构建阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-部署阶段"><span class="nav-text">3 部署阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-测试阶段"><span class="nav-text">4 测试阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-发布阶段"><span class="nav-text">5 发布阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -385,20 +406,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-count">62</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -440,7 +461,7 @@
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.1
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
   </div>
 
         
